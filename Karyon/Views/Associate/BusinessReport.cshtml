@@ -1,0 +1,214 @@
+﻿@model Karyon.Models.BusinessReport
+
+@{
+    ViewData["Title"] = "Business Report";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+@{
+    decimal TotalPaidLeg1 = 0;
+    decimal TotalPaidLeg2 = 0;
+    decimal TotalBusinessLeft = 0;
+    decimal TotalBusinessRight = 0;
+}
+<form asp-action="BusinessReport">
+    
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="page-title">
+                    <div class="row">
+                        <div class="col-sm-6 ps-0">
+                            <h3>Business Report</h3>
+                        </div>
+                        <div class="col-sm-6 pe-0">
+                            <@*ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">
+                                        <svg class="stroke-icon">
+                                            <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">Congratulations</li>
+                                <li class="breadcrumb-item active"> Karyon Wallet List</li>
+                            </ol>*@
+                            @if (Model != null)
+                            {
+                                if (Model.dtDetails != null)
+                                {
+                                    if (Model.dtDetails.Rows.Count > 0)
+                                    {
+                                        <input type="submit" class="btn btn-info" value="Export" id="ExporttoExcel" name="ExporttoExcel" />
+                                    }
+
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <!-- /breadcrumb -->
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="row" style="display:none">
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                            </div>
+                            <input type="hidden" asp-for="Page" />
+                            <input type="hidden" asp-for="ExportToExcel" />
+                        </div>
+                        <div class="table-responsive" id="details">
+                            @if (Model != null)
+                            {
+                                if (Model.dtDetails != null)
+                                {
+                                    if (Model.dtDetails.Rows.Count > 0)
+                                    {
+                                        int i = 1;
+                                        <table class="table mb-0" id="tblDetails">
+                                            <thead>
+                                                <tr>
+
+                                                    <th class="Sno">#</th>
+                                                    <th>Closing Date</th>
+                                                    <th>Payout No</th>
+                                                    <th>Harmony</th>
+                                                    <th>Harmony Points</th>
+                                                    <th>Last C/F(A)</th>
+                                                    <th>Last C/F(B)</th>
+                                                    <th>Today's Zone A</th>
+                                                    <th>Today's Zone B</th>
+                                                    <th>C/F Zone A</th>
+                                                    <th>C/F Zone B</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+
+
+                                                @for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+
+
+                                                    <tr>
+                                                        <td>@i</td>
+
+                                                        <td>@Model.dtDetails.Rows[j]["ClosingDate"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["PayoutNo"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["Harmony"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["HarmonyPoints"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["PrevLeft"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["PrevRight"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["CurrLeft"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["CurrRight"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["BalLeft"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["BalRight"] </td>
+
+                                                    </tr>
+                                                    i++;
+
+                                                }
+                                            </tbody>
+
+
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <span style="color:red">No Data Found...</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span style="color:red">No Data Found...</span>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@* Model*@
+<div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Business Details</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="tblOrderDetails">
+                        <thead>
+                            <tr>
+                                <th>S. No.</th>
+                                <th>LoginId</th>
+                                <th>Zone A Business</th>
+                                <th>Zone B Business</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="OrderDetails">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    function GetBusinessDetails(EntryDate) {
+
+        $.ajax({
+            url: '/Associate/BusinessReportDetails',
+            type: 'Post',
+            data: { EntryDate: EntryDate },
+            success: function(result) {
+
+                if (result != null) {
+                    var srno = 1;
+                    var str = "";
+                    $("#tblOrderDetails tbody").html('');
+                    for (var i = 0; i < result.response.businessList.length; i++) {
+
+                        str += "<tr> <td>" + srno + " </td><td>" + result.response.businessList[i].loginId + "<br/> <span class='badge bg-info' > " + result.response.businessList[i].name + " </span></td> <td>" + result.response.businessList[i].zoneABusiness + " </td><td>" + result.response.businessList[i].zoneBBusiness + "</td></tr> ";
+                        srno = srno + 1;
+                    }
+
+                    console.log(result)
+                    console.log(str)
+
+                    $("#tblOrderDetails tbody").html(str);
+
+                }
+                else {
+
+                }
+            }, error: function() {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+</script>

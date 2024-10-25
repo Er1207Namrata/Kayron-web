@@ -1,0 +1,166 @@
+﻿@model Karyon.Models.PromoTracterResponse
+@{
+    ViewData["Title"] = "Promotracker";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+
+<form asp-action="Promotracker">
+
+
+    <div class="page-body">
+        <div class="container-fluid">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-sm-6 ps-0">
+                        <h3>Promo Tracker</h3>
+                    </div>
+                    <div class="col-sm-6 pe-0">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">
+                                    <svg class="stroke-icon">
+                                        <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">Promo Tracker</li>
+                            <li class="breadcrumb-item active"> Promo Tracker</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+        <div class="row">
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered radio-first-col-width">
+                                <thead style="background: #40541d;">
+                                    <tr>
+                                        <th class="text-white">Maximum Direct Leg (UID + BID PV)</th>
+                                        <th class="text-white">Accumulative Direct Team Total Group PV</th>
+                                        <th class="text-white">Direct Leg</th>
+                                        <th class="text-white">Promotion Level</th>
+                                        <th class="text-white">Performance Level</th>
+                                        <th class="text-white">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        if (Model.Response != null && Model.Response.list.Count > 0)
+                                        {
+                                            foreach (var item in Model.Response.list)
+                                            {
+                                                <tr>
+                                                    <td>@item.TargetPVFrom</td>
+                                                    <td>@item.TargetPVTo</td>
+                                                    <td>@item.DirectLeg</td>
+                                                    <td><img width="110" src="@item.ImageUrl" /> </td>
+                                                    <td>@item.PerformanceLevel</td>
+                                                    <td>
+                                                        @if (item.AchiveStatus == "Pending")
+                                                        {
+                                                            <span style="cursor:pointer;" class="badge badge-danger" onclick="return fgetPendingPromoCode1('@item.PK_LevelId')">
+                                                                @item.AchiveStatus
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span style="cursor:pointer;" class="badge badge-success">
+                                                                @item.AchiveStatus
+                                                            </span>
+                                                        }
+                                                    </td>
+
+                                                </tr>
+
+                                            }
+                                        }
+                                    }
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="headertitle"></h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table id="tblZoneADetails" class="table table-striped">
+                                        <thead>
+                                           
+                                            <tr>
+
+                                                <th>Achived Business/Target PV To</th>
+                                                <th>Total Achived Count/ Direct Leg</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                       
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-sm btn-secondary/" data-bs-dismiss="modal" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    function fgetPendingPromoCode1(pk_levelId) {
+        
+        debugger;
+        var levelId = pk_levelId;
+        $.ajax({
+            url: '/Associate/GetPendingPromoTrackerDetails',
+            type: 'POST',
+            data: { levelId: levelId },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    $("#tblZoneADetails tbody").html('');
+                    if (response.status == "1") {
+                        
+                            let str = '';
+
+
+                        str += "<tr><td>" + response.response.list[0].achivedBusiness + '/' + response.response.list[0].targetPVTo + "</td><td>" + response.response.list[0].totalAchivedCount + '/' + response.response.list[0].directLeg + "</td></tr>";
+                                
+                            
+                            
+                            $("#tblZoneADetails tbody").html(str);
+                        $('#largeModal').modal('show');
+                    }
+                    
+                }
+            },
+            Error: function () {
+
+            }
+        });
+    }
+</script>
+
+

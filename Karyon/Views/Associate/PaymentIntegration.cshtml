@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "PaymentIntegration";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/Websitecss/css/shop.min.css" />
+<header class="page">
+    <div class="page_main container-fluid">
+        <div class="container">
+            <h1 class="page_header"></h1>
+            <p class="page_text">@TempData["Placeorder"]</p>
+        </div>
+    </div>
+
+</header>
+
+
+@Html.Raw(ViewBag.htmlData)

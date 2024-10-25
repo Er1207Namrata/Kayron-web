@@ -1,0 +1,110 @@
+﻿@model Karyon.Models.FamilynWalletListRequest
+@{
+    ViewData["Title"] = "FamilynWalletList";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+
+<form asp-action="FamilynWalletList">
+
+    
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="page-title">
+                    <div class="row">
+                        <div class="col-sm-6 ps-0">
+                            <h3>Familyn Wallet List</h3>
+                        </div>
+                        <div class="col-sm-6 pe-0">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">
+                                        <svg class="stroke-icon">
+                                            <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">Familyn Wallet</li>
+                                <li class="breadcrumb-item active"> Familyn Wallet List</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- /breadcrumb -->
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+
+                    <div class="card-body">
+
+                        <div class="table-responsive" id="details">
+                            <table class="table mb-0" id="tblDetails">
+                                <thead>
+                                    <tr>
+
+                                        <th class="Sno">Sl No.</th>
+                                        <th>Amount</th>
+                                        <th>PaymentMode</th>
+                                        <th>TransactionNo</th>
+                                        <th>TransactionDate</th>
+                                        <th>RequestedDate</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model != null)
+                                    {
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+                                                int j = 1;
+                                                for (var i = 0; i < Model.dtDetails.Rows.Count; i++)
+                                                {
+                                                    string cssclass = "";
+
+                                                    <tr>
+                                                        <td class="Sno">@j</td>
+
+                                                        <td>@Model.dtDetails.Rows[i]["Amount"].ToString()</td>
+                                                        <td>@Model.dtDetails.Rows[i]["PaymentMode"].ToString()</td>
+                                                        <td>@Model.dtDetails.Rows[i]["TransactionNo"].ToString()</td>
+                                                        <td>@Model.dtDetails.Rows[i]["TransactionDate"].ToString()</td>
+                                                        <td>@Model.dtDetails.Rows[i]["RequestedDate"].ToString()</td>
+                                                        <td>
+                                                            @if (Model.dtDetails.Rows[i]["Status"].ToString() == "Pending")
+                                                            {
+                                                                cssclass = "badge bg-info";
+                                                            }
+                                                            else if (Model.dtDetails.Rows[i]["Status"].ToString() == "Approved")
+                                                            {
+                                                                cssclass = "badge bg-success";
+                                                            }
+                                                            else
+                                                            {
+                                                                cssclass = "badge bg-danger";
+                                                            }
+
+                                                            <span class="@cssclass">@Model.dtDetails.Rows[i]["Status"]</span>
+                                                        </td>
+                                                    </tr>
+                                                    j += 1;
+                                                }
+                                            }
+                                        }
+
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,284 @@
+﻿@model Karyon.Models.RewardReposne
+@{
+    ViewData["Title"] = "RewardDetails";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+<form asp-action="RewardDetails">
+   
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="page-title">
+                    <div class="row">
+                        <div class="col-sm-6 ps-0">
+                            <h3>Reward Reports</h3>
+                        </div>
+                        <div class="col-sm-6 pe-0">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">
+                                        <svg class="stroke-icon">
+                                            <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">Reports</li>
+                                <li class="breadcrumb-item active"> Reward Reports</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="row" style="display:none">
+
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                            </div>
+                        </div>
+                        <br />
+                       @*<input type="hidden" asp-for="Page" />*@
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th>Reward Name</th>
+                                        <th>Business Amount</th>
+                                        <th>Left Point</th>
+                                        <th>Right Point</th>
+                                        <th>Matching Target Point</th>
+                                        <th>Acheived On</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        if (Model.Response != null)
+                                        {
+                                            if (Model.Response.RewardList != null)
+                                            {
+                                                int SNO = 0;
+                                                foreach (var item in Model.Response.RewardList)
+                                                {
+                                                    <tr>
+                                                        <td>@(SNO = SNO + 1)</td>
+                                                        @*<td><img src="@item.RewardImg" style="height:50px;width:50px;" /> <br/> @item.Recognition </td>*@
+                                                        <td>@item.RewardName</td>
+                                                        <td>@item.RewardAmount</td>
+                                                        <td>
+                                                            @item.LeftBusiness
+                                                            @if (!string.IsNullOrEmpty(item.BalanceLeft))
+                                                            {
+                                                                <br />
+                                                                <span>Balance Left: <label class="badge badge-success">@item.BalanceLeft</label></span>
+
+                                                                <br />
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @item.RightBusiness
+                                                            @if (!string.IsNullOrEmpty(item.BalanceRight))
+                                                            {
+                                                                <br />
+                                                                <span>Balance Right: <label class="badge badge-success">@item.BalanceRight</label></span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @item.TargetPoint
+                                                        </td>
+
+                                                        <td>@item.AchievedOn</td>
+                                                        <td>
+
+                                                            @if (item.Status == "Achieved")
+                                                            {
+                                                                <span class="badge badge-success">@item.Status</span>
+                                                            }
+                                                            else if (item.Status == "Pending")
+                                                            {
+                                                                <span class="badge badge-warning">@item.Status</span>
+                                                            }
+                                                            else if (item.Status == "Skipped")
+                                                            {
+                                                                <span class="badge badge-danger">@item.Status</span>
+                                                            }
+                                                            else if (item.Status == "Claimed")
+                                                            {
+                                                                <span class="badge badge-info">@item.Status</span>
+                                                            }
+                                                            else if (item.Status == "Claim Denied")
+                                                            {
+                                                                <span class="badge badge-red">@item.Status</span>
+                                                            }
+
+                                                            else if (item.Status == "Approved By Admin")
+                                                            {
+                                                                @*<span class="badge badge-primary">@item.Status</span>*@
+                                                                <a class="text-primary" style="cursor:pointer;text-decoration:underline" onclick="ShowBankDetails(@item.PK_RId)"><span class="badge badge-primary">@item.Status</span></a>
+                                                            }
+
+                                                        </td>
+                                                     
+
+                                                        @if (item.Status == "Achieved")
+                                                        {
+                                                            <td>
+                                                                <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="Claim(@item.PK_RId)">Claim</a>&nbsp;
+                                                                <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="Skip(@item.PK_RId)">Skip</a>
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>-</td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                       
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@*<script type="text/javascript">
+
+    function Claim(pId) {
+
+        if (confirm('Do you want to Sent Request ?')) {
+
+            if (pId == "") {
+
+                return false;
+            }
+            else {
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: 'application/json;charset=utf-8',
+                    tradition: true,
+                    url: '/Associate/Claim',
+                    data: JSON.stringify({ rId: pId }),
+                    success: function (data) {
+                        if (data.Msg == "1") {
+                            alert('Request Claim Successfully!');
+                           // location.href = "/Associate/AssociateRewards/Rewards";
+                            return false;
+                        }
+
+                        else {
+                            alert('Please Try Again!!');
+                            return false;
+                        }
+                    },
+                    error: function (error) {
+                        alert('Something went wrong !!');
+                        return false
+                    }
+                });
+            }
+        }
+    }
+
+    function Skip(pId) {
+
+        if (confirm('Do you want to Skip this Reward ?')) {
+            if (pId == "") {
+                return false;
+            }
+            else {
+
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: 'application/json;charset=utf-8',
+                    tradition: true,
+                    url: '/Associate/Skip',
+                    data: JSON.stringify({ rId: pId }),
+                    success: function (data) {
+                        if (data.Msg == "1") {
+                            alert('Skipped Successfully!!');
+                           // location.href = "/Accounts/Rewards";
+                            return false;
+                        }
+                        else if (data.Msg == "2") {
+
+                            alert('Already Skipped !!');
+                            //location.href = "/Associate/AssociateRewards/Rewards";
+                            return false;
+                        }
+                        else {
+                            alert('Please Try Again!!');
+                            return false;
+                        }
+                    },
+                    error: function (error) {
+                        alert('Something went wrong !!');
+                    }
+                });
+            }
+        }
+    }
+
+    //function ShowBankDetails(pId) {
+
+    //    var srno = 0;
+    //    $("#tbankdetail").html('');
+
+
+    //    if (pId == "") {
+
+    //        return false;
+    //    }
+    //    else {
+    //        $.ajax({
+    //            type: 'post',
+    //            dataType: 'json',
+    //            contentType: 'application/json;charset=utf-8',
+    //            tradition: true,
+    //            url: '/Accounts/ShowBankDetailsReward',
+    //            data: JSON.stringify({ rId: pId }),
+    //            success: function (data) {
+
+    //                $('#ModalBankDetails').modal('show');
+
+
+
+    //                $("#tbankdetail").append(
+    //                    '<tr>' +
+    //                    '<td>' + data.ChequeDDBankName + '</td>' +
+    //                    '<td>' + data.PaymentModeName + '</td>' +
+    //                    '<td>' + data.ChequeDDNo + '</td>' +
+    //                    '<td>' + data.ChequeDDDate + '</td>' +
+    //                    '<td>' + data.BankBranch + '</td>' +
+    //                    '<td>' + data.PaidAmount + '</td>' +
+    //                    '</tr>')
+
+    //            },
+    //            error: function (error) {
+    //                alert('Something went wrong !!');
+    //                return false
+    //            }
+    //        });
+    //    }
+
+    //}
+</script>*@

@@ -1,0 +1,282 @@
+﻿@model Karyon.Models.SetId
+@{
+    ViewData["Title"] = "SetId";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-action="SetId">
+
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Set Id</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Admin</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Set Id </a></li>
+
+                </ol>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Main Id</label>
+                        <input type="text" class="web form-control" asp-for="MainId" placeholder="Main Id" onchange="MGetSponsorName()" min="1" maxlength="100" />
+                        <span id="txtName"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Name </label>
+                        <input class="web form-control" type="text" placeholder="Name" disabled id="SponsorName" />
+                    </div>
+
+                </div>
+                <br />
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label>Upper Id  </label>
+                        <input class="web form-control" type="text" asp-for="UpperId" onchange="UGetSponsorName()" placeholder="Upper Id" min="1" maxlength="100" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Name </label>
+
+                        <input class="web form-control" type="text" placeholder="Name" disabled id="USponsorName" />
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label>Down Id</label>
+
+                        <input type="text" class="web form-control" asp-for="DownId" placeholder="Down Id" onchange="DGetSponsorName()" min="1" maxlength="100" />
+                        <span id="txtName"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Name </label>
+
+                        <input class="web form-control" type="text" placeholder="Name" disabled id="DSponsorName" />
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="submit" name="btnSave" class="btn btn-success" value="Save" onclick="return Fvalidate();" />
+                    </div>
+                    <p style="color:red">@TempData["ViewProfile"]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- row -->
+    @*   <div class="row">
+    <div class="col-md-12">
+    <div class="card">
+
+    <div class="card-body">
+
+    <div class="table-responsive" id="details">
+    <table class="table mb-0" id="tblDetails">
+    <thead>
+    <tr>
+
+    <th class="Sno">Sl No.</th>
+    <th>Login Id</th>
+    <th>Capping Point</th>
+    <th>Target Point</th>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @if (Model != null)
+    {
+    if (Model.dt.Rows.Count > 0)
+    {
+    int j = 1;
+    for (var i = 0; i < Model.dt.Rows.Count; i++)
+    {
+
+    <tr>
+    <td class="Sno">@j</td>
+
+    <td>@Model.dt.Rows[i]["LoginId"].ToString()</td>
+    <td>@Model.dt.Rows[i]["CappingPoint"].ToString()</td>
+    <td>@Model.dt.Rows[i]["TargetPoint"].ToString()</td>
+    <td>@Model.dt.Rows[i]["Name"].ToString()</td>
+    <td>@Model.dt.Rows[i]["Date"].ToString()</td>
+    <td><a href="/Admin/SetCappingMaster?Id=@Model.dt.Rows[i]["Pk_Id"].ToString()" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
+
+    </tr>
+    j += 1;
+    }
+    }
+
+    }
+
+    </tbody>
+    </table>
+
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>*@
+
+</form>
+<script src="~/assets/js/jquery-3.6.0.min.js"></script>
+<script>
+
+    function MGetSponsorName() {
+        ;
+        $(".errortext").removeClass("errortext");
+        $('#pre-loader').show();
+        $.ajax({
+            url: '/Home/GetSponsorName',
+            type: 'Post',
+            data: { SponsorId: $('#MainId').val() },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        $('#SponsorName').val(response.response.name);
+
+                    }
+                    else {
+                        $('#SponsorName').val('');
+                        $("#SponsorName").addClass('errortext');
+                        $('#SponsorName').focus();
+                        $('#MainId').val('');
+                        $("#MainId").addClass('errortext');
+                        $('#MainId').focus();
+                        alert(response.message);
+                        return false;
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+
+    function Fvalidate() {
+        $(".errortext").removeClass("errortext");
+        if ($('#UserId').val() == "") {
+            $("#UserId").addClass('errortext');
+            $('#UserId').focus();
+            return false;
+        }
+        if ($('#CappingPoint').val() == "") {
+            $("#CappingPoint").addClass('errortext');
+            $('#CappingPoint').focus();
+            return false;
+        }
+        if ($('#TargetPoint').val() == "") {
+            $("#TargetPoint").addClass('errortext');
+            $('#TargetPoint').focus();
+            return false;
+        }
+        if ($('#Date').val() == "") {
+            $("#Date").addClass('errortext');
+            $('#Date').focus();
+            return false;
+        }
+    }
+    function UGetSponsorName() {
+        ;
+        $(".errortext").removeClass("errortext");
+        $('#pre-loader').show();
+        $.ajax({
+            url: '/Home/GetSponsorName',
+            type: 'Post',
+            data: { SponsorId: $('#UpperId').val() },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+
+                        $('#USponsorName').val(response.response.name);
+
+                    }
+                    else {
+                        $('#USponsorName').val('');
+                        $("#USponsorName").addClass('errortext');
+                        $('#USponsorName').focus();
+                        $('#UpperId').val('');
+                        $("#UpperId").addClass('errortext');
+                        $('#UpperId').focus();
+                        alert(response.message);
+                        return false;
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function DGetSponsorName() {
+        ;
+        $(".errortext").removeClass("errortext");
+        $('#pre-loader').show();
+        $.ajax({
+            url: '/Home/GetSponsorName',
+            type: 'Post',
+            data: { SponsorId: $('#DownId').val() },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        $('#DSponsorName').val(response.response.name);
+                    }
+                    else {
+                        $('#DSponsorName').val('');
+                        $("#DSponsorName").addClass('errortext');
+                        $('#DSponsorName').focus();
+                        $('#UpperId').val('');
+                        $("#UpperId").addClass('errortext');
+                        $('#UpperId').focus();
+
+                        alert(response.message);
+                        return false;
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+
+</script>
+

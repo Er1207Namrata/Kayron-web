@@ -1,0 +1,476 @@
+﻿@model Karyon.Models.KaryonPointsRequest
+
+@{
+    ViewData["Title"] = "WalletRequest";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+<style>
+    #divload {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 9999;
+        background: url("https://thumbs.gfycat.com/LameDifferentBalloonfish-small.gif") no-repeat center center rgba(0,0,0,0.25);
+    }
+</style>
+<div class="loader" id="divload"></div>
+
+    <div class="page-body">
+        <div class="container-fluid">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-sm-6 ps-0">
+                        <h3>Karyon Wallet Request</h3>
+                    </div>
+                    <div class="col-sm-6 pe-0">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">
+                                    <svg class="stroke-icon">
+                                        <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">Karyon Wallet</li>
+                            <li class="breadcrumb-item active"> Karyon Wallet Request</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- /breadcrumb -->
+    <!-- row -->
+
+    <form asp-action="KaryonPointsRequest" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+
+                    <div class="card-body">
+
+                        @Html.HiddenFor(m=>m.MerchantTranId)
+
+
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Login Id</label>
+                                    <input type="text" asp-for="LoginId" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Name</label>
+                                    <input type="text" asp-for="Name" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Amount</label>
+                                    <input type="text" asp-for="Amount" class="form-control" placeholder="Amount" maxlength="10" onkeypress="return isNumberKey(event)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Payment Mode</label>
+                                    @Html.DropDownListFor(m => m.PaymentMode, new SelectList(ViewBag.ddlPaymentMode, "Value", "Text"), new { @class = "form-control" ,@onchange="fpaymentdetails()"})
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="upino" style="display:none">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">UPI Id</label>
+                                    <input type="text" class="form-control" placeholder="Enter UPI Id" maxlength="150" id="txtuppino" name="txtuppino" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="divBankName" style="display:none">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Bank Name</label>
+                                    @Html.DropDownListFor(m => m.BankId, new SelectList(@ViewBag.ddlBank, "Value", "Text"), new { @class = "form-control"})
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="divPaymentSlip" style="display:none">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Payment Slip</label>
+                                    <input type="file" asp-for="ImageFile" class="form-control" />
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="row" id="divTransactionNo" style="display:none">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Transaction No</label>
+                                    <input type="text" placeholder="Enter Transaction No" asp-for="TransactionNo" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="divTransactionDate" style="display:none">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Transaction Date</label>
+                                    <input type="text" asp-for="TransactionDate" class="form-control" readonly placeholder="Enter Transaction Date" />
+                                </div>
+                            </div>
+                        </div>
+                        <section class="cart section" style="padding-top:0px;display:none" id="virtualaccount">
+                            <div class="container d-md-flex justify-content-between align-content-start">
+                                <div class="cart_main">
+                                    <ul class="cart_main-list">
+
+                                        <li class="cart_main-list_item">
+                                            <div class="wrapper d-flex flex-wrap flex-xl-nowrap align-items-center justify-content-between">
+
+                                                <div class="price_wrapper d-flex flex-column">
+
+                                                    <span class="price price--new">Account Name : Karyon Organic Private Limited</span>
+                                                </div>
+
+
+                                            </div>
+                                        </li>
+                                        <li class="cart_main-list_item">
+                                            <div class="wrapper d-flex flex-wrap flex-xl-nowrap align-items-center justify-content-between">
+
+                                                <div class="price_wrapper price_wrapper--subtotal d-flex flex-column">
+
+                                                    <span class="price price--total">Account No. : @Model.LoginId</span>
+                                                </div>
+
+
+                                            </div>
+                                        </li>
+                                        <li class="cart_main-list_item">
+                                            <div class="wrapper d-flex flex-wrap flex-xl-nowrap align-items-center justify-content-between">
+
+                                                <div class="price_wrapper price_wrapper--subtotal d-flex flex-column">
+                                                    <span class="price price--total">IFSC Code : ICIC0000104</span>
+
+                                                </div>
+
+
+
+                                            </div>
+                                        </li>
+                                        <li class="cart_main-list_item">
+                                            <div class="wrapper d-flex flex-wrap flex-xl-nowrap align-items-center justify-content-between">
+
+                                                <div class="price_wrapper price_wrapper--subtotal d-flex flex-column">
+                                                    <span class="price price--total">Branch : ICICI BANK LTD, CMS</span>
+
+                                                </div>
+
+
+
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                    <br />
+                                    <h4 class="cart_main-header d-flex align-items-center justify-content-between" style="color:#6a813b">
+                                        How we can transfer funds to wallet?
+                                        <br />
+                                        It is very simple, you can use google pay ,Phone Pay, or any UPI Application or NEFT, RTGS, IMPS facility or Physical Bank transfer also you can do.
+                                        Example: suppose if you are using google pay then select bank transfer> add account no of company which are given you on this Page (account Number)>
+                                        Re-enter account no (ID)>Enter IFSC Code > Enter Company Name (Karyon Organic Private Limited)>Click on Confirm> Enter Order Amount >click on Next Arrow >
+                                        Enter your UPI Pin and done Your order will be generated successfully.(Limit applicable as per daily transaction limit)
+                                        For NEFT RTGS IMPS
+                                        You need to add beneficiary in your banking application or on bank website.
+                                        (NO limit)
+                                        Physical Bank transfer:
+                                        You can visit your bank or any bank to make NEFT RTGS or IMPS transaction.
+                                        (NO Limit)
+                                    </h4>
+
+                                </div>
+                            </div>
+                        </section>
+                        <div class="row" id="qrcode" style="display:none">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <img src="#" style="width:150px;height:150px" id="barcodeimg" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                           
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="text-right">
+                                    <br />
+                                    <button type="submit" value="Request" class="btn btn-success" onclick="return validate();" name="Request" id="btnRequest" style="display:none">Request Amount</button>
+                                    <button type="button" value="Request" class="btn btn-success" onclick="return validate();" name="Request" id="btnOtherPayment">Request Amount</button>
+                                    <p style="color:red">@TempData["KaryonPointsRequest"]</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script src="~/FranchisePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
+<script>
+
+
+    $(document).ready(function () {
+        $("#divload").css({ 'display': 'none' });
+        //GetBiddingData();
+
+    });
+    $('#TransactionDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+    function validate() {
+        $(".errortext").removeClass("errortext");
+        if ($('#Amount').val() == '') {
+            $("#Amount").addClass('errortext');
+            $("#Amount").focus()
+            return false;
+        }
+        if ($('#PaymentMode').val() == '0') {
+            $("#PaymentMode").addClass('errortext');
+            $("#PaymentMode").focus()
+            return false;
+        }
+        if ($('#PaymentMode').val() == "UPI QR Code") {
+            $('#divload').show();
+            $.ajax({
+                url: '/Home/GenerateQRCODE',
+                type: 'Post',
+                data: { amount: $('#Amount').val(), Type: "Karyon Wallet", LoginId: $('#LoginId').val(), merchantTranId: $('#MerchantTranId').val() },
+                success: function (response) {
+
+                    $('#barcodeimg').attr("src", response[0].qrcodeimg);
+                    $('#MerchantTranId').val(response[0].merchantTranId);
+                    // console.log(response);
+                    $('#divload').hide();
+                    $('#qrcode').show();
+                    return false;
+
+                }, error: function () {
+                    //alert('Some Thing wrong!');
+
+
+                }
+            });
+        }
+        else if ($('#PaymentMode').val() == "UPI Id") {
+            $('#divload').show();
+            $.ajax({
+                url: '/Home/PayUPIID',
+                type: 'Post',
+                data: { PayerVPA: $('#txtuppino').val(), amount: $('#Amount').val(), Type: "Karyon Wallet", LoginId: $('#LoginId').val(), merchantTranId: $('#MerchantTranId').val() },
+                success: function (response) {
+                    if (response.success == "true") {
+                        window.location.href = "/Home/ProcessingPayment?OrderId=" + response.merchantTranId;
+                        // $('#MerchantTranId').val(response.merchantTranId);
+                        // GetBiddingData();
+
+                    }
+                    else {
+                        alert(response.message);
+                        return false;
+                    }
+                    // $('.overlay').show();
+
+
+                    return false;
+
+                }, error: function () {
+                    //alert('Some Thing wrong!');
+
+
+                }
+            });
+        }
+        else if ($('#PaymentMode').val() == "Virtual Account Transfer") {
+            return false;
+        }
+        else if ($('#PaymentMode').val() == "Cash Deposit/Cheque Deposit") {
+            if ($('#BankId').val() == '0') {
+                $('#BankId').focus()
+                $("#BankId").addClass('errortext');
+                return false;
+            }
+            if ($("#ImageFile").val() == "" || $("#ImageFile") == null || $("#ImageFile").val() == "0" || $("#ImageFile").val() == NaN || $("#ImageFile").val() == undefined) {
+                $('#ImageFile').focus()
+                $("#ImageFile").addClass('errortext');
+                return false;
+            }
+            if ($("#TransactionNo").val() == "" || $("#TransactionNo") == null || $("#TransactionNo").val() == "0" || $("#TransactionNo").val() == NaN || $("#TransactionNo").val() == undefined) {
+                $('#TransactionNo').focus()
+                $("#TransactionNo").addClass('errortext');
+                return false;
+            }
+            if ($("#TransactionDate").val() == "" || $("#TransactionDate") == null || $("#TransactionDate").val() == "0" || $("#TransactionDate").val() == NaN || $("#TransactionDate").val() == undefined) {
+                $('#TransactionDate').focus()
+                $("#TransactionDate").addClass('errortext');
+                return false;
+            }
+        }
+    }
+    function fpaymentdetails() {
+
+        if ($('#PaymentMode').val() == "UPI QR Code") {
+            $('#qrcode').hide();
+            $('#virtualaccount').hide();
+            $('#btnRequest').hide();
+            $('#btnOtherPayment').show();
+            $('#divPaymentSlip').hide();
+            $('#divTransactionDate').hide();
+            $('#divTransactionNo').hide();
+            $('#divBankName').hide();
+        }
+        else if ($('#PaymentMode').val() == "UPI Id") {
+            $('#qrcode').hide();
+            $('#virtualaccount').hide();
+            $('#btnRequest').hide();
+            $('#btnOtherPayment').show();
+            $('#upino').show();
+            $('#divPaymentSlip').hide();
+            $('#divTransactionDate').hide();
+            $('#divTransactionNo').hide();
+            $('#divBankName').hide();
+        }
+        else if ($('#PaymentMode').val() == "Virtual Account Transfer") {
+            $('#qrcode').hide();
+            $('#virtualaccount').show();
+            $('#btnRequest').hide();
+            $('#btnOtherPayment').show();
+            $('#divPaymentSlip').hide();
+            $('#divBankName').hide();
+            $('#divTransactionNo').hide();
+            $('#divTransactionDate').hide();
+        }
+        else if ($('#PaymentMode').val() == "UPI/NET Banking/Debit Card/Credit Card") {
+            $('#qrcode').hide();
+            $('#virtualaccount').hide();
+            $('#btnRequest').show();
+            $('#btnOtherPayment').hide();
+            $('#divPaymentSlip').hide();
+            $('#divBankName').hide();
+            $('#divTransactionDate').hide();
+            $('#divTransactionNo').hide();
+        }
+        else if ($('#PaymentMode').val() == "Cash Deposit/Cheque Deposit") {
+            $('#qrcode').hide();
+            $('#virtualaccount').hide();
+            $('#btnRequest').show();
+            $('#btnOtherPayment').hide();
+            $('#divPaymentSlip').show();
+            $('#ImageFile').val("");
+            $('#divBankName').show();
+            $('#BankId').val(0);
+            $('#divTransactionDate').show();
+            $('#TransactionDate').val('');
+            $('#divTransactionNo').show();
+            $('#TransactionNo').val('');
+        }
+        else {
+            $('#qrcode').hide();
+            $('#virtualaccount').hide();
+            $('#btnRequest').show();
+            $('#btnOtherPayment').hide();
+            $('#divPaymentSlip').hide();
+            $('#divBankName').hide();
+            $('#divTransactionDate').hide();
+            $('#divTransactionNo').hide();
+
+        }
+
+
+    }
+    function GetBiddingData() {
+
+        $.ajax({
+            url: '/Associate/GetKaryonPointsList',
+            type: 'GET',
+            dataType: 'JSON',
+            data: { 'merchantTranId': $('#MerchantTranId').val() },
+            success: function (response) {
+                if (response.status == "1") {
+
+
+
+                    if (response.response.requestList[0].status == "Pending") {
+                        GetBiddingData();
+                    }
+                    else if (response.response.requestList[0].status == "Declined") {
+                        alert('Payment Declined please contact admin.');
+                    }
+                    else {
+                        window.location.href = "/Associate/PaymentSuccessWallet";
+                    }
+
+
+                }
+                else {
+                    GetBiddingData();
+                }
+
+
+            }
+        })
+    }
+
+</script>
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+    //Disable the send button until connection is established.
+    document.getElementById("btnOtherPayment").disabled = true;
+
+    connection.on("ReceiveMessage", function (user, message) {
+        GetBiddingData();
+    });
+
+    connection.start().then(function () {
+        document.getElementById("btnOtherPayment").disabled = false;
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    document.getElementById("btnOtherPayment").addEventListener("click", function (event) {
+        var user = document.getElementById("LoginId").value;
+        var message = document.getElementById("LoginId").value;
+        connection.invoke("SendMessage", user, message).catch(function (err) {
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    });
+</script>

@@ -1,0 +1,154 @@
+﻿@model Karyon.Models.UpdateMemberDetails
+
+@{
+    ViewData["Title"] = "UpdateRank";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-action="UpdateRank">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Update Rank </span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                   
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Update Rank</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6 style="color:red">Note : Please use new Id</h6>
+                            </div>
+                        </div>
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Login Id</label>
+                                    <input type="text" asp-for="LoginId" class="form-control" placeholder="Login Id" onchange="return GetSponsorName('1')" />
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Name</label>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="lblrank" style="color:blue"></span>
+                                    <input type="text" class="form-control" placeholder="Name" id="Name" disabled />
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Rank</label>
+                                    @Html.DropDownListFor(m => m.Fk_PerformanceLevelId, new SelectList(ViewBag.ddlRank, "Value", "Text"), new { @class = "web form-control" })
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-right">
+                                    <br/>
+                                    <button type="submit" value="UpdateRank" class="btn btn-success" onclick="return Fvalidate();" name="UpdateRank">Update Rank</button>
+                                    <p style="color:red">@TempData["UpdateRank"]</p>
+                                </div>
+                            </div>
+                        </div>
+                     
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+
+    function GetSponsorName(value) {
+        var loginid = "";
+        if (value == "1") {
+            loginid = $('#LoginId').val();
+        }
+        else {
+            loginid = $('#SponsorLoginId').val()
+        }
+        $(".errortext").removeClass("errortext");
+        $('#pre-loader').show();
+        $.ajax({
+            url: '/Home/GetSponsorNameByNewId',
+            type: 'Post',
+            data: { SponsorId: loginid },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        if (value == "1") {
+                            $('#Name').val(response.response.name);
+                            var rank = response.response.performanceLevel;
+
+                            $('#lblrank').text(rank);
+                        }
+                        else {
+                            $('#lblrank').text('');
+                        }
+
+                    }
+                    else {
+                        if (value == "1") {
+                            $('#LoginId').val('');
+                            $('#Name').val(''); 1
+                            $("#LoginId").addClass('errortext');
+                            $('#LoginId').focus();
+                        }
+                        else {
+                            $('#SponsorLoginId').val('');
+                            $('#SponsorName').val(''); 1
+                            $("#SponsorLoginId").addClass('errortext');
+                            $('#SponsorLoginId').focus();
+                        }
+                        alert(response.message);
+
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+
+    function Fvalidate() {
+        $(".errortext").removeClass("errortext");
+        if ($('#Fk_PerformanceLevelId').val() == "0") {
+            $("#Fk_PerformanceLevelId").addClass('errortext');
+            $('#Fk_PerformanceLevelId').focus();
+            return false;
+        }
+        
+        $("#pre-loader").show();
+    }
+</script>

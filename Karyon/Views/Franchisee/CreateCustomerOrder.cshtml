@@ -1,0 +1,356 @@
+﻿@model Karyon.Models.CreateOrder
+
+@{
+    ViewData["Title"] = "CreateCustomerOrder";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+<form asp-action="CreateCustomerOrder" enctype="multipart/form-data">
+     @{
+        decimal TotalPV = 0;
+        int TotalQty = 0;
+        decimal FinalBV = 0;
+        decimal TotalPrice = 0;
+        decimal TotalMRP = 0;
+        int TotalBottles = 0;
+        decimal TotalGst = 0;
+        decimal Total = 0;
+    }
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Create Order</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Billing</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Create Order</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <label>Product</label>
+                        <br />
+                        @Html.DropDownListFor(m => m.Fk_ProductId, new SelectList(ViewBag.ddlProducts, "Value", "Text"), new { @class = "form-control" ,@onchange="fGetDetails()"})
+                    </div>
+                    <div class="col-md-2">
+                        <label>Available Qty</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="AvailableQty" disabled placeholder="Available Qty" min="1" maxlength="50" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Amount</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="Amount" disabled placeholder="Amount" min="1" maxlength="50" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>PV</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="PV" disabled placeholder="PV" min="1" maxlength="50" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Quantity</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="Qty" placeholder="Quantity" min="1" maxlength="50" onchange="return GetSubtotal();" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Sub Total</label>
+                        <br />
+                        <input class="web form-control" type="number" disabled asp-for="SubTotal" placeholder="Sub Total" min="1" maxlength="50" />
+                    </div>
+                    <div class="col-md-2">
+
+                        <br />
+                        <input type="submit" id="btnAdd" name="btnAdd" class="btn btn-success" value="Add" onclick="return FvalidateAdd();" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                   <th>S. No.</th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                   
+                                    <th>Total Price</th>
+                                    <th>GST Rate</th>
+                                    <th>GST</th>
+                                    <th>Total</th>
+                                   
+                                    <th>Total PV</th>
+
+                                    
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+
+                                    if (Model.dtDetails != null)
+                                    {
+
+                                        for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                        {
+                                            TotalPV = TotalPV + decimal.Parse(Model.dtDetails.Rows[j]["BV"].ToString());
+                                            TotalGst = TotalGst + decimal.Parse(Model.dtDetails.Rows[j]["GSTAmt"].ToString());
+                                            TotalQty = TotalQty + int.Parse(Model.dtDetails.Rows[j]["Qty"].ToString());
+                                            FinalBV = FinalBV + decimal.Parse(Model.dtDetails.Rows[j]["TotalBv"].ToString());
+                                            TotalPrice = TotalPrice + decimal.Parse(Model.dtDetails.Rows[j]["TotalPrice"].ToString());
+                                            TotalMRP = TotalMRP + decimal.Parse(Model.dtDetails.Rows[j]["MRP"].ToString());
+                                            
+                                            Total = Total + decimal.Parse(Model.dtDetails.Rows[j]["Total"].ToString());
+                                            <tr>
+                                                <td>@(j+1)</td>
+                                                <td><span>@Model.dtDetails.Rows[j]["ProductName"]</span></td>
+                                                <td>@Model.dtDetails.Rows[j]["Price"]</td>
+                                                <td>@Model.dtDetails.Rows[j]["Qty"] </td>
+                                           
+                                                <td>@Model.dtDetails.Rows[j]["TotalPrice"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["GSTPerc"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["GSTAmt"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["Total"] </td>
+                                                
+                                                <td>@Model.dtDetails.Rows[j]["TotalBv"] </td>
+                                                
+                                                <td>
+                                                    <a href="/Franchisee/DeleteCustomerTempOrder?Id=@Model.dtDetails.Rows[j]["Pk_Id"]" onclick="return confirm('are you sure to delete this record?')" style="color:red"><i class="fa fa-trash"></i></a>
+                                                </td>
+
+                                            </tr>
+
+                                        }
+
+                                    }
+                                }
+
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th>@TotalQty</th>
+                                    
+                                    <th>@TotalPrice</th>
+                                    <th></th>
+                                    <th>@TotalGst</th>
+                                    <th>@Total</th>
+                                    <th>@FinalBV</th>
+
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                @if (Model != null)
+                {
+
+                    if (Model.dtDetails != null)
+                    {
+                        if (Model.dtDetails.Rows.Count > 0)
+                        {
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="text" asp-for="LoginId" class="web form-control" placeholder="Customer Id" onchange="return GetSponsorName();" />
+
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="web form-control" type="text" placeholder="Customer Name" id="SponsorName" disabled />
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(m => m.PaymentMode, new SelectList(ViewBag.ddlPaymentMode, "Value", "Text"), new { @class = "form-control" ,@onchange="fpaymentdetails()"})
+                                </div>
+
+                            </div>
+                            <div class="row" id="divTransactionNo" style="display:none">
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Transaction No.</label>
+                                        <input type="text" asp-for="TransactionNo" class="form-control" maxlength="12" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Transaction Date</label>
+                                        <input type="text" asp-for="TransactionDate" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Payment Slip</label>
+                                        <input type="file" asp-for="ImageFile" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="submit" id="btnSave" name="btnSave" class="btn btn-success" value="Save" onclick="return validateSave();" />
+                                </div>
+
+
+                            </div>
+                        }
+
+                    }
+                }
+                <div class="row">
+                    <p style="color:red">@TempData["CreateOrder"]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
+    <script>
+        $('#TransactionDate').datepicker({
+            dateFormat: 'dd/mm/yy',
+            maxDate: 0,
+            changeYear: true,
+            changeMonth: true
+        });
+        function fpaymentdetails() {
+
+            if ($('#PaymentMode').val() != "Cash") {
+                $('#divTransactionNo').css({ "display": "" });
+
+            }
+            else {
+                $('#divTransactionNo').css({ "display": "none" });
+
+            }
+        }
+        function validateSave() {
+            $(".errortext").removeClass("errortext");
+            if ($('#LoginId').val() == '') {
+                $("#LoginId").addClass('errortext');
+                $("#LoginId").focus()
+                return false;
+            }
+            if ($('#PaymentMode').val() == '0') {
+                $("#PaymentMode").addClass('errortext');
+                $("#PaymentMode").focus()
+                return false;
+            }
+            if ($('#PaymentMode').val() != "Cash") {
+                if ($('#TransactionNo').val() == '') {
+                    $("#TransactionNo").addClass('errortext');
+                    $("#TransactionNo").focus()
+                    return false;
+                }
+                if ($('#TransactionDate').val() == '') {
+                    $("#TransactionDate").addClass('errortext');
+                    $("#TransactionDate").focus()
+                    return false;
+                }
+                if ($('#PaymentSlipImg').val() == '') {
+                    $("#PaymentSlipImg").addClass('errortext');
+                    $("#PaymentSlipImg").focus()
+                    return false;
+                }
+            }
+
+
+        }
+        function fGetDetails() {
+            $(".errortext").removeClass("errortext");
+            $("#pre-loader").show();
+            $.ajax({
+                url: '/Franchisee/GetFranchiseStockDetails',
+                type: 'Post',
+                data: { ProductId: $('#Fk_ProductId').val() },
+                success: function(response) {
+                    if (response != null) {
+
+                        console.log(response);
+                        $('#Amount').val(response[0].offeredPrice);
+                        $('#PV').val(response[0].pv);
+                        $('#AvailableQty').val(response[0].availableQty);
+                        GetSubtotal();
+
+                        $("#pre-loader").hide();
+
+                    }
+                    else {
+                        $("#pre-loader").hide();
+                    }
+                }, error: function() {
+                    //alert('Some Thing wrong!');
+                    $("#pre-loader").hide();
+
+                }
+            });
+        }
+        function GetSponsorName() {
+            $(".errortext").removeClass("errortext");
+            $('#pre-loader').show();
+            $.ajax({
+                url: '/Home/GetSponsorName',
+                type: 'Post',
+                data: { SponsorId: $('#LoginId').val() },
+                success: function(response) {
+                    if (response != null) {
+                        console.log(response);
+                        if (response.status == 1) {
+                            $('#SponsorName').val(response.response.name);
+                        }
+                        else {
+                            $('#LoginId').val('');
+                            $('#SponsorName').val(''); 1
+                            $("#LoginId").addClass('errortext');
+                            $('#LoginId').focus();
+                            alert(response.message);
+
+                        }
+
+                        $("#pre-loader").hide();
+
+                    }
+                    else {
+                        $("#pre-loader").hide();
+                    }
+                }, error: function() {
+                    //alert('Some Thing wrong!');
+                    $("#pre-loader").hide();
+
+                }
+            });
+        }
+        function GetSubtotal() {
+            var subtotal = $('#Amount').val() * $('#Qty').val();
+            $('#SubTotal').val(subtotal);
+        }
+        function FvalidateAdd() {
+            if ($('#Fk_ProductId').val() == '0') {
+                $("#Fk_ProductId").addClass('errortext');
+                $("#Fk_ProductId").focus()
+                return false;
+            }
+            if ($('#Qty').val() == '') {
+                $("#Qty").addClass('errortext');
+                $("#Qty").focus();
+                return false;
+            }
+
+        }
+    </script>
+</form>

@@ -1,0 +1,223 @@
+﻿@model Karyon.Models.PayoutDetail
+@{
+    ViewData["Title"] = "OfferLedger";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+
+<form asp-action="OfferPointLagder">
+
+    <div class="page-body">
+        <div class="container-fluid">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-sm-6 ps-0">
+                        <h3>Offer Point Ledger</h3>
+                    </div>
+                    <div class="col-sm-6 pe-0">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">
+                                    <svg class="stroke-icon">
+                                        <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">Payout</li>
+                            <li class="breadcrumb-item active"> Offer Point Ledger</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="row" style="display:none;">
+
+                            <div class="col-md-3">
+                                <label class="mb-10" for="name">From Date </label>
+                                <input type="text" asp-for="FromDate" class="form-control" readonly placeholder="From Date" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="mb-10" for="name">To Date </label>
+
+                                <input type="text" asp-for="ToDate" class="web form-control" placeholder="To Date" readonly />
+                            </div>
+                            <input type="hidden" asp-for="Page" />
+                            <input type="hidden" asp-for="ExportToExcel" />
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success " id="BtnSearch" value="Search" style="display:none;">
+                                <input type="button" class="btn btn-success " style="" value="Search" onclick="fCallPaging(1,0)">
+                            </div>
+                        </div>
+                        <br />
+                        <input type="hidden" asp-for="Page" />
+                        <div class="table-responsive">
+                            <table class="table table-bordered radio-first-col-width">
+                                <thead style="background: #40541d;">
+                                    <tr>
+                                        <th class="text-white">S. No.</th>
+                                        <th class="text-white">LoginId</th>
+                                        @* <th class="text-white">Name</th> *@
+                                        <th class="text-white">Transaction Date</th>
+                                        <th class="text-white">Narration</th>
+                                        <th class="text-white">Credit Point</th>
+                                        <th class="text-white">Debit Point</th>
+                                        <th class="text-white">Balance</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+                                                int i = 1;
+
+                                                int page = Model.Pager.CurrentPage;
+                                                page = (page - 1);
+                                                i = ((page) * (Model.Pager.PageSize));
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+                                                    <tr>
+                                                        <td>@(i + 1)</td>
+                                                        <td>@Model.dtDetails.Rows[j]["LoginId"]</td>
+                                                        @* <td>@Model.dtDetails.Rows[j]["Name"]</td> *@
+                                                        <td>@Model.dtDetails.Rows[j]["Transactiondate"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["Narration"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["CrPoint"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["DrPoint"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["Balance"] </td>
+                                                        
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+
+                            <footer class="card-footer bg-white p-2">
+
+                                <div class="d-md-flex align-items-center justify-content-between">
+                                    @if (Model != null)
+                                    {
+                                        if (Model.Pager != null)
+                                        {
+                                            @if (Model.Pager.EndPage > 1)
+                                            {
+                                                <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                                <div>
+                                                    <ul class="pagination mb-0">
+                                                        @if (Model.Pager.CurrentPage > 1)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                            </li>
+
+
+
+                                                            <li class="page-item">
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                            </li>
+                                                        }
+                                                        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                        {
+                                                            var P = @page;
+                                                            <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                                <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                            </li>
+
+                                                        }
+                                                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                            </li>
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
+
+                                    }
+
+                                </div>
+                            </footer>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $('#FromDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+    $('#ToDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+    function fCallPaging(val, IsExport) {
+
+        if (val == undefined || val == NaN || val == null || val == "" || val == 0) {
+            val = 1;
+        }
+        $("#ExportToExcel").val(IsExport);
+        $("#Page").val(val);
+        $('#BtnSearch').trigger('click');
+
+    }
+
+
+</script>
+

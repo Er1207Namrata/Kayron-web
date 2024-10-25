@@ -1,0 +1,184 @@
+﻿@model Karyon.Models.FamilynWalletRequest
+
+@{
+    ViewData["Title"] = "FamilynWalletRequest";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+<form asp-action="FamilynWalletRequest" enctype="multipart/form-data">
+
+   
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="page-title">
+                    <div class="row">
+                        <div class="col-sm-6 ps-0">
+                            <h3>Familyn Wallet Request</h3>
+                        </div>
+                        <div class="col-sm-6 pe-0">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">
+                                        <svg class="stroke-icon">
+                                            <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">Familyn Wallet</li>
+                                <li class="breadcrumb-item active"> Familyn Wallet Request</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- /breadcrumb -->
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Login Id</label>
+                                    <input type="text" asp-for="LoginId" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Name</label>
+                                    <input type="text" asp-for="Name" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Amount</label>
+                                    <input type="text" asp-for="Amount" class="form-control" placeholder="Amount" maxlength="5" onkeypress="return isNumberKey(event)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Payment Mode</label>
+                                    @Html.DropDownListFor(m => m.PaymentMode, new SelectList(ViewBag.ddlPaymentMode, "Value", "Text"), new { @class = "form-control" ,@onchange="fpaymentdetails()"})
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="divTransactionNo" style="display:none">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Transaction No.</label>
+                                    <input type="text" asp-for="TransactionNo" class="form-control" maxlength="12" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="divTransactionDate" style="display:none">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Transaction Date</label>
+                                    <input type="date" asp-for="TransactionDate" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="divPaymentSlip" style="display:none">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Payment Slip</label>
+                                    <input type="file" asp-for="ImageFile" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="text-right">
+
+                                    <button type="submit" value="Request" class="btn btn-success" onclick="return validate();" name="Request">Request Amount</button>
+                                    <p style="color:red">@TempData["FamilynWalletRequest"]</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<script>
+    function validate() {
+        $(".errortext").removeClass("errortext");
+        if ($('#Amount').val() == '') {
+            $("#Amount").addClass('errortext');
+            $("#Amount").focus()
+            return false;
+        }
+        if ($('#PaymentMode').val() == '0') {
+            $("#PaymentMode").addClass('errortext');
+            $("#PaymentMode").focus()
+            return false;
+        }
+        if ($('#PaymentMode').val() != "Cash") {
+            if ($('#PaymentMode').val() == "GPay" || $('#PaymentMode').val() == "UPI" || $('#PaymentMode').val() == "PhonePe") {
+                if ($('#PaymentSlipImg').val() == '') {
+                    alert('Please upload slip');
+                    return false;
+                }
+            }
+            else {
+                if ($('#TransactionNo').val() == '') {
+                    $("#TransactionNo").addClass('errortext');
+                    $("#TransactionNo").focus()
+                    return false;
+                }
+                if ($('#TransactionDate').val() == '') {
+                    $("#TransactionDate").addClass('errortext');
+                    $("#TransactionDate").focus()
+                    return false;
+                }
+                if ($('#PaymentSlipImg').val() == '') {
+                    alert('Please upload slip');
+                    return false;
+                }
+            }
+
+        }
+
+
+    }
+    function fpaymentdetails() {
+
+        if ($('#PaymentMode').val() != "Cash" && $('#PaymentMode').val() != "0") {
+            if ($('#PaymentMode').val() == "GPay" || $('#PaymentMode').val() == "UPI" || $('#PaymentMode').val() == "PhonePe") {
+                $('#divTransactionNo').css({ "display": "none" });
+                $('#divTransactionDate').css({ "display": "none" });
+                $('#divPaymentSlip').css({ "display": "" });
+            }
+            else {
+                $('#divTransactionNo').css({ "display": "" });
+                $('#divTransactionDate').css({ "display": "" });
+                $('#divPaymentSlip').css({ "display": "" });
+            }
+        }
+
+        else {
+            $('#divTransactionNo').css({ "display": "none" });
+            $('#divTransactionDate').css({ "display": "none" });
+            $('#divPaymentSlip').css({ "display": "none" });
+        }
+    }
+
+</script>

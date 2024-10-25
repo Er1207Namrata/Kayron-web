@@ -1,0 +1,199 @@
+﻿@model Karyon.Models.ChangeSponsor
+
+@{
+    ViewData["Title"] = "Active Member";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<form asp-action="ActiveMember">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Active Member</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Accounts</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Active Member</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Login Id</label>
+                                    <input type="text" asp-for="LoginId" class="form-control" placeholder="Login Id" onchange="return GetSponsorName('1')" />
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Name</label>
+                                    <input type="text" class="form-control" placeholder="Name" id="Name" disabled />
+                                    <input type="hidden" asp-for="TempPermanent" />
+                                    <input type="hidden" asp-for="BIDUID" />
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Status</label>
+                                    <input type="radio" id="rdbActive" name="rdbStatus" value="P" checked /> <span>&nbsp;Active</span>
+                                    <input type="radio" id="rdbInactive" name="rdbStatus" value="T" /> <span>&nbsp;Inactive</span>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">UID/BID</label>
+                                    <input type="radio" id="rdbBID" name="rdbBIDUID" value="1" checked /> <span>&nbsp;BID</span>
+                                    <input type="radio" id="rdbUID" name="rdbBIDUID" value="0" /> <span>&nbsp;UID</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+
+
+
+                            <div class="col-md-6">
+                                <div class="text-right">
+
+                                    <button type="submit" value="Change" class="btn btn-success" onclick="return Fvalidate();" name="ActivateMember">Activate</button>
+                                    <p style="color:red">@TempData["ActivateMember"]</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+
+    function GetSponsorName(value) {
+        var loginid = "";
+        if (value == "1") {
+            loginid = $('#LoginId').val();
+        }
+        else {
+            loginid = $('#SponsorLoginId').val()
+        }
+        $(".errortext").removeClass("errortext");
+        $('#pre-loader').show();
+        $.ajax({
+            url: '/Home/GetSponsorName',
+            type: 'Post',
+            data: { SponsorId: loginid },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        if (value == "1") {
+                            $('#Name').val(response.response.name);
+                            var sposorname = response.response.sponsorName + '(' + response.response.sponsorLoginId + ')';
+
+                            $('#OldSponsorName').text(sposorname);
+                            if (response.response.tempPermanent == "P") {
+                                $("#rdbActive").prop("checked", true);
+                                $("#rdbInactive").prop("checked", false);
+                                
+                                
+                            }
+                            else {
+                                $("#rdbActive").prop("checked", false);
+                                $("#rdbInactive").prop("checked", true);
+                            }
+                            if (response.response.isBID == "True") {
+                                $("#rdbBID").prop("checked", true);
+                                $("#rdbUID").prop("checked", false);
+                                
+                                
+                            }
+                            else {
+                                $("#rdbBID").prop("checked", false);
+                                $("#rdbUID").prop("checked", true);
+                            }
+                        }
+                        else {
+                            $('#SponsorName').val(response.response.name);
+                        }
+
+                    }
+                    else {
+                        if (value == "1") {
+                            $('#LoginId').val('');
+                            $('#Name').val(''); 1
+                            $("#LoginId").addClass('errortext');
+                            $('#LoginId').focus();
+                        }
+                        else {
+                            $('#SponsorLoginId').val('');
+                            $('#SponsorName').val(''); 1
+                            $("#SponsorLoginId").addClass('errortext');
+                            $('#SponsorLoginId').focus();
+                        }
+                        alert(response.message);
+
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+
+    function Fvalidate() {
+        $(".errortext").removeClass("errortext");
+        if ($('#LoginId').val() == "") {
+            $("#LoginId").addClass('errortext');
+            $('#LoginId').focus();
+            return false;
+        }
+
+        var TempPermanent = $('input[name="rdbStatus"]:checked').val();
+        $('#TempPermanent').val(TempPermanent);
+
+        var BIDUID = $('input[name="rdbBIDUID"]:checked').val();
+        
+        $('#BIDUID').val(BIDUID);
+
+    }
+</script>

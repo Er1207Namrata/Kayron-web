@@ -1,0 +1,191 @@
+﻿@model Karyon.Models.CappingMaster
+@{
+    ViewData["Title"] = "CappingMaster";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<form asp-action="SetCappingMaster">
+
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Capping Master</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Admin</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Capping Master</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body"> 
+                <div class="row">
+                    
+                    <div class="col-md-4">
+                        <label >Login Id<i style="color:Red">*</i></label>
+                        <br/>
+                        <input type="text" asp-for="UserId" class="form-control"  placeholder="Login Id" onchange="GetSponsorName()" maxlength="50" />
+                        <span id="txtName"></span>
+                    </div>
+                      <div class="col-md-4">
+                        <label >Name </label>
+                        <input class="web form-control" type="text" placeholder="Sponsor Name" id="SponsorName" disabled />
+                     </div>
+                     <div class="col-md-4">
+                         <label >Capping Point<i style="color:Red">*</i></label>
+                        <br/>
+                        <input class="web form-control" type="number" asp-for="CappingPoint"    placeholder="Capping Point" min="1" maxlength="50" />
+                    </div>
+                   
+                </div>
+                <br/>
+                
+                <br />
+                <div class="row">
+                     <div class="col-md-4">
+                         <label >Target Point<i style="color:Red">*</i></label>
+                        <br/>
+                        <input class="web form-control" type="number" asp-for="TargetPoint"   placeholder="Target Point" min="1" maxlength="50" />
+                    </div>
+                    <div class="col-md-4">
+                        <label >Date<i style="color:Red">*</i></label>
+                        <br/>
+                        <input type="Date" placeholder="Date" asp-for="Date" class="form-control"  maxlength="50" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="submit"  name="btnSave" class="btn btn-success" value="Save"  onclick="return Fvalidate();" />
+                    </div>
+                    <p style="color:red">@TempData["ViewProfile"]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-body">
+                       
+                        <div class="table-responsive" id="details">
+                            <table class="table mb-0" id="tblDetails">
+                                <thead>
+                                    <tr>
+
+                                        <th class="Sno">Sl No.</th>
+                                        <th>Login Id</th>
+                                        <th>Capping Point</th>
+                                        <th>Target Point</th>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model != null)
+                                    {
+                                        if (Model.dt.Rows.Count > 0)
+                                        {
+                                            int j = 1;
+                                            for (var i = 0; i < Model.dt.Rows.Count; i++)
+                                            {
+
+                                                <tr>
+                                                    <td class="Sno">@j</td>
+
+                                                    <td>@Model.dt.Rows[i]["LoginId"].ToString()</td>
+                                                    <td>@Model.dt.Rows[i]["CappingPoint"].ToString()</td>
+                                                    <td>@Model.dt.Rows[i]["TargetPoint"].ToString()</td>
+                                                    <td>@Model.dt.Rows[i]["Name"].ToString()</td>
+                                                    <td>@Model.dt.Rows[i]["Date"].ToString()</td>
+                                                    <td><a href="/Admin/SetCappingMaster?Id=@Model.dt.Rows[i]["Pk_Id"].ToString()" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
+                                                    
+                                                </tr>
+                                                j += 1;
+                                            }
+                                        }
+
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</form>
+ <script src="~/assets/js/jquery-3.6.0.min.js"></script>
+ <script>
+     
+     function GetSponsorName() {
+           $(".errortext").removeClass("errortext");
+           $('#pre-loader').show();
+           $.ajax({
+               url: '/Home/GetSponsorName',
+               type: 'Post',
+               data: { SponsorId: $('#UserId').val() },
+               success: function(response) {
+                   if (response != null) {
+                       console.log(response);
+                       if (response.status == 1) {
+                           $('#SponsorName').val(response.response.name);
+                       }
+                       else {
+                           $('#SponsorLoginId').val('');
+                           $("#SponsorLoginId").addClass('errortext');
+                           $('#SponsorLoginId').focus();
+                           alert(response.message);
+          
+                       }
+          
+                       $("#pre-loader").hide();
+          
+                   }
+                   else {
+                       $("#pre-loader").hide();
+                   }
+               }, error: function() {
+                   //alert('Some Thing wrong!');
+                   $("#pre-loader").hide();
+          
+               }
+           });
+        }
+     function Fvalidate() {
+         $(".errortext").removeClass("errortext");
+         if ($('#UserId').val() == "") {
+             $("#UserId").addClass('errortext');
+             $('#UserId').focus();
+             return false;
+         }
+         if ($('#CappingPoint').val() == "") {
+             $("#CappingPoint").addClass('errortext');
+             $('#CappingPoint').focus();
+             return false;
+         }
+         if ($('#TargetPoint').val() == "") {
+             $("#TargetPoint").addClass('errortext');
+             $('#TargetPoint').focus();
+             return false;
+         }
+         if ($('#Date').val() == "") {
+             $("#Date").addClass('errortext');
+             $('#Date').focus();
+             return false;
+         }
+     }
+
+
+ </script>
+

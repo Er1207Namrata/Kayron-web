@@ -1,0 +1,136 @@
+﻿@model Karyon.Models.UpdateMemberDetails
+
+@{
+    ViewData["Title"] = "Update Member Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-action="UpdateMemberDetails">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Update Member Profile</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">My Team</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Update Member Profile</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">Login Id </label>
+                                <input type="text" asp-for="LoginId" class="web form-control" placeholder="LoginId" maxlength="50" onchange="return fgetMemberDetails()" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">Name </label>
+                                <input type="text" asp-for="Name" class="web form-control" readonly />
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">Mobile No.</label>
+                                <input type="text" asp-for="MobileNo" class="web form-control" readonly />
+                            </div>
+                             <div class="col-md-3"></div>
+                             <div class="col-md-3">
+                                <label class="mb-10" for="name">New First Name </label>
+                                <input type="text" asp-for="NewFirstName" class="web form-control" placeholder="New First Name" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="mb-10" for="name">New Middle Name </label>
+                                <input type="text" asp-for="NewMiddleName" class="web form-control" placeholder="New Middle Name" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="mb-10" for="name">New Last Name </label>
+                                <input type="text" asp-for="NewLastName" class="web form-control" placeholder="New Last Name" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="mb-10" for="name">New Mobile No.</label>
+                                <input type="text" asp-for="NewMobileNo" class="web form-control" placeholder="New Mobile No." />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" onclick="return fvalidate()" value="Update">
+                            </div>
+                            <span>
+                                @ViewBag.Message
+                            </span>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<script>
+    function fgetMemberDetails() {
+      
+        if ($("#LoginId").val() != "") {
+            $.ajax({
+                Type: "POST",
+                url: "/Admin/GetMemberdetails",
+                data: { LoginId: $("#LoginId").val() },
+                DataType: "JSON",
+                success: function (response) {
+                    if (response != null) {
+                        if (response.status == 1) {
+                            $('#Name').val(response.response.name);
+                            $('#MobileNo').val(response.response.mobileNo);
+                        }
+                        else {
+                            alert(response.message);
+                        }
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                }, error: function () {
+                    alert('Something went wrong!');
+                  
+
+                }
+
+            });
+        }
+    }
+    function fvalidate() {
+        if ($("#NewFirstName").val() == "") {
+            $("#NewFirstName").focus();
+            alert("Please Add First Name");
+            return false;
+        }
+        //if ($("#NewMiddleName").val() == "") {
+        //    $("#NewMiddleName").focus();
+        //    alert("Please Add Midddle Name");
+        //    return false;
+        //}
+        //if ($("#NewLastName").val() == "") {
+        //    $("#NewLastName").focus();
+        //    alert("Please Add Last Name");
+        //    return false;
+        //}
+        if ($("#NewMobileNo").val() == "") {
+            $("#NewMobileNo").focus();
+            alert("Please Add Mobile No.");
+            return false;
+        }
+    }
+</script>

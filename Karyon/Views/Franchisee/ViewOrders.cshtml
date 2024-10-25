@@ -1,0 +1,478 @@
+﻿@model Karyon.Models.CreateOrder
+
+@{
+    ViewData["Title"] = "ViewOrders";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+<style>
+    @@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+        /* Force table to not be like tables anymore */
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+            /* Hide table headers (but not display: none;, for accessibility) */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+        tr {
+            border: 1px solid #ccc;
+        }
+
+        td {
+            /* Behave  like a "row" */
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+        }
+
+            td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                top: 12px;
+                left: 14px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+            }
+            /*
+          Label the data
+          */
+            td:nth-of-type(1):before {
+                content: "S. No.";
+            }
+
+            td:nth-of-type(2):before {
+                content: "Order No.";
+            }
+
+            td:nth-of-type(3):before {
+                content: "Order Date";
+            }
+
+            td:nth-of-type(4):before {
+                content: "Order Amount";
+            }
+
+
+
+            td:nth-of-type(5):before {
+                content: "Total PV";
+            }
+
+            td:nth-of-type(6):before {
+                content: "Status";
+            }
+
+            td:nth-of-type(7):before {
+                content: "Action";
+            }
+
+        .table-striped > tbody * {
+            color: var(--color);
+            text-align: right !important;
+        }
+    }
+</style>
+<form asp-action="ViewOrders">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">View Orders</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Manage Stock</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">View Orders</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="row">
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">Order No </label>
+                                <input type="text" asp-for="OrderNo" class="web form-control" placeholder="Order No" maxlength="50" />
+                                <input type="hidden" id="hdfOrderNo" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">From Date </label>
+                                <input type="text" asp-for="FromDate" class="form-control" readonly placeholder="From Date" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">To Date </label>
+
+                                <input type="text" asp-for="ToDate" class="web form-control" placeholder="To Date" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">Status </label>
+
+                                @Html.DropDownListFor(m => m.Status, new SelectList(ViewBag.ddlStatus, "Value", "Text"), new { @class = "form-control" })
+                            </div>
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                            </div>
+                        </div>
+                        <br />
+                        <input type="hidden" asp-for="Page" />
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th>Order No</th>
+                                        <th>Order Date</th>
+                                        <th>Order Amount</th>
+                                        <th>Total PV</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+
+
+                                                int i = 1;
+
+                                                int page = Model.Pager.CurrentPage;
+                                                page = (page - 1);
+                                                i = ((page) * (Model.Pager.PageSize));
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+                                                    string cssclass = "";
+                                                    <tr>
+                                                        <td>@(j+1)</td>
+                                                        <td><a style="color:blue" href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="return GetOrderDetails('@Model.dtDetails.Rows[j]["OrderNo"]')">@Model.dtDetails.Rows[j]["OrderNo"]</a></td>
+                                                        <td>@Model.dtDetails.Rows[j]["OrderDate"]</td>
+
+                                                        <td>@Model.dtDetails.Rows[j]["OrderAmount"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["TotalPV"] </td>
+                                                        <td>
+                                                            @if (Model.dtDetails.Rows[j]["Status"].ToString() == "Pending")
+                                                            {
+                                                                cssclass = "badge bg-info";
+                                                            }
+                                                            else if (Model.dtDetails.Rows[j]["Status"].ToString() == "Approved")
+                                                            {
+                                                                cssclass = "badge bg-success";
+                                                            }
+                                                            else
+                                                            {
+                                                                cssclass = "badge bg-danger";
+                                                            }
+
+                                                            <span class="@cssclass">@Model.dtDetails.Rows[j]["Status"]</span>
+                                                        </td>
+                                                        <td>
+                                                            <a target="_blank" style="color:red;font-size:12px" href="/Franchisee/PrintFranchiseOrder?OrderNo=@Model.dtDetails.Rows[j]["OrderNo"].ToString()">
+                                                                <i class="fa fa-print"></i>
+                                                            </a>
+
+                                                            @if (int.Parse(Model.dtDetails.Rows[j]["Fk_ParentFranchiseId"].ToString()) == 0)
+                                                            {
+                                                                <a style="color:blue" href="#" data-bs-target="#pickupfranchisee" onclick="return GetOrderNo('@Model.dtDetails.Rows[j]["OrderNo"]')" data-bs-toggle="modal">Pickup Franchisee</a>
+
+                                                            }
+                                                            else
+                                                            {
+
+                                                            }
+                                                        </td>
+
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+
+                            <footer class="card-footer bg-white p-2">
+
+                                <div class="d-md-flex align-items-center justify-content-between">
+                                    @if (Model != null)
+                                    {
+                                        if (Model.Pager != null)
+                                        {
+                                            @if (Model.Pager.EndPage > 1)
+                                            {
+                                                <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                                <div>
+                                                    <ul class="pagination mb-0">
+                                                        @if (Model.Pager.CurrentPage > 1)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                            </li>
+
+
+
+                                                            <li class="page-item">
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                            </li>
+                                                        }
+                                                        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                        {
+                                                            var P = @page;
+                                                            <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                                <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                            </li>
+
+                                                        }
+                                                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                            </li>
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
+
+                                    }
+
+                                </div>
+                            </footer>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Order Details</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tblOrderDetails">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Pickup From</th>
+                                    <th>Product Name</th>
+                                    <th>MRP</th>
+                                    <th>PV</th>
+                                    <th>Qty</th>
+                                    <th style="text-align:right">Grand Total</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="OrderDetails">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="pickupfranchisee" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Pickup Franchisee</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" id="Pincode" name="Pincode" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <a onclick="return GetFranchiseByPincode()" class="btn btn-sm btn-primary" style="color:white">Get Franchisee</a>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tblfranchiseList">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Name</th>
+                                    <th>Contact No</th>
+                                    <th>Action</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<script src="~/Franchisepanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
+<script>
+    $('#FromDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+    $('#ToDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+    function fCallPaging(val, IsExport) {
+        
+        if (val == undefined || val == NaN || val == null || val == "" || val == 0) {
+            val = 1;
+        }
+        $("#IsExport").val(IsExport);
+        $("#Page").val(val);
+        $('#BtnSearch').trigger('click');
+
+    }
+    function GetOrderNo(OrderNo) {
+        $('#hdfOrderNo').val(OrderNo);
+    }
+    function GetFranchiseByPincode() {
+        $("#tblfranchiseList tbody").html('');
+        $.ajax({
+            url: '/Franchisee/GetPincodeFranchise',
+            type: 'Post',
+            data: { Pincode: $('#Pincode').val() },
+            success: function(result) {
+                if (result != null) {
+                    console.log(result);
+                    var srno = 1;
+                    var str = "";
+
+                    for (var i = 0; i < result.response.requestList.length; i++) {
+
+                        str += "<tr><td>" + srno + "</td><td  nowrap>" + result.response.requestList[i].name + "</td><td >" + result.response.requestList[i].mobile + "</td><td ><a href='#' onclick='return selectfranchisee(" + result.response.requestList[i].pk_Id + ")'><i class='fa fa-eye'></i></a></td></tr>";
+                        srno = srno + 1;
+                    }
+
+                    //str += "<tr><th colspan='2'>Total</th><th>" + TotalReqQty + "</th><th>" + PointValue + "</th><th>" + TotalPV + "</th><th>" + TotalProdAmt + "</th><th>" + FinalAmt + "</th></tr>";
+
+                    $("#tblfranchiseList tbody").html(str);
+
+                }
+                else {
+
+                }
+            }, error: function() {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function selectfranchisee(FranchiseeId) {
+        $.ajax({
+            url: '/Franchisee/UpdatePickupFranchisee',
+            type: 'Post',
+            data: { FranchiseeId: FranchiseeId, OrderNo: $('#hdfOrderNo').val() },
+            success: function(result) {
+                if (result != null) {
+                    console.log(result);
+                    if (result.status == "1") {
+                        window.location.href = "/Franchisee/ViewOrders";
+                    }
+                    else {
+                        alert(result.message);
+                    }
+
+                }
+                else {
+
+                }
+            }, error: function() {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function GetOrderDetails(OrderNo) {
+        $.ajax({
+            url: '/Home/GetFranchiseOrderDetails',
+            type: 'Post',
+            data: { OrderNo: OrderNo },
+            success: function(result) {
+                if (result != null) {
+                    var srno = 1;
+                    var str = "";
+                    $("#tblOrderDetails tbody").html('');
+                    for (var i = 0; i < result.length; i++) {
+
+                        str += "<tr><td>" + srno + "</td><td>" + result[i].companyName + "<br/><span class='badge bg-info'>" + result[i].isDispatched + "</span></td><td>" + result[i].productName + "</td><td >" + result[i].amount + "</td><td >" + result[i].pv + "</td><td >" + result[i].qty + "</td><td style='text-align:right'>" + result[i].subTotal + "</td></tr>";
+                        srno = srno + 1;
+                    }
+
+                    //str += "<tr><th colspan='2'>Total</th><th>" + TotalReqQty + "</th><th>" + PointValue + "</th><th>" + TotalPV + "</th><th>" + TotalProdAmt + "</th><th>" + FinalAmt + "</th></tr>";
+
+                    $("#tblOrderDetails tbody").html(str);
+
+                }
+                else {
+
+                }
+            }, error: function() {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+</script>

@@ -1,0 +1,287 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model Karyon.Models.DashBoardRequest
+
+@{
+    ViewData["Title"] = "DashBoard";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+<marquee style="color:red;background: #fee3aa;
+    padding: 10px;" direction="left">
+    @TempData["Message"]
+</marquee>
+<div class="main-container container-fluid">
+    <!-- breadcrumb -->
+   
+    <div class="breadcrumb-header justify-content-between mt-0">
+
+        <div class="left-content">
+            <span class="main-content-title mg-b-0 mg-b-lg-1">DASHBOARD</span>
+        </div>
+        <div class="justify-content-center mt-2">
+            <ol class="breadcrumb breadcrumb-style3">
+                <li class="breadcrumb-item tx-15">
+                    <a href="javascript:void(0)">
+                        @* <img src="@Model.Response.RankImage" style="width:145px" />*@
+                    </a>
+                </li>
+
+            </ol>
+        </div>
+    </div>
+    <!-- /breadcrumb -->
+
+    <div class="row">
+        <div class="col-xxl-12 col-xl-12">
+            <div class="row">
+                @if (ViewBag.Msg == "2")
+                {
+                    <form asp-action="FrachiseViewProfile" enctype="multipart/form-data">
+                        <div class="form-group ">
+                            <div class="row row-sm">
+                                <div class="col-md-3">
+                                    <label class="form-label">Address</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <textarea class="form-control" type="text" asp-for="Address" placeholder="Address"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="row row-sm">
+                                <div class="col-md-3">
+                                    <label class="form-label">Pincode</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="number" placeholder="Pincode" asp-for="Pincode" onchange=" GetStateCity()" min="1" class="form-control" maxlength="6" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="row row-sm">
+                                <div class="col-md-3">
+                                    <label class="form-label">City</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" placeholder="City" asp-for="City" readonly class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="row row-sm">
+                                <div class="col-md-3">
+                                    <label class="form-label">State</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" placeholder="State" asp-for="State" readonly class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <input type="submit" id="btnEditProfile" name="btnUpdate" class="btn btn-sm btn-primary rounded-pill" value="Update" onclick="return fvalidate();" />
+                    </form>
+                }
+                
+                else
+                {
+                    {
+                        Html.RenderPartial("_FranchaiseeDashboardPartial");
+
+                    }
+                    @if (@ViewBag.Amount != null)
+                    {
+                        <div class="col-xl-3 col-lg-6">
+                            <div class="card">
+                                <a href="/HOME/EWAY">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-column mb-0">
+                                            <div class="mb-3">
+
+                                                <div class="avatar radius-4 bg-orange-transparent">
+                                                    <i class="fa-solid fa-eye tx-orange"></i>
+
+                                                </div>
+                                            </div>
+                                            <div class="flex-1">
+
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="mb-0">E way</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    @if (ViewBag.FK_FranchiseTypeId == "5" || ViewBag.FK_FranchiseTypeId == "7")
+                    {
+                        <div class="col-xl-3 col-lg-6">
+                            <div class="card">
+                                <a href="#">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-column mb-0">
+                                            <div class="mb-3">
+
+                                                <div class="avatar radius-4 bg-primary-transparent">
+                                                    <i class="fa-regular fa-money-bill tx-primary"></i>
+
+                                                </div>
+                                                <div class="mb-1">
+                                                    <h5 class="mt-3 numberfont">₹  @ViewBag.CrAmount</h5>
+                                                </div>
+
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="mb-0">Stock Billing</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-xl-3 col-lg-6">
+                        <div class="card">
+                            <a href="#">
+                                <div class="card-body">
+                                    <div class="d-flex flex-column mb-0">
+                                        <div class="mb-3">
+
+                                            <div class="avatar radius-4 bg-success-transparent">
+
+                                                <i class="fa-solid fa-money-bill tx-success"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <p class="mb-0">Incentive & Business</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6">
+                        <div class="card">
+                            <a href="#">
+                                <div class="card-body">
+                                    <div class="d-flex flex-column mb-0">
+                                        <div class="mb-3">
+                                            <div class="avatar radius-4 bg-orange-transparent">
+                                                <i class="fa-sharp fa-solid fa-book tx-orange"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            @*  <div class="mb-2">
+                                        <h5 class="mb-0 numberfont">₹ </h5>
+                                        </div>*@
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0">Incentive Ledger</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6">
+                        <div class="card">
+                            <a href="#">
+                                <div class="card-body">
+                                    <div class="d-flex flex-column mb-0">
+                                        <div class="mb-3">
+                                            <div class="avatar radius-4 bg-success-transparent">
+                                                <i class="fa-solid fa-messages-question tx-success"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <p class="mb-0">Support</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6">
+                        <div class="card">
+                            <a href="#">
+                                <div class="card-body">
+                                    <div class="d-flex flex-column mb-0">
+                                        <div class="mb-3">
+                                            <p class="mb-0">Karyon Wallet</p>
+
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 tx-14 text-start">@ViewBag.WalletBalance</p>
+
+                                                <a href="/Franchisee/WalletRequest" class="btn btn-outline-success mt-1 mb-1 me-3">
+
+
+                                                    <span>Add &nbsp;<i class="fa-solid fa-wallet"></i> </span>
+
+
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function GetStateCity() {
+        $(".errortext").removeClass("errortext");
+        $("#pre-loader").show();
+        $.ajax({
+            url: '/Home/GetStateCity',
+            type: 'Post',
+            data: { PinCode: $('#Pincode').val() },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        $('#State').val(response.response.state);
+                        $('#City').val(response.response.city);
+                    }
+                    else {
+                        $('#Pincode').val('');
+                        $('#State').val('');
+                        $('#City').val('');
+                        $("#Pincode").addClass('errortext');
+                        $('#Pincode').focus();
+                        alert(response.message);
+
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+</script>

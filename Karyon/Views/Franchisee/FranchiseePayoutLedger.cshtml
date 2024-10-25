@@ -1,0 +1,169 @@
+﻿@model Karyon.Models.FranchiseePayoutLedgerRequest
+@{
+    ViewData["Title"] = "FranchiseePayoutLedger";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+
+<form asp-action="FranchiseePayoutLedger">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Payout Ledger</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Payout</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Payout Ledger</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="row" style="display:none">
+
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                            </div>
+                        </div>
+                        <br />
+                        <input type="hidden" asp-for="Page" />
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th>Transaction Date</th>
+                                        <th>Narration</th>
+                                        <th>CrAmount</th>
+                                        <th>DrAmount</th>
+
+                                        <th>Balance</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+                                                int i = 1;
+
+                                                int page = Model.Pager.CurrentPage;
+                                                page = (page - 1);
+                                                i = ((page) * (Model.Pager.PageSize));
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+                                                    <tr>
+                                                        <td>@(i + 1)</td>
+                                                        <td>@Model.dtDetails.Rows[j]["TransactionDate"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["Narration"]</td>
+
+                                                        <td>@Model.dtDetails.Rows[j]["Cramount"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["Dramount"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["Balance"] </td>
+                                                       
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+
+                            <footer class="card-footer bg-white p-2">
+
+                                <div class="d-md-flex align-items-center justify-content-between">
+                                    @if (Model != null)
+                                    {
+                                        if (Model.Pager != null)
+                                        {
+                                            @if (Model.Pager.EndPage > 1)
+                                            {
+                                                <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                                <div>
+                                                    <ul class="pagination mb-0">
+                                                        @if (Model.Pager.CurrentPage > 1)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                            </li>
+
+
+
+                                                            <li class="page-item">
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                            </li>
+                                                        }
+                                                        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                        {
+                                                            var P = @page;
+                                                            <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                                <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                            </li>
+
+                                                        }
+                                                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                            </li>
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
+
+                                    }
+
+                                </div>
+                            </footer>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function fCallPaging(val, IsExport) {
+  
+        if (val == undefined || val == NaN || val == null || val == "" || val == 0) {
+            val = 1;
+        }
+        $("#IsExport").val(IsExport);
+        $("#Page").val(val);
+        $('#BtnSearch').trigger('click');
+
+    }
+</script>

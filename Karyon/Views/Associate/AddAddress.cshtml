@@ -1,0 +1,483 @@
+﻿@model Karyon.Models.AddressRequest
+
+@{
+    ViewData["Title"] = "AddAddress";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+<style>
+    .bordercolor{
+        border:1px solid red;
+    }
+</style>
+<form asp-action="AddAddress">
+
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Select Delivery Address</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Address List</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+        <br />
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2">
+                                <a class="btn btn-success" style="color:blue" href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="return addadress();">Add Address</a>
+                            </div>
+
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="MyDirectList">
+                                <thead>
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th></th>
+                                        <th>Name</th>
+                                        <th>MobileNo</th>
+                                        <th>Address</th>
+                                        <th>Locality</th>
+                                        <th>Pincode</th>
+
+                                        <th>State</th>
+                                        <th>City</th>
+
+                                        <th>Landmark</th>
+                                        <th>
+                                            Action
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+
+                                        if (Model.AddressList != null)
+                                        {
+
+                                            int i = 1;
+                                            foreach (var item in Model.AddressList)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td> <input type="radio" id="rdDefaultAddress" name="rdDefaultAddress" groupname="rdAddress" onclick="return getAddress('@item.Pk_AddressId','@item.State')" /></td>
+                                                    <td>@item.Name</td>
+                                                    <td>@item.MobileNo</td>
+                                                    <td>@item.Address</td>
+                                                    <td>@item.Locality</td>
+                                                    <td>@item.Pincode</td>
+                                                    <td>@item.State</td>
+                                                    <td>@item.City</td>
+                                                    <td>@item.Landmark</td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-primary btn-sm" data-bs-target="#largeModal" data-bs-toggle="modal"
+                                               onclick="return editaddress('@item.Pk_AddressId','@item.Name','@item.MobileNo','@item.Address','@item.Locality','@item.Pincode','@item.State','@item.City',
+                                                       '@item.Landmark');">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        @*<a href="/Associate/AssociateAddressDelete?id=@item.Pk_AddressId" id="btnDelete" class="btn btn-danger btn-sm" onclick="return confirm('are you sure to delete this address?')" ToolTip="Delete">
+                                            <i class="fa fa-trash"></i>
+                                            </a>*@
+                                                    </td>
+
+
+                                                </tr>
+                                                i++;
+
+
+                                            }
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                       @* <div class="row">
+                            <div class="col-md-2">
+                                <br /> <input type="radio" name="rdbWallet" onchange="changeWalletType()" value="KaryonWallet" checked />&nbsp; Karyon Wallet<br />
+                            </div>
+                            <div class="col-md-2">
+                                <br />   <input type="radio" name="rdbWallet" onchange="changeWalletType()" value="FUPWallet" />&nbsp; FUP Wallet
+                            </div>
+                            <div class="col-md-2">
+                               <br /> <input type="text" id="WalletBalance" class="form-control" readonly />
+                            </div>
+                            @Html.HiddenFor(m => m.KaryonWallet)
+                            @Html.HiddenFor(m => m.FUPWallet)
+                            @Html.HiddenFor(m => m.WalletType)
+                        </div>*@
+                        <div class="row">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2">
+                                <input type="submit" class="btn btn-primary" onclick="return fcheckaddres()" name="PlaceOrder" value="Place Order" />
+                                <span style="display:none" id="CheckState"></span>
+                                @* <input type="submit" class="btn btn-primary" onclick="return fcheckaddres()" name="PaymentGayewat" value="Payment Gayeway" />*@
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="headertitle"></h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name"> Name </label>
+                                <input type="text" asp-for="Name" class="web form-control" placeholder="Name" maxlength="150" />
+
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">Mobile No </label>
+                                <input type="text" asp-for="MobileNo" class="form-control" placeholder="Mobile No" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-12">
+                                <label class="mb-10" for="name">Address </label>
+
+                                <input type="text" asp-for="Address" class="web form-control" placeholder="Address" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">Locality </label>
+                                <input type="text" asp-for="Locality" class="form-control" placeholder="Locality" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">Pincode </label>
+                                <input type="text" asp-for="Pincode" class="form-control" placeholder="Pincode" onchange="return GetStateCity();" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">State </label>
+                                <input type="text" asp-for="State" class="form-control" placeholder="State" readonly />
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">City </label>
+                                <input type="text" asp-for="City" class="form-control" placeholder="City" readonly />
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">Landmark </label>
+                                <input type="text" asp-for="Landmark" class="form-control" placeholder="Landmark" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" name="btnSave" id="btnSave" style="" value="Add Address" onclick="return fvalidate();" />
+                        <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.Pk_AddressId)
+
+    </div>
+
+</form>
+@*<form asp-action="AddAddress">
+
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Address List</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+
+                    <li class="breadcrumb-item tx-15">
+                        <a class="btn btn-success" style="color:blue" href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="return addadress();">Add Address</a>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+        <br />
+        <div class="row">
+
+            @if (Model != null)
+            {
+
+
+                if (Model.AddressList != null)
+                {
+
+                    int i = 1;
+                    foreach (var item in Model.AddressList)
+                    {
+                        <div class="col-md-4">
+                            <div class="card" style="height:323px">
+                                <div class="card-header">
+                                    <div class="card-title">Address @i <a style="margin-left: 58%;" href="#" onclick="return getAddress('@item.Pk_AddressId')">Select</a></div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-3 tx-muted tx-14">Name</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-3 tx-14">@item.Name</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-3 tx-muted tx-14">Mobile Number</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-3 tx-14">+@item.MobileNo</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-3 tx-muted tx-14">Billing Address</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-3 tx-14">
+                                                @item.Address,@item.Locality,@item.Pincode,@item.State,@item.City,@item.Landmark
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-0 tx-muted tx-14">Shipping Address</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-0 tx-14">
+                                                @item.Address,@item.Locality,@item.Pincode,@item.State,@item.City,@item.Landmark
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-0 tx-14">
+                                                <a href="#" class="btn btn-primary btn-sm" data-bs-target="#largeModal" data-bs-toggle="modal"
+                                       onclick="return editaddress('@item.Pk_AddressId','@item.Name','@item.MobileNo','@item.Address','@item.Locality','@item.Pincode','@item.State','@item.City',
+                                                       '@item.Landmark');">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+
+                                                <a href="/Associate/AssociateAddressDelete?id=@item.Pk_AddressId" id="btnDelete" class="btn btn-danger btn-sm" onclick="return confirm('are you sure to delete this address?')" ToolTip="Delete">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        i++;
+                    }
+                }
+            }
+
+        </div>
+
+    </div>
+     <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="headertitle"></h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name"> Name </label>
+                                <input type="text" asp-for="Name" class="web form-control" placeholder="Name" maxlength="150" />
+
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">Mobile No </label>
+                                <input type="text" asp-for="MobileNo" class="form-control" placeholder="Mobile No" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-12">
+                                <label class="mb-10" for="name">Address </label>
+
+                                <input type="text" asp-for="Address" class="web form-control" placeholder="Address" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">Locality </label>
+                                <input type="text" asp-for="Locality" class="form-control" placeholder="Locality" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">Pincode </label>
+                                <input type="text" asp-for="Pincode" class="form-control" placeholder="Pincode" onchange="return GetStateCity();" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">State </label>
+                                <input type="text" asp-for="State" class="form-control" placeholder="State" readonly />
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">City </label>
+                                <input type="text" asp-for="City" class="form-control" placeholder="City" readonly />
+                            </div>
+                            <div class="section-field mb-20 col-sm-6">
+                                <label class="mb-10" for="name">Landmark </label>
+                                <input type="text" asp-for="Landmark" class="form-control" placeholder="Landmark" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" name="btnSave" id="btnSave" style="" value="Add Address" onclick="return fvalidate();" />
+                        <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.Pk_AddressId)
+</form>*@
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+  
+    function getAddress(addressId,State) {
+        $('#Pk_AddressId').val(addressId);
+        $('#CheckState').text(State);
+        //alert($('#CheckState').text());
+    }
+    function addadress() {
+        $('#headertitle').text('Add Address');
+        $("#btnSave").attr('value', 'Add Address');
+    }
+    function fcheckaddres() {
+        if ($('#Pk_AddressId').val() == "0") {
+            alert("Please Select Address");
+            return false;
+        }
+        if ($('#CheckState').text() == "") {
+            alert("Please Update Address");
+            return false;
+        }
+    }
+    function editaddress(Pk_AddressId, Name, MobileNo, Address, Locality, Pincode, State, City, Landmark) {
+        $('#Name').val(Name);
+        $('#Pk_AddressId').val(Pk_AddressId);
+        $('#MobileNo').val(MobileNo);
+        $('#Address').val(Address);
+        $('#Locality').val(Locality);
+        $('#Pincode').val(Pincode);
+        $('#State').val(State);
+        $('#City').val(City);
+        $('#Landmark').val(Landmark);
+        $('#headertitle').text('Update Address');
+        $("#btnSave").attr('value', 'Update Address');
+    }
+    function GetStateCity() {
+        $(".errortext").removeClass("errortext");
+        $("#pre-loader").show();
+        $.ajax({
+            url: '/Home/GetStateCity',
+            type: 'Post',
+            data: { PinCode: $('#Pincode').val() },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        $('#State').val(response.response.state);
+                        $('#City').val(response.response.city);
+                    }
+                    else {
+                        $('#Pincode').val('');
+                        $("#Pincode").addClass('errortext');
+                        $('#Pincode').focus();
+                        alert(response.message);
+
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function fvalidate() {
+        $(".errortext").removeClass("errortext");
+        if ($('#Name').val() == "") {
+            $("#Name").addClass('errortext');
+            $('#Name').focus();
+            return false;
+        }
+        if ($('#MobileNo').val() == "") {
+            $("#MobileNo").addClass('errortext');
+            $('#MobileNo').focus();
+            return false;
+        }
+        if ($('#Address').val() == "") {
+            $("#Address").addClass('errortext');
+            $('#Address').focus();
+            return false;
+        }
+        if ($('#Locality').val() == "") {
+            $("#Locality").addClass('errortext');
+            $('#Locality').focus();
+            return false;
+        }
+        if ($('#Locality').val() == "") {
+            $("#Locality").addClass('errortext');
+            $('#Locality').focus();
+            return false;
+        }
+        if ($('#Pincode').val() == "") {
+            $("#Pincode").addClass('errortext');
+            $('#Pincode').focus();
+            return false;
+        }
+        if ($('#Landmark').val() == "") {
+            $("#Landmark").addClass('errortext');
+            $('#Landmark').focus();
+            return false;
+        }
+    }
+    function changeWalletType() {
+        var rdbWallet = $('input[name="rdbWallet"]:checked').val();
+        if (rdbWallet == "FUPWallet") {
+            $('#WalletBalance').val($('#FUPWallet').val());
+            $('#WalletType').val(rdbWallet);
+        }
+        else {
+            $('#WalletBalance').val($('#KaryonWallet').val());
+            $('#WalletType').val(rdbWallet);
+        }
+    }
+</script>

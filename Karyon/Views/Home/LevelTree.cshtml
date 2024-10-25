@@ -1,0 +1,97 @@
+﻿@model Karyon.Models.DirectRequest
+@{
+    ViewData["Title"] = "Tree";
+    Layout = null;
+    //Layout = null;
+}
+
+
+
+<div id="container"></div>
+<script src="~/associatepanel/assets/js/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/sankey.js"></script>
+<script src="https://code.highcharts.com/modules/organization.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<script>
+    $(document).ready(function () {
+        fBindTree();
+    });
+    function fBindTree()
+    {
+        $.ajax({
+            url: '/Home/GetLevelTree',
+            type: 'GET',
+            success: function (response) {
+                if (response != null) {
+                    Highcharts.chart('container', {
+                        chart: {
+                            height: 5100,
+                            inverted: false
+                        },
+
+                        title: {
+                            text: 'Carnivora Phylogeny'
+                        },
+
+                      
+                        plotOptions: {
+                            series: {
+                                nodeWidth: '10%',
+                            }
+                        },
+
+                        accessibility: {
+                            point: {
+                                descriptionFormat: '{toNode.name} ' +
+                                    '{#if (eq toNode.level 1 )} is a distinct family within the ' +
+                                    'order of {fromNode.id}. {toNode.custom.info}{/if}' +
+                                    '{#if (eq toNode.level 2 )} is a genus within the {fromNode.id}. ' +
+                                    '{toNode.custom.info} {/if}' +
+                                    '{#if (eq toNode.level 3 )} is a species within the ' +
+                                    '{fromNode.id}. {toNode.custom.info} {/if}'
+                            }
+                        },
+
+                        series: [{
+                            type: 'organization',
+                            name: 'Carnivora Phyologeny',
+                            keys: ['from', 'to'],
+                            data: response.myArray,
+
+                           
+                            colorByPoint: false,
+                            borderColor: 'black',
+                            borderWidth: 2
+                        }],
+
+                        tooltip: {
+                            outside: true,
+                            format: '{point.custom.info}',
+                            style: {
+                                width: '320px'
+                            }
+                        },
+
+                        exporting: {
+                            allowHTML: true,
+                            sourceWidth: 800,
+                            sourceHeight: 600
+                        }
+                    });
+
+                }
+                else {
+                    alert('Something went wrong!');
+                }
+            }, error: function () {
+
+                alert('Something went wrong!');
+            }
+        });
+    }
+   
+
+</script>

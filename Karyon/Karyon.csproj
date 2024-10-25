@@ -1,0 +1,340 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <Content Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Associate\LevelTree.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.97.0" />
+    <PackageReference Include="Hangfire" Version="1.8.14" />
+    <PackageReference Include="itextsharp.xmlworker" Version="5.5.13.3" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="QRCoder" Version="1.4.1" />
+    <PackageReference Include="RazorPay.Core" Version="1.0.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\revolution\assets\demo\news-video148\" />
+    <Folder Include="wwwroot\KaryonPointRequest\" />
+    <Folder Include="wwwroot\AssociatePanCard\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Admin\ActiveMember.cshtml" />
+    <None Include="Views\Admin\ChangeSponsorLeg.cshtml" />
+    <None Include="Views\Admin\DashBoard.cshtml" />
+    <None Include="Views\Admin\GetAssociateList.cshtml" />
+    <None Include="Views\Admin\GetDirectTeam.cshtml" />
+    <None Include="Views\Admin\RegisterNewId.cshtml" />
+    <None Include="Views\Admin\SetCappingMaster.cshtml" />
+    <None Include="Views\Admin\SetId.cshtml" />
+    <None Include="Views\Admin\Tree.cshtml" />
+    <None Include="Views\Admin\UpdateMemberDetails.cshtml" />
+    <None Include="Views\Associate\AddAddress.cshtml" />
+    <None Include="Views\Associate\Advisor1Report.cshtml" />
+    <None Include="Views\Associate\Advisor3Report.cshtml" />
+    <None Include="Views\Associate\AssociatePayotReport.cshtml" />
+    <None Include="Views\Associate\Business.cshtml" />
+    <None Include="Views\Associate\BusinessReport.cshtml" />
+    <None Include="Views\Associate\ChangePassword.cshtml" />
+    <None Include="Views\Associate\CheckOut.cshtml" />
+    <None Include="Views\Associate\Congratulations.cshtml" />
+    <None Include="Views\Associate\CreatorBusiness.cshtml" />
+    <None Include="Views\Associate\CreatorHarmony.cshtml" />
+    <None Include="Views\Associate\CreatorReport.cshtml" />
+    <None Include="Views\Associate\DirectList.cshtml" />
+    <None Include="Views\Associate\DownlineList.cshtml" />
+    <None Include="Views\Associate\FamilynWalletLedger.cshtml" />
+    <None Include="Views\Associate\FamilynWalletList.cshtml" />
+    <None Include="Views\Associate\FamilynWalletRequest.cshtml" />
+    <None Include="Views\Associate\GetPincodeFranchise.cshtml" />
+    <None Include="Views\Associate\GetWeeklyAssociatePayoutReport.cshtml" />
+    <None Include="Views\Associate\HarmonyReport.cshtml" />
+    <None Include="Views\Associate\KaryonPointsList.cshtml" />
+    <None Include="Views\Associate\KaryonPointsRequest.cshtml" />
+    <None Include="Views\Associate\Ledger.cshtml" />
+    <None Include="Views\Associate\OrderList.cshtml" />
+    <None Include="Views\Associate\PackPurchase.cshtml" />
+    <None Include="Views\Associate\PaymentIntegration.cshtml" />
+    <None Include="Views\Associate\PaymentSuccessWallet.cshtml" />
+    <None Include="Views\Associate\PayoutLedger.cshtml" />
+    <None Include="Views\Associate\PCreatorHarmony.cshtml" />
+    <None Include="Views\Associate\PickUpFranchisee.cshtml" />
+    <None Include="Views\Associate\PlacePack.cshtml" />
+    <None Include="Views\Associate\PrintCustomerOrder.cshtml" />
+    <None Include="Views\Associate\PrintFUPOrder.cshtml" />
+    <None Include="Views\Associate\Registration.cshtml" />
+    <None Include="Views\Associate\RewardDetails.cshtml" />
+    <None Include="Views\Associate\RoyalReport.cshtml" />
+    <None Include="Views\Associate\Support.cshtml" />
+    <None Include="Views\Home\ProcessingPayment.cshtml" />
+    <None Include="Views\Home\LevelTree.cshtml" />
+    <None Include="Views\Associate\Tree.cshtml" />
+    <None Include="Views\Associate\UpdatePanPage.cshtml" />
+    <None Include="Views\Associate\ViewProfile.cshtml" />
+    <None Include="Views\Associate\WelcomeLetter.cshtml" />
+    <None Include="Views\Franchisee\CounterCollect.cshtml" />
+    <None Include="Views\Franchisee\CreateCustomerOrder.cshtml" />
+    <None Include="Views\Franchisee\CreateOrder.cshtml" />
+    <None Include="Views\Franchisee\DashBoard.cshtml" />
+    <None Include="Views\Franchisee\DispatchedCustomerOrders.cshtml" />
+    <None Include="Views\Franchisee\DispatchedFranchiseOrders.cshtml" />
+    <None Include="Views\Franchisee\FamilynWalletLedger.cshtml" />
+    <None Include="Views\Franchisee\FamilynWalletList.cshtml" />
+    <None Include="Views\Franchisee\FamilynWalletRequest.cshtml" />
+    <None Include="Views\Franchisee\FrachiseViewProfile.cshtml" />
+    <None Include="Views\Franchisee\FranchiseePayout.cshtml" />
+    <None Include="Views\Franchisee\FranchiseePayoutLedger.cshtml" />
+    <None Include="Views\Franchisee\FranchisePaymentIntegration.cshtml" />
+    <None Include="Views\Franchisee\Ledger.cshtml" />
+    <None Include="Views\Franchisee\OpenOrder.cshtml" />
+    <None Include="Views\Franchisee\OrderList.cshtml" />
+    <None Include="Views\Franchisee\PaymentIntegration.cshtml" />
+    <None Include="Views\Franchisee\PendingCustomerOrders.cshtml" />
+    <None Include="Views\Franchisee\PendingOrders.cshtml" />
+    <None Include="Views\Franchisee\PrintCustomerDispatchNote.cshtml" />
+    <None Include="Views\Franchisee\PrintCustomerOrder.cshtml" />
+    <None Include="Views\Franchisee\PrintFranchiseeDispatchNote.cshtml" />
+    <None Include="Views\Franchisee\PrintFranchiseOrder.cshtml" />
+    <None Include="Views\Franchisee\RequestList.cshtml" />
+    <None Include="Views\Franchisee\Stock.cshtml" />
+    <None Include="Views\Franchisee\UpdateCustomerDispatchDetailExcel.cshtml" />
+    <None Include="Views\Franchisee\UploadCustomerDispatchDetailExcel.cshtml" />
+    <None Include="Views\Franchisee\ViewOrders.cshtml" />
+    <None Include="Views\Franchisee\WalletRequest.cshtml" />
+    <None Include="Views\Home\About.cshtml" />
+    <None Include="Views\Home\AddressList.cshtml" />
+    <None Include="Views\Home\AdminLogin.cshtml" />
+    <None Include="Views\Home\CancellationPolicy.cshtml" />
+    <None Include="Views\Home\CartList.cshtml" />
+    <None Include="Views\Home\Congratulations.cshtml" />
+    <None Include="Views\Home\ContactUs.cshtml" />
+    <None Include="Views\Home\DashBoard.cshtml" />
+    <None Include="Views\Home\DownloadExcelForBank.cshtml" />
+    <None Include="Views\Home\ForgotId.cshtml" />
+    <None Include="Views\Home\ForgotPassword.cshtml" />
+    <None Include="Views\Home\FranchiseeRequest.cshtml" />
+    <None Include="Views\Home\FranchiseRegistration.cshtml" />
+    <None Include="Views\Home\GenerateQRCODE.cshtml" />
+    <None Include="Views\Home\Getmessage.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Login.cshtml" />
+    <None Include="Views\Home\Opportunity.cshtml" />
+    <None Include="Views\Home\PaytmResponse.cshtml" />
+    <None Include="Views\Home\PrintCustomerInvoice.cshtml" />
+    <None Include="Views\Home\PrintFranchiseeInvoice.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\Home\PrivacyPolicy.cshtml" />
+    <None Include="Views\Home\Products.cshtml" />
+    <None Include="Views\Home\Registration.cshtml" />
+    <None Include="Views\Home\ReviewAboutus.cshtml" />
+    <None Include="Views\Home\Services.cshtml" />
+    <None Include="Views\Home\Shop.cshtml" />
+    <None Include="Views\Home\TermsCondition.cshtml" />
+    <None Include="Views\Home\VarientDetail.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_AddToCaetModal.cshtml" />
+    <None Include="Views\Shared\_AdminLayout.cshtml" />
+    <None Include="Views\Shared\_AssociateLayout.cshtml" />
+    <None Include="Views\Shared\_Cart.cshtml" />
+    <None Include="Views\Shared\_FranchiseLayout.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_SideMenu.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\Shared\_WebsiteLayout.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="wwwroot\assets\css\plugins\bootstrap.min.css.map" />
+    <None Include="wwwroot\assets\css\style.css.bak" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-01.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-02.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-03.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-04.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-05.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-06.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-07.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-08.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-09.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-10.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-11.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-12.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-13.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-14.svg" />
+    <None Include="wwwroot\assets\images\pre-loader\loader-15.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\360-degree-panorama\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\404-error-page\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\app-showcase\ic_filter_drama_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\app-showcase\ic_free_breakfast_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\app-showcase\ic_lightbulb_outline_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\app-showcase\ic_supervisor_account_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\app-showcase\ic_tag_faces_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\app-showcase\ic_trending_up_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\beforeafterslider190\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\blendmodeheader72\ic_layers_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\blur-effect-slider\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\car-dealership\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\carousel-gallery\closedhand.cur" />
+    <None Include="wwwroot\assets\revolution\assets\demo\carousel-gallery\ic_fullscreen_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\carousel-gallery\ic_fullscreen_36px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\carousel-gallery\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\christmas-snow-scene\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\classicslider182\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\clean-news-slider\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\content-tabs\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\content-zoom200\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\creative-freedom\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\creative-frontpage\ic_expand_more_36px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\creative-frontpage\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\desk-scene\ic_keyboard_arrow_down_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\desk-scene\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\double-exposure-effect\ic_arrow_forward_36px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\double-exposure-effect\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\duotone80\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\fashion14\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\film-strip\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\flickr-gallery176\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\food-carousel130\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\fullscreen-button124\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\fullscreen-menu\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\gravitydesign42\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\highlight-carousel172\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\highlight-carousel17\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\highlight-showcase170\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\image-gallery\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\innovation90\ic_data_usage_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\innovation90\ic_keyboard_arrow_down_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\innovation90\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\inspiration-header\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\magazine-posts\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\main-feature-slider\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\mask-showcase\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\news-background-video204\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\news-gallery166\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\newsletter-hero146\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\our-team-carousel108\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\our-team\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\overexposure-transition\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\parallax-scroll\ic_arrow_downward_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\parallax-scroll\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\parallax-zoom-slices\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\particle-effect-one52\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\particle-effect-three48\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\particle-effect-two50\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\photography-carousel150\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\portfolio-viewer\ic_close_36px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\portfolio-viewer\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\product-showcase\ic_arrow_upward_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\product-showcase\ic_play_arrow_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\product-showcase\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\restaurant-header\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\reveal-add-on18\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\rock-band-music\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\rotating-words128\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\scroll-effect16\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\search-form-hero144\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\sleek-landing-page\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\sliding-overlays\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\snowaddon54\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\space-opera\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\sports-hero142\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\sports-hero142\tinified\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\tech-journal\ic_close_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\tech-journal\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\themeplicity-menu\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\travel-static-captions126\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\typewriter-effect\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\web-product-dark158\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\web-product-light-hero-3d118\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\web-product-light-hero154\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\web-product-light\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\website-intro\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\arrow-right.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\award5.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\character07.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\chart02.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\file05.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\gauge.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\head-check.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\head-idea.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\ic_done_24px.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\monitor.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\pencil.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\preson-megaphone.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\whiteboard-export198\user05.svg" />
+    <None Include="wwwroot\assets\revolution\assets\demo\youtube-gallery134\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\assets\demo\youtube-hero\Thumbs.db" />
+    <None Include="wwwroot\assets\revolution\css\closedhand.cur" />
+    <None Include="wwwroot\assets\revolution\css\OpenHand.cur" />
+    <None Include="wwwroot\assets\revolution\fonts\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\assets\revolution\fonts\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\assets\revolution\fonts\pe-icon-7-stroke\fonts\Pe-icon-7-stroke.svg" />
+    <None Include="wwwroot\assets\revolution\fonts\revicons\revicons.svg" />
+    <None Include="wwwroot\assets\revolution\js\extensions\revolution.extension.actions.min.js" />
+    <None Include="wwwroot\assets\revolution\js\extensions\revolution.extension.carousel.min.js" />
+    <None Include="wwwroot\assets\revolution\js\extensions\revolution.extension.kenburn.min.js" />
+    <None Include="wwwroot\assets\revolution\js\extensions\revolution.extension.layeranimation.min.js" />
+    <None Include="wwwroot\assets\revolution\js\extensions\revolution.extension.migration.min.js" />
+    <None Include="wwwroot\assets\revolution\js\extensions\revolution.extension.navigation.min.js" />
+    <None Include="wwwroot\assets\revolution\js\extensions\revolution.extension.parallax.min.js" />
+    <None Include="wwwroot\assets\revolution\js\extensions\revolution.extension.slideanims.min.js" />
+    <None Include="wwwroot\assets\revolution\js\extensions\revolution.extension.video.min.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.revslider-christmas-snow-scene.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.revslider-fashion14.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.revslider-mask-showcase.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.revslider-overexposure-transition.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.revslider-parallax-zoom-slices.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.revslider-particle-effect-three48.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.revslider-themeplicity-menu.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.revslider-webster-slider-8.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.revslider-ws-slider1.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.revslider.embed.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.themepunch.enablelog.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.themepunch.revolution.min.js" />
+    <None Include="wwwroot\assets\revolution\js\jquery.themepunch.tools.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution-custom.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution.addon.beforeafter.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution.addon.filmstrip.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution.addon.panorama.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution.addon.particles.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution.addon.polyfold.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution.addon.revealer.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution.addon.slicey.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution.addon.snow.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution.addon.typewriter.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revolution.addon.whiteboard.min.js" />
+    <None Include="wwwroot\assets\revolution\js\revslider-weather-addon-public.js" />
+    <None Include="wwwroot\assets\revolution\js\three.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="paytm">
+      <HintPath>..\..\Karyonbin\paytm.dll</HintPath>
+    </Reference>
+    <Reference Include="PaytmChecksum">
+      <HintPath>..\..\Karyonbin\PaytmChecksum.dll</HintPath>
+    </Reference>
+    <Reference Include="QRCoder">
+      <HintPath>..\..\BankAPI\BankAPI\BankAPI\bin\QRCoder.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

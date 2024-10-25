@@ -1,0 +1,1016 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model Karyon.Models.AssociateDashBoardResponseWeb;
+@{
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+<style>
+    .pull-left {
+        float: left
+    }
+
+    .pull-right {
+        float: right
+    }
+
+    .clearboth {
+        clear: both
+    }
+
+    .text-sucess {
+        color: green;
+    }
+
+    #days {
+        color: #db4844;
+    }
+
+    #hours {
+        color: #f07c22;
+        padding: 0 10px;
+    }
+
+    #minutes {
+        color: #627a30;
+        padding: 0 10px 0 0;5
+    }
+
+    #seconds {
+        color: #abcd58;
+    }
+</style>
+
+<div class="main-container container-fluid">
+    <marquee style="color:red;margin-top:10px;" direction="left">
+        @Model.Response.Message
+    </marquee>
+    <!-- breadcrumb -->
+    <div class="breadcrumb-header justify-content-between">
+        <div class="left-content">
+            <span class="main-content-title mg-b-0 mg-b-lg-1">DASHBOARD</span>
+        </div>
+        <div class="justify-content-center mt-2">
+            <ol class="breadcrumb breadcrumb-style3">
+                <li class="breadcrumb-item tx-15">
+                    <a href="javascript:void(0)">
+                        <img src="@Model.Response.RankImage" style="width:145px" />
+                    </a>
+                </li>
+
+            </ol>
+        </div>
+    </div>
+    <!-- /breadcrumb -->
+
+    <div class="row">
+        <div class="col-xxl-5 col-xl-12">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column mb-0">
+                                <div class="mb-3">
+
+                                    <div class="avatar radius-4 bg-primary-transparent">
+
+                                        <i class="fa-solid fa-money-bill-1 tx-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="mb-2">
+                                        <h5 class="mb-0 numberfont">₹ @Model.Response.TodayIncome</h5>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-0">Today's Earning</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card">
+                        <a href="/Associate/OrderList">
+                            <div class="card-body">
+                                <div class="d-flex flex-column mb-0">
+                                    <div class="mb-3">
+
+                                        <div class="avatar radius-4 bg-orange-transparent">
+                                            <i class="fa-solid fa-cart-shopping tx-orange"></i>
+
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="mb-2">
+                                            <h5 class="mb-0 numberfont">₹ @Model.Response.TotalShopping</h5>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <p class="mb-0">Total Shopping</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card">
+                        <a href="/Associate/FamilynWalletLedger">
+                            <div class="card-body">
+                                <div class="d-flex flex-column mb-0">
+                                    <div class="mb-3">
+
+                                        <div class="avatar radius-4 bg-info-transparent">
+                                            <i class="fa-solid fa-money-bill tx-info"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="mb-1">
+                                            <h5 class="mb-0 numberfont">₹ @Model.Response.FamilynWallet</h5>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <p class="mb-0">FUP Wallet</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card">
+                        <a href="/Associate/Ledger">
+                            <div class="card-body">
+                                <div class="d-flex flex-column mb-0">
+                                    <div class="mb-3">
+
+                                        <div class="avatar radius-4 bg-info-transparent">
+                                            <i class="fa-solid fa-money-bill tx-info"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="mb-1">
+                                            <h5 class="mb-0 numberfont">₹ @Model.Response.PayoutWallet</h5>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <p class="mb-0">Karyon Wallet</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card">
+                        <a href="/Associate/AssociatePayotReport">
+                            <div class="card-body">
+                                <div class="d-flex flex-column mb-0">
+                                    <div class="mb-3">
+
+                                        <div class="avatar radius-4 bg-success-transparent">
+
+                                            <i class="fa-solid fa-money-bill tx-success"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="mb-1">
+                                            <h5 class="mb-0 numberfont">₹ @Model.Response.TotalIncome</h5>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <p class="mb-0">Total Earning's</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div class="pull-left">
+                            <input type="text" style="width: 5px;border: none;background-color: #44ce85;" id="ZoneA" value="@BaseUrl.LeftRightURL/Home/Registration?pid=@Context.Session.GetString("LoginId")&amp;Zone=L" />
+                            <a href="/Associate/Registration?pid=@Context.Session.GetString("LoginId")&amp;Zone=L" target="_blank" style="color: #43ce85;">
+                                <strong id="myInput">Zone A Referal</strong>
+                            </a>
+                        </div>
+                        <div class="pull-right">
+                            <button id="copyTextBtn" class="btn-close" type="button"><i class="fa-solid fa-copy"></i></button>
+                            <span style="color:red;display:none" id="txtleft">Link Copied</span>
+                        </div>
+                        <div class="clearboth"></div>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <div class="pull-left">
+                            <input type="text" id="ZoneB" style="width: 5px;border: none;background-color: #90d6f2;" value="@BaseUrl.LeftRightURL/Home/Registration?pid=@Context.Session.GetString("LoginId")&amp;Zone=R" />
+                            <a href="/Associate/Registration?pid=@Context.Session.GetString("LoginId")&amp;Zone=R" target="_blank" style="color: #4ec2f0;">
+                                <strong id="myInputR">Zone B Referal</strong>
+                            </a>
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn-close" id="copyTextBtnR" type="button"><i class="fa-solid fa-copy"></i></button>
+                            <span style="color:red;display:none" id="txtright">Link Copied</span>
+                        </div>
+                        <div class="clearboth"></div>
+                    </div>
+                </div>
+
+                <div class="col-xl-12">
+                    <div class="card">
+
+
+                        <div id="container" style="height:300px">
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">UnPaid Income</div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="mb-0">
+                                <div class="flex-between mb-2">
+                                    <p class="mb-0 tx-14 text-start">Creator</p>
+
+                                    <span>₹ @Model.Response.SelfIncomeU</span>
+
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="mb-0">
+                                <div class="flex-between mb-2">
+                                    <p class="mb-0 tx-14 text-start">Creator Harmony</p>
+
+                                    <span>₹ @Model.Response.CreatorHarmonyU</span>
+
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="mb-0">
+                                <div class="flex-between mb-2">
+                                    <p class="mb-0 tx-14 text-start">Harmony</p>
+
+                                    <span>₹ @Model.Response.BinaryIncomeU</span>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Earning Details</div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="mb-0">
+                                <div class="flex-between mb-2">
+                                    <p class="mb-0 tx-14 text-start">Creator</p>
+
+                                    <span>₹ @Model.Response.SelfIncome</span>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="mb-0">
+                                <div class="flex-between mb-2">
+                                    <p class="mb-0 tx-14 text-start">Creator Harmony</p>
+
+                                    <span>₹ @Model.Response.CreatorHarmony</span>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="mb-0">
+                                <div class="flex-between mb-2">
+                                    <p class="mb-0 tx-14 text-start">Harmony</p>
+
+                                    <span>₹ @Model.Response.BinaryIncome</span>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="mb-0">
+                                <div class="flex-between mb-2">
+                                    <p class="mb-0 tx-14 text-start">Advisor</p>
+
+                                    <span>₹ @Model.Response.Advisor1</span>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="mb-0">
+                                <div class="flex-between mb-2">
+                                    <p class="mb-0 tx-14 text-start">Royal</p>
+
+                                    <span>₹ @Model.Response.Royal</span>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div id="sponsorcontainer" style="height:300px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxl-7 col-xl-12">
+            <div class="row">
+
+                @if (Model.Response.lstOfferMaster != null)
+                {
+                    @if (Model.Response.lstOfferMaster.Count > 0)
+                    {
+                        int i = 1;
+                        var day = "";
+                        var hour = "";
+                        var minute = "";
+                        var second = "";
+
+                        <div class="col-sm-12 col-lg-12 col-xl-12 col-xxl-12">
+                            @foreach (var item in Model.Response.lstOfferMaster)
+                            {
+                                day = "days" + @item.Pk_OfferId;
+                                hour = "hours" + @item.Pk_OfferId;
+                                minute = "minutes" + @item.Pk_OfferId;
+                                second = "seconds" + @item.Pk_OfferId;
+                                <div class="card ">
+                                    <div class="card-header custom-header d-flex justify-content-between align-items-center">
+                                        <div class="card-title" style="width:100%;">
+                                            <div class="d-flex justify-content-between">
+                                                <div>@item.OfferName</div>
+
+                                                <div id="timer" class="d-flex justify-content-end align-items-right ">
+                                                    <div class="@day" id="days"></div>
+                                                    <div class="@hour" id="hours"></div>
+                                                    <div class="@minute" id="minutes"></div>
+                                                    <div class="@second" id="seconds"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="card-body p-0">
+
+                                        @if (@item.OfferStatus != "Achived")
+                                        {
+                                            <div class="tab-content">
+                                                <div class="tab-pane active table-responsive" id="Active">
+                                                    <img src="@item.OfferImage" />
+                                                </div>
+
+                                            </div>
+
+                                            <div class="card-body">
+                                                <div class="row">
+
+                                                    <div class="col-md-4"><b>Target : @item.HarmonyCount</b></div>
+                                                    <div class="col-md-4"><b class="text-sucess">Achived :  @item.AchivePoint </b> </div>
+                                                    <div class="col-md-4"><b class="text-info">@item.OfferStatus</b></div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+
+                                                    <div class="col-md-4"><b>Offer Calculation: </b></div>
+                                                    <div class="col-md-4"><b class="text-sucess">Zone A :  @Model.Response.LeftBusiness </b> </div>
+                                                    <div class="col-md-4"><b class="text-info">Zone B: @Model.Response.RightBusiness</b></div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="tab-content">
+                                                <div class="tab-pane active table-responsive" id="Active">
+                                                    <img src="@item.AchieveImage" />
+                                                </div>
+
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                i++;
+                            }
+
+                        </div>
+
+                    }
+                }
+
+
+
+
+                <div class="col-sm-12 col-lg-12 col-xl-12 col-xxl-12">
+                    <div class="card ">
+                        <div class="card-header custom-header d-flex justify-content-between align-items-center">
+                            <div class="card-title d-flex justify-content-between">Creator Harmony</div>
+
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="tab-content">
+                                <div class="tab-pane active table-responsive" id="Active">
+                                    <table class="table border-0 mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="border-top-0 tx-muted font-weight-normal ps-4">
+                                                    Team
+
+                                                </th>
+                                                <th class="border-top-0 tx-muted font-weight-normal">Zone A</th>
+                                                <th class="border-top-0 tx-muted font-weight-normal">Zone B</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+
+                                                        <div class="d-flex flex-column ms-2">
+                                                            <p class="mb-1 font-weight-semibold">Total</p>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <p class="mb-1 font-weight-semibold numberfont tx-14">@Model.Response.TotalLeftBusinessC</p>
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <p class="mb-1 font-weight-semibold numberfont tx-14">@Model.Response.TotalRightBusinessC</p>
+
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+
+                                                        <div class="d-flex flex-column ms-2">
+                                                            <p class="mb-1 font-weight-semibold">Matching</p>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <p class="mb-1 font-weight-semibold numberfont tx-14">@Model.Response.PaidBusinessLeftC</p>
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <p class="mb-1 font-weight-semibold numberfont tx-14">@Model.Response.PaidBusinessRightC</p>
+
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+
+                                                        <div class="d-flex flex-column ms-2">
+                                                            <p class="mb-1 font-weight-semibold">C/F</p>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <span class="font-weight-semibold numberfont tx-14">@Model.Response.CaryForwardLeftC</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <span class="font-weight-semibold numberfont tx-14">@Model.Response.CaryForwardRightC</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-lg-12 col-xl-12 col-xxl-12">
+                    <div class="card ">
+                        <div class="card-header custom-header d-flex justify-content-between align-items-center">
+                            <div class="card-title d-flex justify-content-between">Harmony</div>
+
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="tab-content">
+                                <div class="tab-pane active table-responsive" id="Active">
+                                    <table class="table border-0 mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="border-top-0 tx-muted font-weight-normal ps-4">
+                                                    Team
+
+                                                </th>
+                                                <th class="border-top-0 tx-muted font-weight-normal">Zone A</th>
+                                                <th class="border-top-0 tx-muted font-weight-normal">Zone B</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+
+                                                        <div class="d-flex flex-column ms-2">
+                                                            <p class="mb-1 font-weight-semibold">Total</p>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <p class="mb-1 font-weight-semibold numberfont tx-14">@Model.Response.TotalLeftBusiness</p>
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <p class="mb-1 font-weight-semibold numberfont tx-14">@Model.Response.TotalRightBusiness</p>
+
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+
+                                                        <div class="d-flex flex-column ms-2">
+                                                            <p class="mb-1 font-weight-semibold">Matching</p>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <p class="mb-1 font-weight-semibold numberfont tx-14">@Model.Response.PaidBusinessLeft</p>
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <p class="mb-1 font-weight-semibold numberfont tx-14">@Model.Response.PaidBusinessRight</p>
+
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+
+                                                        <div class="d-flex flex-column ms-2">
+                                                            <p class="mb-1 font-weight-semibold">C/F</p>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <span class="font-weight-semibold numberfont tx-14">@Model.Response.CaryForwardLeft</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column ms-2">
+                                                        <span class="font-weight-semibold numberfont tx-14">@Model.Response.CaryForwardRight</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div id="container1" style="height:300px">
+                        </div>
+
+                        @*<div class="card-header">
+                        <div class="card-title">Self Orders</div>
+                        </div>
+                        <div class="card-body" style="padding:0px">
+                        <div class="tab-pane active table-responsive" id="Active">
+                        <table class="table border-0 mb-0">
+                        <thead>
+                        <tr>
+                        <th class="border-top-0 tx-muted font-weight-normal ps-4">
+                        #
+
+                        </th>
+                        <th class="border-top-0 tx-muted font-weight-normal">
+
+                        Order No
+                        </th>
+                        <th class="border-top-0 tx-muted font-weight-normal">Order Date</th>
+                        <th class="border-top-0 tx-muted font-weight-normal">Order Amount</th>
+                        <th class="border-top-0 tx-muted font-weight-normal">Order PV</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (Model != null)
+                        {
+
+                        if (Model.Response.lstShopping != null)
+                        {
+                        if (Model.Response.lstShopping.Count > 0)
+                        {
+
+
+                        int i = 1;
+
+                        foreach (var item in Model.Response.lstShopping)
+                        {
+                        <tr>
+                        <td>@i</td>
+                        <td>
+                        <div>
+                        <span class="tx-primary">
+
+                        @item.OrderNo
+
+                        </span>
+                        </div>
+                        </td>
+                        <td>
+                        <div>
+                        <span class="tx-primary">
+
+                        @item.OrderDate
+
+                        </span>
+                        </div>
+                        </td>
+                        <td>
+                        <div>
+                        <span class="tx-primary">
+
+                        @item.OrderAmount
+
+                        </span>
+                        </div>
+                        </td>
+                        <td>
+                        <div>
+                        <span class="tx-primary">
+
+                        @item.TotalPV
+
+                        </span>
+                        </div>
+                        </td>
+
+                        </tr>
+                        i++;
+                        }
+                        }
+                        }
+                        }
+
+
+                        </tbody>
+                        </table>
+                        </div>
+                        </div>*@
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+    </div>
+
+
+
+</div>
+<script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script>
+    copyTextBtn = document.querySelector('#copyTextBtn');
+    copyTextBtn.addEventListener('click', function (event) {
+        let copyTextarea = document.querySelector('#ZoneA');
+        copyTextarea.focus();
+        copyTextarea.select();
+        try {
+            let successful = document.execCommand('copy');
+            let msg = successful ? 'successful' : 'unsuccessful';
+            $('#txtleft').show();
+            $('#copyTextBtn').hide();
+            //alert('Copy text command was ' + msg);
+        } catch (err) {
+            alert('Unable to copy');
+        }
+    });
+    copyTextBtn = document.querySelector('#copyTextBtnR');
+    copyTextBtn.addEventListener('click', function (event) {
+        let copyTextarea = document.querySelector('#ZoneB');
+        copyTextarea.focus();
+        copyTextarea.select();
+        try {
+            let successful = document.execCommand('copy');
+            let msg = successful ? 'successful' : 'unsuccessful';
+            $('#txtright').show();
+            $('#copyTextBtnR').hide();
+            //alert('Copy text command was ' + msg);
+        } catch (err) {
+            alert('Unable to copy');
+        }
+    });
+</script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+<script>
+
+    function makeTimer() {
+
+
+        $.ajax({
+            url: '/Home/GetOfferTime',
+            type: 'Post',
+            success: function (response) {
+
+                for (var i = 0; i < response.length; i++) {
+                    setDate(response[i].toDate, response[i].pk_OfferId)
+
+                }
+            },
+            error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+        //		var endTime = new Date("29 April 2018 9:56:00 GMT+01:00");
+    }
+
+    Date.prototype.addHours = function (h) {
+        this.setHours(this.getHours() + h);
+        return this;
+    }
+    function setDate(entryDate, id) {
+
+        var entryDate
+        var endTime = new Date(entryDate);//.addHours(12);
+        endTime = (Date.parse(endTime) / 1000);
+
+        var now = new Date();
+        now = (Date.parse(now) / 1000);
+
+
+        var timeLeft = endTime - now;
+
+        var iddays = ".days" + id;
+        var idhours = ".hours" + id;
+        var idminutes = ".minutes" + id;
+        var idseconds = ".seconds" + id;
+
+        if (timeLeft <= 0) {
+
+
+            $(".days" + id).html(00 + "<span>Days</span>");
+            $(".hours" + id).html(00 + "<span>Hrs</span>");
+            $(".minutes" + id).html(00 + "<span>Min</span>");
+            $(".seconds" + id).html(00 + "<span>Sec</span>");
+
+        }
+        else {
+            var days = Math.floor(timeLeft / 86400);
+            var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
+            var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600)) / 60);
+            var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
+
+            if (hours < "10") { hours = "0" + hours; }
+            if (minutes < "10") { minutes = "0" + minutes; }
+            if (seconds < "10") { seconds = "0" + seconds; }
+
+            $(".days" + id).html(days + "<span>Days</span>");
+            $(".hours" + id).html(hours + "<span>Hrs</span>");
+            $(".minutes" + id).html(minutes + "<span>Min</span>");
+            $(".seconds" + id).html(seconds + "<span>Sec</span>");
+        }
+    }
+
+    setInterval(function () { makeTimer(); }, 1000);
+    //$(document).ready(function () {
+    //    makeTimer();
+    //});
+    $.ajax({
+        type: "POST",
+        url: "/Home/GetTeamGraph",
+
+
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            var datalist = [];
+
+
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Team Details'
+                },
+
+                xAxis: {
+                    categories: [
+                        'Zone A',
+                        'Zone B'
+
+                    ],
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: ''
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'Total',
+                    data: [data[0].totalMember, data[0].totalMemberR]
+
+                }, {
+                    name: 'Inactive',
+                    data: [data[0].totalInactiveMember, data[0].totalInactiveMemberR]
+
+                }, {
+                    name: 'Active',
+                    data: [data[0].totalActiveMember, data[0].totalActiveMemberR]
+
+                }]
+            });
+
+            var datalist1 = [];
+
+
+            var obj = {
+                "name": "Zone A Business",
+                "y": data[0].leftBVFresh,
+                "sliced": true,
+                "selected": true
+            }
+            datalist1.push(obj);
+
+            var obj = {
+                "name": "Zone B Business",
+                "y": data[0].rightBVFresh
+
+            }
+
+
+            datalist1.push(obj);
+
+            Highcharts.chart('container1', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Fresh Business'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    name: 'Fresh Business',
+                    colorByPoint: true,
+                    data: datalist1
+                }]
+            });
+
+            var datalist2 = [];
+            var obj = {
+                "name": "Zone A Business",
+                "y": data[0].sponsorLeftBVFresh,
+                "sliced": true,
+                "selected": true
+            }
+            datalist2.push(obj);
+
+            var obj = {
+                "name": "Zone B Business",
+                "y": data[0].sponsorRightBVFresh
+
+            }
+            datalist2.push(obj);
+
+            Highcharts.chart('sponsorcontainer', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Sponsor Fresh Business'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    name: 'Sponsor Fresh Business',
+                    colorByPoint: true,
+                    data: datalist2
+                }]
+            });
+        }
+    });
+</script>

@@ -1,0 +1,491 @@
+﻿@model Karyon.Models.OpenOrderRequest
+@{
+    ViewData["Title"] = "OpenOrder";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+
+<form asp-action="OpenOrder">
+    @{
+        int TotalQty = 0;
+        decimal FinalBV = 0;
+        decimal TotalPrice = 0;
+        decimal TotalMRP = 0;
+        decimal TotalGst = 0;
+        decimal Total = 0;
+    }
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Open Order</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Manage Stock</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Open Order</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <input type="text" asp-for="Pk_Id" style="display:none;" />
+                        <label>Product</label>
+                        <br />
+                        @Html.DropDownListFor(m => m.Fk_ProductId, new SelectList(ViewBag.ddlProducts, "Value", "Text"), new { @class = "form-control" ,@onchange="fGetProductDetails()"})
+                    </div>
+                    <div class="col-md-2">
+                        <label>Amount</label>
+                        <br />
+                        <input class="web form-control" type="text" onkeypress="return isNumberKey(event)" asp-for="Amount" placeholder="Amount" min="1" maxlength="50" onchange="return fGetSubtotal();" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Quantity</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="Qty" placeholder="Quantity" min="1" maxlength="50" onkeypress="return isNumberKey(event)" onchange="return fGetSubtotal();" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Sub Total</label>
+                        <br />
+                        <input class="web form-control" type="number" disabled id="SubTotal" placeholder="Sub Total" min="1" maxlength="50" />
+                    </div>
+                    <div class="col-md-2 ">
+                        <br />
+                        <input type="submit" id="Add" name="Add" class="btn btn-success" style="margin-top: 7%;" value="Add" onclick="return validateAdd();" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Sr. No.</th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Total Price</th>
+                                    <th>GST Rate</th>
+                                    <th>GST</th>
+                                    <th>Total</th>
+                                    <th>Total PV</th>
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    if (Model.dtDetails != null)
+                                    {
+                                        for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                        {
+                                            TotalGst = TotalGst + decimal.Parse(Model.dtDetails.Rows[j]["GSTAmt"].ToString());
+                                            TotalQty = TotalQty + int.Parse(Model.dtDetails.Rows[j]["Qty"].ToString());
+                                            FinalBV = FinalBV + decimal.Parse(Model.dtDetails.Rows[j]["TotalBv"].ToString());
+                                            TotalPrice = TotalPrice + decimal.Parse(Model.dtDetails.Rows[j]["TotalPrice"].ToString());
+                                            TotalMRP = TotalMRP + decimal.Parse(Model.dtDetails.Rows[j]["MRP"].ToString());
+
+                                            Total = Total + decimal.Parse(Model.dtDetails.Rows[j]["Total"].ToString());
+                                            <tr>
+                                                <td>@(j + 1)</td>
+                                                <td><span>@Model.dtDetails.Rows[j]["ProductName"]</span></td>
+                                                <td>@Model.dtDetails.Rows[j]["Price"]</td>
+                                                <td>@Model.dtDetails.Rows[j]["Qty"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["TotalPrice"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["GSTPerc"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["GSTAmt"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["Total"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["TotalBv"] </td>
+                                                <td>
+                                                    <a href="/Franchisee/OpenOrder?Pk_Id=@Model.dtDetails.Rows[j]["Pk_Id"]" onclick="return confirm('are you sure to delete this record?')" style="color:red"><i class="fa fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th>@TotalQty</th>
+                                    <th>@TotalPrice</th>
+                                    <th></th>
+                                    <th>@TotalGst</th>
+                                    <th><span id="Total">@Total</span></th>
+                                    <th>@FinalBV</th>
+
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                @if (Model != null)
+                {
+
+                    if (Model.dtDetails != null)
+                    {
+                        if (Model.dtDetails.Rows.Count > 0)
+                        {
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="LoginId" class="web form-control" placeholder="Customer Id" onchange="return getMemberDetails();" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input class="web form-control" type="text" placeholder="Customer Name" id="Name" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input class="web form-control" type="text" placeholder="Wallet Balance" id="WalletBalance" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input class="web form-control" placeholder="Commission Percentage" type="text" value="0" asp-for="CommissionPer" onkeypress="return isNumberKey(event)" min="1" maxlength="50" style="display:none;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Same as Member Address</label>
+                                        <input type="checkbox" id="SameAddress" name="SameAddress" onchange="return fgetAddressDetails()" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 1%;">
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="BillTo" placeholder="Bill To" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="text" placeholder="Contact No" asp-for="BillContactNo" class="form-control" min="1" max="10" onkeypress="return isNumberKey(event)" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <textarea asp-for="BillAddress" placeholder="Billing Address" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="Pincode" placeholder="Pincode" class="form-control" maxlength="6" onkeypress="return isNumberKey(event)" onchange="return fGetStateCity()" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="State" placeholder="State" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="City" placeholder="City" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="text" asp-for="BillGSTNo" placeholder="GST No." class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align:center;">
+                                    <div class="form-group">
+                                        <input type="submit" id="Save" name="Save" class="btn btn-success" value="Generate Order" onclick="return validateSave();" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                <div class="row">
+                    <p style="color:red">@TempData["OpenOrder"]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    //function fGetProductDetails() {
+    //    $(".errortext").removeClass("errortext");
+    //    $("#pre-loader").show();
+    //    $.ajax({
+    //        url: '/Franchisee/GetProductDetails',
+    //        type: 'Post',
+    //        data: { ProductId: $('#Fk_ProductId').val() },
+    //        success: function (response) {
+    //            if (response != null) {
+    //                $('#Amount').val(response.response.singleProduct[0].boxPrice);
+    //                fGetSubtotal();
+
+    //                $("#pre-loader").hide();
+    //            }
+    //            else {
+    //                $("#pre-loader").hide();
+    //            }
+    //        }, error: function () {
+    //            //alert('Some Thing wrong!');
+    //            $("#pre-loader").hide();
+    //        }
+    //    });
+    //}
+    function fGetProductDetails() {
+        $(".errortext").removeClass("errortext");
+        $("#pre-loader").show();
+        $.ajax({
+            url: '/Franchisee/GetFranchiseStockDetails',
+            type: 'Post',
+            data: { ProductId: $('#Fk_ProductId').val() },
+            success: function (response) {
+                if (response != null) {
+
+                    console.log(response);
+                    $('#Amount').val(parseInt(response[0].offeredPrice));
+                    GetSubtotal();
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function fgetwalletbalance(LoginId) {
+        $(".errortext").removeClass("errortext");
+        $("#pre-loader").show();
+        $.ajax({
+            url: '/Home/GetWalletBalance',
+            type: 'Post',
+            data: { LoginId: LoginId },
+            success: function (response) {
+                if (response != null) {
+                    $('#WalletBalance').val(response.response.walletBalanceData.balance);
+
+                    $("#pre-loader").hide();
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                $("#pre-loader").hide();
+            }
+        });
+    }
+    function fGetSubtotal() {
+        var subtotal = $('#Amount').val() * $('#Qty').val();
+        $('#SubTotal').val(subtotal);
+    }
+    function validateAdd() {
+        if ($('#Fk_ProductId').val() == '0') {
+            $("#Fk_ProductId").addClass('errortext');
+            $("#Fk_ProductId").focus()
+            return false;
+        }
+        if ($('#Amount').val() == '') {
+            $("#Amount").addClass('errortext');
+            $("#Amount").focus()
+            return false;
+        }
+        if ($('#Qty').val() == '' || $('#Qty').val() == '0') {
+            $("#Qty").addClass('errortext');
+            $("#Qty").focus();
+            return false;
+        }
+    }
+    function validateSave() {
+        $(".errortext").removeClass("errortext");
+        if ($('#LoginId').val() == '') {
+            $("#LoginId").addClass('errortext');
+            $("#LoginId").focus();
+            return false;
+        }
+        if ($('#CommissionPer').val() == '' || $('#CommissionPer').val() == null) {
+            $("#CommissionPer").addClass('errortext');
+            alert("Please Enter Commission Percentage");
+            $("#CommissionPer").focus();
+            return false;
+        }
+        if ($('#BillTo').val() == '' || $('#BillTo').val() == '0' || $('#BillTo').val() == null) {
+            $("#BillTo").addClass('errortext');
+            alert("Please Enter Bill To ");
+            $("#BillTo").focus();
+            return false;
+        }
+        if ($('#BillContactNo').val() == '' || $('#BillContactNo').val() == '0' || $('#BillContactNo').val() == null) {
+            $("#BillContactNo").addClass('errortext');
+            alert("Please Enter Contact Number ");
+            $("#BillContactNo").focus();
+            return false;
+        }
+        if ($('#BillAddress').val() == '' || $('#BillAddress').val() == '0' || $('#BillAddress').val() == null) {
+            $("#BillAddress").addClass('errortext');
+            alert("Please Enter Billing Address ");
+            $("#BillAddress").focus();
+            return false;
+        }
+        if ($('#Pincode').val() == '' || $('#Pincode').val() == '0' || $('#Pincode').val() == null) {
+            $("#Pincode").addClass('errortext');
+            alert("Please Enter Pincode ");
+            $("#Pincode").focus();
+            return false;
+        }
+        if ($('#State').val() == '' || $('#BillAddress').val() == '0' || $('#BillAddress').val() == null) {
+            $("#Pincode").addClass('errortext');
+            alert("Please Enter Pincode ");
+            $("#Pincode").focus();
+            return false;
+        }
+        if ($('#City').val() == '' || $('#BillAddress').val() == '0' || $('#BillAddress').val() == null) {
+            $("#Pincode").addClass('errortext');
+            alert("Please Enter Pincode ");
+            $("#Pincode").focus();
+            return false;
+        }
+
+        //if ($('#BillGSTNo').val() == '' || $('#BillGSTNo').val() == '0' || $('#BillGSTNo').val() == null) {
+        //    $("#BillGSTNo").addClass('errortext');
+        //    alert("Please Enter GST Number ");
+        //    $("#BillGSTNo").focus();
+        //    return false;
+        //}
+        let walletbalance = parseFloat($('#WalletBalance').val());
+        let Total = parseFloat($('#Total').text());
+        if (walletbalance < Total) {
+            if (confirm('Insufficient Balance !! Do you Wish to Continue ?') != true) {
+                return false;
+            }
+        }
+    }
+    function getMemberDetails() {
+        if ($("#LoginId").val() != "") {
+            $.ajax({
+                Type: "POST",
+                url: "/Home/GetMemberdetails",
+                data: { LoginId: $("#LoginId").val() },
+                DataType: "JSON",
+                success: function (response) {
+                    if (response != null) {
+                        if (response.status == 1) {
+                            $('#Name').val(response.response.name);
+                            fgetwalletbalance($("#LoginId").val());
+                        }
+                        else {
+                            $('#Name').val('');
+                            $('#LoginId').val('');
+                            alert(response.message);
+                        }
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                }, error: function () {
+                    alert('Something went wrong!');
+                }
+            });
+        }
+    }
+    function fgetAddressDetails() {
+        if ($("input[name='SameAddress']:checked").val() == "on") {
+            if ($("#LoginId").val() != "") {
+                $.ajax({
+                    Type: "POST",
+                    url: "/Home/GetCustomerAddress",
+                    data: { LoginId: $("#LoginId").val() },
+                    DataType: "JSON",
+                    success: function (response) {
+                        if (response != null) {
+                            if (response.status == 1) {
+                                let address = response.response.address + ' ' + response.response.locality + ' ' + response.response.landmark;
+                                $('#BillTo').val($('#Name').val());
+                                $('#BillAddress').val(address);
+                                $('#BillContactNo').val(response.response.contactNo);
+                                $('#Pincode').val(response.response.pincode);
+                                $('#State').val(response.response.state);
+                                $('#City').val(response.response.city);
+                                $('#BillGSTNo').val(response.response.gstNo);
+                            }
+                            else {
+                                alert(response.message);
+                            }
+                        }
+                        else {
+                            alert(response.message);
+                        }
+                    }, error: function () {
+                        alert('Something went wrong!');
+                    }
+                });
+            } else {
+                alert('Please Add CustomerId');
+            }
+        }
+        else {
+            $('#BillContactNo').val('');
+            $('#BillTo').val('');
+            $('#BillAddress').val('');
+            $('#Pincode').val('');
+            $('#State').val('');
+            $('#City').val('');
+        }
+    }
+    function fGetStateCity() {
+        $(".errortext").removeClass("errortext");
+        $("#pre-loader").show();
+        $.ajax({
+            url: '/Home/GetStateCity',
+            type: 'Post',
+            data: { PinCode: $('#Pincode').val() },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        $('#State').val(response.response.state);
+                        $('#City').val(response.response.city);
+                    }
+                    else {
+                        $('#Pincode').val('');
+                        $('#State').val('');
+                        $('#City').val('');
+                        $("#Pincode").addClass('errortext');
+                        $('#Pincode').focus();
+                        alert(response.message);
+
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+</script>

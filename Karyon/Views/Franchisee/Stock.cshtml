@@ -1,0 +1,246 @@
+﻿@model Karyon.Models.Stock
+
+@{
+    ViewData["Title"] = "Stock";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+<form asp-action="Stock">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Stock</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Manage Stock</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Stock</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="row">
+
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name"> Product </label>
+                                @Html.DropDownListFor(m => m.Fk_VarientId, new SelectList(ViewBag.ddlProducts, "Value", "Text"), new { @class = "web form-control" })
+
+                            </div>
+
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                            </div>
+                        </div>
+                        <br />
+                        <input type="hidden" asp-for="Page" />
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="MyDirectList">
+                                <thead>
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th>Product Name</th>
+                                        <th>Credit</th>
+                                        <th>Debit</th>
+                                        <th>Balance</th>
+                                        <th>View Details</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+                                                int i = 1;
+
+                                                int page = Model.Pager.CurrentPage;
+                                                page = (page - 1);
+                                                i = ((page) * (Model.Pager.PageSize));
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+                                                    decimal balance = decimal.Parse(@Model.dtDetails.Rows[j]["CreditQty"].ToString()) - decimal.Parse(@Model.dtDetails.Rows[j]["DebitQty"].ToString());
+                                                    <tr>
+                                                        <td>@(i+1)</td>
+                                                        <td><span>@Model.dtDetails.Rows[j]["ProductName"]</span></td>
+
+                                                        <td>@Model.dtDetails.Rows[j]["CreditQty"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["DebitQty"] </td>
+                                                        <td>@balance </td>
+                                                        <td>
+                                                            <a href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="return GetStockDetails(@Model.dtDetails.Rows[j]["Id"].ToString());"><i class="fa fa-eye" style="color:blue"></i></a>
+                                                        </td>
+
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <footer class="card-footer bg-white p-2">
+
+                            <div class="d-md-flex align-items-center justify-content-between">
+                                @if (Model != null)
+                                {
+                                    if (Model.Pager != null)
+                                    {
+                                        @if (Model.Pager.EndPage > 1)
+                                        {
+                                            <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                            <div>
+                                                <ul class="pagination mb-0">
+                                                    @if (Model.Pager.CurrentPage > 1)
+                                                    {
+                                                        <li class="page-item">
+
+                                                            <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                        </li>
+
+
+
+                                                        <li class="page-item">
+                                                            <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                        </li>
+                                                    }
+                                                    @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                    {
+                                                        var P = @page;
+                                                        <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                            <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                        </li>
+
+                                                    }
+                                                    @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                    {
+                                                        <li class="page-item">
+
+                                                            <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                        </li>
+                                                        <li class="page-item">
+
+                                                            <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        }
+                                    }
+
+                                }
+
+                            </div>
+                        </footer>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Stock Details</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tblStockDetails">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Order No</th>
+                                    <th>Order Date</th>
+                                    <th>LoginId</th>
+                                    <th>Contact Person</th>
+                                    <th>Credit</th>
+                                    <th>Debit</th>
+                                    
+                                   
+
+                                </tr>
+                            </thead>
+                            <tbody id="StockDetails">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function fCallPaging(val, IsExport) {
+        
+        if (val == undefined || val == NaN || val == null || val == "" || val == 0) {
+            val = 1;
+        }
+        $("#IsExport").val(IsExport);
+        $("#Page").val(val);
+        $('#BtnSearch').trigger('click');
+
+    }
+    function GetStockDetails(Fk_VarientId) {
+         $.ajax({
+            url: '/Home/GetStockDetails',
+            type: 'Post',
+            data: { Fk_VarientId: Fk_VarientId},
+            success: function(result) {
+                if (result != null) {
+                    var srno = 1;
+                    var str = "";
+                    var IsDispatch = "";
+                    console.log(result);
+                    $("#tblStockDetails tbody").html('');
+                    for (var i = 0; i < result.length; i++) {
+
+
+                        str += "<tr><td>" + srno + "</td><td>" + result[i].orderNo + "</td><td>" + result[i].orderDate + "</td><td>" + result[i].loginId + "</td><td >" + result[i].companyName + "</td><td >" + result[i].credit + "</td><td>" + result[i].debit
+                            str += "</td></tr > ";
+
+
+                            srno = srno + 1;
+                        
+                        
+                    }
+
+                    
+                    $("#tblStockDetails tbody").html(str);
+
+                }
+                else {
+
+                }
+            }, error: function() {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+</script>

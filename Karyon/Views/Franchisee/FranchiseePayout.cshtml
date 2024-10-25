@@ -1,0 +1,218 @@
+﻿@model Karyon.Models.FranchiseePayoutRequest
+@{
+    ViewData["Title"] = "FranchiseePayout";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+<form asp-action="FranchiseePayout">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Franchisee Payout</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Payout</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Franchisee Payout</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sr No.</th>
+                                        <th>Month</th>
+                                        <th style="text-align:right;">Total Business</th>
+                                        <th style="text-align:right;">Incentive</th>
+                                        <th style="text-align:right;">TDS</th>
+                                        <th style="text-align:right;">Admin Charges</th>
+                                        <th style="text-align:right;">Payable</th>
+                                        <th style="text-align:right;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+                                                int i = 1;
+
+                                                int page = Model.Pager.CurrentPage;
+                                                page = (page - 1);
+                                                i = ((page) * (Model.Pager.PageSize));
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+                                                    <tr>
+                                                        <td>@(j + 1)</td>
+                                                        <td>@Model.dtDetails.Rows[j]["Month"]</td>
+                                                        <td style="text-align:right;">@Model.dtDetails.Rows[j]["TotalBusiness"]</td>
+                                                        <td style="text-align:right;">@Model.dtDetails.Rows[j]["Incentive"]</td>
+                                                        <td style="text-align:right;">@Model.dtDetails.Rows[j]["TDS"] </td>
+                                                        <td style="text-align:right;">@Model.dtDetails.Rows[j]["AdminCharges"] </td>
+                                                        <td style="text-align:right;">@Model.dtDetails.Rows[j]["Payable"]</td>
+
+                                                        <td style="text-align:right;"><a style="color:blue" href="#" data-bs-target="#ModalOrders" data-bs-toggle="modal" onclick="return GetOrders('@Model.dtDetails.Rows[j]["PayoutNo"]')">View Details</a></td>
+
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                            <footer class="card-footer bg-white p-2">
+
+                                <div class="d-md-flex align-items-center justify-content-between">
+                                    @if (Model != null)
+                                    {
+                                        if (Model.Pager != null)
+                                        {
+                                            @if (Model.Pager.EndPage > 1)
+                                            {
+                                                <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                                <div>
+                                                    <ul class="pagination mb-0">
+                                                        @if (Model.Pager.CurrentPage > 1)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                            </li>
+
+
+
+                                                            <li class="page-item">
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                            </li>
+                                                        }
+                                                        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                        {
+                                                            var P = @page;
+                                                            <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                                <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                            </li>
+
+                                                        }
+                                                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                            </li>
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
+
+                                    }
+
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalOrders" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Payout Details</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tblOrders">
+                            <thead>
+                                <tr>
+                                    <th>Sr No.</th>
+                                    <th>Income Type</th>
+                                    <th>Order No.</th>
+                                    <th>From LoginId</th>
+                                    <th>Member Name</th>
+                                    <th>Business Amount </th>
+                                    <th>Percentage</th>
+                                    <th>Amount</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+<script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
+<script>
+
+    function GetOrders(PayoutNo) {
+        $.ajax({
+            url: '/Franchisee/FranchiseePayoutDetails',
+            type: 'Post',
+            data: { PayoutNo: PayoutNo },
+            success: function (result) {
+                if (result != null) {
+                    var srno = 1;
+                    var str = "";
+                    var TotalAmount = 0;
+                    var TotalBusinessAmount = 0;
+                    $("#tblOrders tbody").html('');
+                    for (var i = 0; i < result.length; i++) {
+
+                        str += "<tr><td>" + srno + "</td><td  nowrap>" + result[i].incomeType + "</td><td >" + result[i].orderNo + "</td><td >" + result[i].fromLoginId + "</td><td>" + result[i].fromContactPerson + "</td><td style='text-align:right'>" + result[i].businessAmount + "</td><td style='text-align:right'>" + result[i].percentage + "</td><td style='text-align:right'>" + result[i].amount + "</td></tr>";
+                        srno = srno + 1;
+                        TotalAmount = TotalAmount + result[i].amount;
+                        TotalBusinessAmount = TotalBusinessAmount + result[i].businessAmount;
+
+                    }
+                    str += "<tr><th colspan='5' style='text-align:right'>Total</th><th style='text-align:right'>" + TotalBusinessAmount.toFixed(2) + "</th><th></th><th style='text-align:right'>" + TotalAmount.toFixed(2) + "</th></tr>";
+                    $("#tblOrders tbody").html(str);
+
+                }
+                else {
+
+                }
+            }, error: function () {
+                $("#pre-loader").hide();
+
+            }
+        });
+
+    }
+</script>

@@ -1,0 +1,193 @@
+﻿@model Karyon.Models.AssociateReport
+
+@{
+    ViewData["Title"] = "Weekly Payout Report";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+
+<form asp-action="GetWeeklyAssociatePayoutReport">
+
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1"> Weekly Payout</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <input type="submit" class="btn btn-info" value="Export" id="BtnExport" name="BtnExport" />
+            </div>
+        </div>
+
+
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="page-title">
+                    <div class="row">
+                        <div class="col-sm-6 ps-0">
+                            <h3>Weekly Payout</h3>
+                        </div>
+                        <div class="col-sm-6 pe-0">
+                            @*<ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">
+                                        <svg class="stroke-icon">
+                                            <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">Franchise</li>
+                                <li class="breadcrumb-item active"> Familyn Wallet Request</li>
+                            </ol>*@
+                            <input type="submit" class="btn btn-info" value="Export" id="BtnExport" name="BtnExport" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- /breadcrumb -->
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="row" style="display:none">
+                        <div class="section-field mb-10 col-sm-3">
+                            <br />
+                            <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                        </div>
+                    </div>
+                    <br />
+                    <input type="hidden" asp-for="Page" />
+                    <input type="hidden" asp-for="ExportToExcel" />
+                    <div class="card-body" style="padding: 0px;margin-top: 0px;">
+                        <div class="table-responsive" id="details">
+                                <table class="table table-bordered radio-first-col-width" id="tblDetails">
+                                <thead>
+                                    <tr>
+
+                                        <th class="Sno">Sl No.</th>
+                                        <th>Closing Date</th>
+                                        <th>Payout No</th>
+                                        <th>Creator</th>
+                                        <th>Creator Harmony</th>
+                                        <th>Harmony</th>
+                                        <th>Advisor</th>
+                                        <th>Smart</th>
+                                        <th>LeaderShip</th>
+                                        <th>Royal</th>
+                                        <th>Gross</th>
+                                        <th>TDS</th>
+                                        <th>Admin</th>
+                                        <th>Net</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+                                                int i = 1;
+
+                                                int page = Model.Pager.CurrentPage;
+                                                page = (page - 1);
+                                                i = ((page) * (Model.Pager.PageSize));
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+                                                    <tr>
+                                                        <td>@(i + 1)</td>
+                                                        <td>@Model.dtDetails.Rows[j]["ClosingDate"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["PayoutNo"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["Creator"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["CreatorHarmony"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["Harmony"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["Advisor1"] </td>
+
+                                                        <td>
+                                                            @Model.dtDetails.Rows[j]["Smart"]
+                                                        </td>
+                                                        <td>@Model.dtDetails.Rows[j]["LeaderShip"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["Royal"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["GrossAmount"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["TDSAmount"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["ProcessingFee"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["NetAmount"] </td>
+
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                            <footer class="card-footer bg-white p-2">
+
+                                <div class="d-md-flex align-items-center justify-content-between">
+                                    @if (Model != null)
+                                    {
+                                        if (Model.Pager != null)
+                                        {
+                                            @if (Model.Pager.EndPage > 1)
+                                            {
+                                                <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                                <div>
+                                                    <ul class="pagination mb-0">
+                                                        @if (Model.Pager.CurrentPage > 1)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                            </li>
+
+
+
+                                                            <li class="page-item">
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                            </li>
+                                                        }
+                                                        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                        {
+                                                            var P = @page;
+                                                            <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                                <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                            </li>
+
+                                                        }
+                                                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                            </li>
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
+
+                                    }
+
+                                </div>
+                            </footer>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

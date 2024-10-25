@@ -1,0 +1,60 @@
+﻿@model Karyon.Models.Menu
+
+<nav class="sidebar-main">
+    <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+    <div id="sidebar-menu">
+        <ul class="sidebar-links" id="simple-bar">
+
+
+            @if (Context.Session.GetObjectFromJson<Menu>("_menu").menuList != null && Context.Session.GetObjectFromJson<Menu>("_submenu").subMenuList != null)
+            {
+                string cssclass="";
+                @foreach (var item in Context.Session.GetObjectFromJson<Menu>("_menu").menuList)
+                {
+                    @if (item.IsDropdown == "Y")
+                    {
+                        cssclass = "sidebar-link sidebar-title";
+                    }
+                    else
+                    {
+                        cssclass = "sidebar-link sidebar-title link-nav";
+                    }
+                     <li class="sidebar-list">
+
+                            @* <i class="fa fa-thumb-tack"></i> *@
+                        <a class="@cssclass" href="@item.Url">
+
+                                <i class="@item.Icon text-white"></i>
+                                <span>@item.MenuName</span>
+                            </a>
+
+                            @if (item.IsDropdown == "Y")
+                            {
+                                <ul class="sidebar-submenu">
+                                    @foreach (var item1 in Context.Session.GetObjectFromJson<Menu>("_submenu").subMenuList)
+                                    {
+                                        if (int.Parse(item.MenuId) == int.Parse(item1.Fk_MenuId))
+                                        {
+                                            <li>
+                                                <a href="@item1.Url">
+                                                    <i class="@item1.Icon text-white"></i>
+                                                    @item1.SubMenuName
+                                                </a>
+
+                                            </li>
+
+                                        }
+                                    }
+                                </ul>
+                            }
+
+                    </li>
+                    
+
+                }
+            }
+
+        </ul>
+    </div>
+    
+</nav>

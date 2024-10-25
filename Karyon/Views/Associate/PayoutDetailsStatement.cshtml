@@ -1,0 +1,390 @@
+﻿@model Karyon.Models.PayoutDetail
+@{
+    ViewData["Title"] = "PayoutDetails";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+<style>
+    .btn-outline-success:hover {
+        background: #40541d !important;
+    }
+</style>
+
+<div class="page-body">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-sm-6 ps-0">
+                    <h3>Payout Details</h3>
+                </div>
+                <div class="col-sm-6 pe-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">
+                                <svg class="stroke-icon">
+                                    <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">Payout Details</li>
+                        <li class="breadcrumb-item active"> Payout Details</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /breadcrumb -->
+    @if (Model != null && Model.dtDetails != null && Model.dtDetails.Rows.Count > 0)
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered radio-first-col-width">
+                                <thead>
+                                    <tr style="border:none;">
+                                        <th style="border:none;" class="text-start">
+                                            Payout Details :
+
+                                            @Model.dtDetails.Rows[0]["PayoutNo"].ToString()
+                                        </th>
+                                        <td style="border:none;"></td>
+                                        <th style="border:none;" class="text-end">@Model.dtDetails.Rows[0]["ClosingDate"].ToString()</th>
+                                    </tr>
+                                    <tr style="border:none;">
+                                        <td style="border:none;" colspan="3" class="">
+                                            <button style="width: 100%;" class="btn btn-outline-success">₹@Model.dtDetails.Rows[0]["NetAmount"].ToString()</button>
+                                        </td>
+                                    </tr>
+                                    <tr style="border:none;">
+                                        <th style="width:33.3%;border:none;" class="text-start">@Model.dtDetails.Rows[0]["PerformanceLevel"].ToString() <br /><span class="badge badge-light-success">@Model.dtDetails.Rows[0]["LevelPercentage"].ToString()%</span></th>
+                                        <th style="width:33.3%;border:none;" class="text-center">Self PV <br /> <span><small>@Model.dtDetails.Rows[0]["SelfPV"].ToString()</small></span></th>
+                                        <th style="width:33.3%;border:none;" class="text-end">Team PV <br />@Model.dtDetails.Rows[0]["TeamPV"].ToString()</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered radio-first-col-width">
+                                <tbody>
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["DirectIncome"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th style="width:50%" class="text-start text-success">Self Income</th>
+                                            <th style="width:50%" class="text-end"><a href="#" onclick="return fGetInComeDetails('1','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["DirectIncome"].ToString()</a></th>
+                                        </tr>
+                                    }
+
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["TeamIncome"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Team Income</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('2','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["TeamIncome"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["Smart"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Smart Royality</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('3','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["Smart"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["Leadership"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Leadership Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('4','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["Leadership"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["SuperStartSale"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Super Star Sale Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('5','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["SuperStartSale"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["SuperStartClub"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Super Star Club Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('6','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["SuperStartClub"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["PremiumClub"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Premium Club Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('7','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["PremiumClub"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["SuperPremiumClub"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Super Premium Club Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('8','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["SuperPremiumClub"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["SeminarBonus"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Seminar Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('11','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["SeminarBonus"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["CarClubBonus"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Car Club Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('12','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["CarClubBonus"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["TravelClubBonus"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Travel Club Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('13','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["TravelClubBonus"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["ProvidentClubBonus"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Provident Club Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('14','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["ProvidentClubBonus"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["HouseClubBonus"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">House Club Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('15','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["HouseClubBonus"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["BlueDiamondClubBonus"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Blue Diamond Club Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('16','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["BlueDiamondClubBonus"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["CrownAmbassadorClubBonus"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">Crown Ambassador  Club Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('17','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["CrownAmbassadorClubBonus"].ToString()</a></th>
+                                        </tr>
+                                    }
+                                    @if (decimal.Parse(Model.dtDetails.Rows[0]["PresidentClubBonus"].ToString()) > 0)
+                                    {
+                                        <tr>
+                                            <th class="text-start text-success">President  Club Bonus</th>
+                                            <th class="text-end"><a href="#" onclick="return fGetInComeDetails('18','@Model.dtDetails.Rows[0]["PayoutNo"].ToString()')">@Model.dtDetails.Rows[0]["PresidentClubBonus"].ToString()</a></th>
+                                        </tr>
+                                    }
+
+                                   @* <tr>
+                                        <th class="text-start text-success">Total Offer Point :</th>
+                                        <th class="text-white text-end"><a href="#" onclick="return fGetSmartPointDetails()">@Model.dtDetails.Rows[0]["TotalOfferpoint"].ToString()</a></th>
+                                    </tr>*@
+                                    <tr style="background: #40541d;">
+                                        <th class="text-white">Gross Amount :</th>
+                                        <th class="text-white text-end">@Model.dtDetails.Rows[0]["GrossAmount"].ToString()</th>
+                                    </tr>
+
+
+                                    <tr>
+                                        <th class="text-start">TDS Deducation 5.00% :</th>
+                                        <th class="text-end">@Model.dtDetails.Rows[0]["TDSAmount"].ToString()</th>
+                                    </tr>
+
+
+                                    <tr>
+                                        <th class="text-start">Admin Charge 5.00% :</th>
+                                        <th class="text-end">@Model.dtDetails.Rows[0]["ProcessingFee"].ToString()</th>
+                                    </tr>
+
+
+                                    <tr style="background: #40541d;">
+                                        <th class="text-white">Net Amount :</th>
+                                        <th class="text-white text-end">@Model.dtDetails.Rows[0]["NetAmount"].ToString()</th>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <span style="text-align:center">No record found !!</span>
+                </div>
+            </div>
+        </div>
+    }
+    <!--Modal Start-->
+    <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Payout Summary</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tblOrderDetails">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>LoginId</th>
+                                    <th>Name</th>
+                                    <th>Amount</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="OrderDetails">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal End-->
+    <!--Modal-->
+    <div class="modal fade" id="largeModal1" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Payout Summary</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tblOrderDetails1">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>LoginId</th>
+                                    <th>Name</th>
+                                    <th>Business Amount</th>
+                                    <th>Commission Percentage</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="OrderDetails">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal-->
+   
+</div>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function fGetInComeDetails(planId, payoutNo) {
+        var planId = planId;
+
+        $.ajax({
+            url: '/Associate/GetPayoutSummary',
+            type: 'Post',
+            data: { planId: planId, payoutNo: payoutNo },
+            success: function (result) {
+                console.log(result);
+                if (result != null) {
+                    var srno = 1;
+                    var str = "";
+                    if (planId == '1' || planId == '2' || planId == '3' || planId == '4') {
+                        $("#tblOrderDetails1 tbody").html('');
+                        for (var i = 0; i < result.length; i++) {
+
+                            str += "<tr> <td>" + srno + " </td><td>" + result[i].loginId + "</td><td>" + result[i].name + "</td><td>" + result[i].businessAmount + "</td><td>" + result[i].commissionPercentage + "</td><td>" + result[i].amount + "</td></tr> ";
+                            srno = srno + 1;
+                        }
+
+                        $("#tblOrderDetails1 tbody").html(str);
+                        $('#largeModal1').modal('show');
+                    }
+                    else {
+                        $("#tblOrderDetails tbody").html('');
+                        for (var i = 0; i < result.length; i++) {
+
+                            str += "<tr> <td>" + srno + " </td><td>" + result[i].loginId + "</td><td>" + result[i].name + "</td><td>" + result[i].amount + "</td></tr> ";
+                            srno = srno + 1;
+                        }
+
+                        $("#tblOrderDetails tbody").html(str);
+                        $('#largeModal').modal('show');
+                    }
+                }
+                else {
+
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+
+
+
+    }
+
+    function fGetSmartPointDetails() {
+        var planId = planId;
+
+        $.ajax({
+            url: '/Associate/GetSmartPoint',
+            type: 'Post',
+            //data: { planId: planId, payoutNo: payoutNo },
+            success: function (result) {
+                console.log(result);
+                if (result != null) {
+                    var srno = 1;
+                    var str = "";
+                    $("#tblOrderDetails123 tbody").html('');
+                    for (var i = 0; i < result.length; i++) {
+
+                        str += "<tr> <td>" + srno + " </td><td>" + result[i].loginId + "</td><td>" + result[i].name + "</td><td>" + result[i].orderNo + "</td><td>" + result[i].offerPoint + "</td><td>" + result[i].achiveDate + "</td></tr> ";
+                        srno = srno + 1;
+                    }
+
+                    $("#tblOrderDetails123 tbody").html(str);
+                    $('#largeModal123').modal('show');
+
+
+                }
+                else {
+
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+
+
+
+    }
+
+</script>
+
+

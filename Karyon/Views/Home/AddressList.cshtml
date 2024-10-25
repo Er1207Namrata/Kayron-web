@@ -1,0 +1,852 @@
+﻿@model Karyon.Models.AddressRequest
+
+@{
+    ViewData["Title"] = "AddressList";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/WebsiteCss/css/index2.min.css" />
+<style>
+    .accordion {
+        width: 100%;
+    }
+
+    .addressinput {
+        display: block;
+        width: 100%;
+        border-radius: 2px;
+        border: 1px solid #d8d8d8;
+        padding: 10px;
+        margin-bottom: 20px
+    }
+
+
+    /* .loader {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: block;
+        margin: 15px auto;
+        position: relative;
+        top: 50%;
+        background: #FFF;
+        box-shadow: -24px 0 #FFF, 24px 0 #FFF;
+        box-sizing: border-box;
+        animation: shadowPulse 2s linear infinite;
+    } */
+
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        background: rgb(0, 0, 0);
+        background: rgba(0, 0, 0, 0.5); /* Black see-through */
+        color: #f1f1f1;
+        width: 100%;
+        height: 1300px;
+        transition: .5s ease;
+        opacity: 1;
+        color: white;
+        font-size: 20px;
+        padding: 20px;
+        text-align: center;
+    }
+</style>
+
+@* <!--=================================
+ preloader -->
+<div class="overlay">
+    <span class="loader"></span>
+</div>
+
+<!--=================================
+ preloader --> *@
+<form asp-action="AddAddress" asp-controller="Associate">
+    <!-- Cart content start -->
+    <main>
+        <span style="display:none" id="CheckName"></span>
+        <span style="display:none" id="CheckMobileNo"></span>
+        <span style="display:none" id="CheckAddress"></span>
+        <span style="display:none" id="CheckLocality"></span>
+        <span style="display:none" id="CheckLandmark"></span>
+        <span style="display:none" id="CheckPincode"></span>
+        <span style="display:none" id="CheckState"></span>
+        <span style="display:none" id="CheckCity"></span>
+        @Html.HiddenFor(m=>m.Amount)
+        @Html.HiddenFor(m=>m.LoginId)
+
+        <div class="d-flex" style="margin-top:135px;margin-bottom:10px">
+            <div class="accordion">
+                <div class="accordion_component" id="accordionComponent">
+                    @Html.HiddenFor(m => m.Pk_AddressId)
+                    <!-- item 1 -->
+                    <div class="accordion_component-item">
+                        <h5 id="showlist" class="accordion_component-item_header d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#item-1" aria-expanded="true" style="background-color: #258f67;color: white;padding: 19px;">
+                            Dilevery Address
+                            <span class="wrapper">
+                                <i class="icon-caret_down icon"></i>
+                            </span>
+                        </h5>
+                        <div id="item-1" class="accordion-collapse collapse show" data-bs-parent="#accordionComponent">
+                            <div class="accordion_component-item_body">
+                                @if (Model != null)
+                                {
+
+
+                                    if (Model.AddressList != null)
+                                    {
+
+                                        int i = 1;
+                                        int totalcount = @Model.AddressList.Count;
+                                        totalcount = totalcount - 2;
+                                        foreach (var item in Model.AddressList)
+                                        {
+                                            @if (i <= 2)
+                                            {
+                                                if (i == 1)
+                                                {
+                                                    <div id="divaddress_@i" style="display:flex;padding: 34px;background-color: #dfdfdf;border-radius-bottom-left: 10px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">
+
+                                                        <div class="_2jIO64" style="width:100%;">
+                                                            <div class="_2SkKgB">
+                                                                <div id="" class="tDHRfA _3a5__h" style="padding-left: 5px;">
+
+                                                                    <p class="rPNEXT">
+                                                                        <input type="radio" id="rdDefaultAddress" name="rdDefaultAddress" groupname="rdAddress" style="margin-top: -50px;margin-left: 2px;" onclick="return getAddress('@item.Pk_AddressId','@item.Name','@item.MobileNo','@item.Address','@item.Locality','@item.Landmark','@item.Pincode','@item.State','@item.City')" />
+
+                                                                        <span class="_2dQV-8"><b>@item.Name,</b></span>
+                                                                        <span class="_3mmRDy _2dQV-8">
+                                                                            <b>@item.MobileNo</b>
+
+                                                                        </span>
+                                                                        <span style="float:right;">
+                                                                            <button type="button" id="showlist" class="_1MM7ZD" data-bs-toggle="collapse" data-bs-target="#item-3" aria-expanded="true" onclick="Editaddress('@item.Pk_AddressId','@item.Name','@item.MobileNo','@item.Address','@item.Locality','@item.Landmark','@item.Pincode','@item.State','@item.City')"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                                            <button type="button" class="_1MM7ZD " onclick="Deleteaddress('@item.Pk_AddressId')"><i class="fa-solid fa-trash"></i></button>
+
+                                                                        </span>
+                                                                        @* <span class="_3mmRDy _2dQV-8">Edit</span>*@
+                                                                    </p>
+                                                                    <span class="rPNEXT Br27Zz">
+                                                                        @item.Address<br />
+                                                                    </span>
+                                                                    <span class="rPNEXT Br27Zz">
+                                                                        @item.Locality,@item.Landmark<br />
+                                                                    </span>
+                                                                    <span class="rPNEXT Br27Zz">
+                                                                        @item.State,@item.City,<b>@item.Pincode</b>
+                                                                    </span>
+
+
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div id="divaddress_@i" style="display:flex;padding: 34px;background-color: #fff;border-radius-bottom-left: 10px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">
+
+                                                        <div class="_2jIO64" style="width:100%;">
+                                                            <div class="_2SkKgB">
+                                                                <div id="" class="tDHRfA _3a5__h" style="padding-left: 5px;">
+
+                                                                    <p class="rPNEXT">
+                                                                        <input type="radio" id="rdDefaultAddress" name="rdDefaultAddress" groupname="rdAddress" style="margin-top: -50px;margin-left: 2px;" onclick="return getAddress('@item.Pk_AddressId','@item.Name','@item.MobileNo','@item.Address','@item.Locality','@item.Landmark','@item.Pincode','@item.State','@item.City')" />
+
+                                                                        <span class="_2dQV-8"><b>@item.Name,</b></span>
+                                                                        <span class="_3mmRDy _2dQV-8">
+                                                                            <b>@item.MobileNo</b>
+
+                                                                        </span>
+                                                                        <span style="float:right;">
+                                                                            <button type="button" class="_1MM7ZD " data-bs-toggle="collapse" data-bs-target="#item-3" aria-expanded="true" onclick="Editaddress('@item.Pk_AddressId','@item.Name','@item.MobileNo','@item.Address','@item.Locality','@item.Landmark','@item.Pincode','@item.State','@item.City')"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                                            <button type="button" class="_1MM7ZD " onclick="Deleteaddress('@item.Pk_AddressId')"><i class="fa-solid fa-trash"></i></button>
+
+                                                                        </span>
+                                                                        @* <span class="_3mmRDy _2dQV-8">Edit</span>*@
+                                                                    </p>
+                                                                    <span class="rPNEXT Br27Zz">
+                                                                        @item.Address<br />
+                                                                    </span>
+                                                                    <span class="rPNEXT Br27Zz">
+                                                                        @item.Locality,@item.Landmark<br />
+                                                                    </span>
+                                                                    <span class="rPNEXT Br27Zz">
+                                                                        @item.State,@item.City,<b>@item.Pincode</b>
+                                                                    </span>
+
+
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                <div id="divshowaddress_@i" style="display:flex;padding: 34px;background-color: #fff;border-radius-bottom-left: 10px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;display:none">
+
+                                                    <div class="_2jIO64" style="width:100%;">
+                                                        <div class="_2SkKgB">
+                                                            <div id="" class="tDHRfA _3a5__h" style="padding-left: 5px;">
+
+                                                                <p class="rPNEXT">
+                                                                    <input type="radio" id="rdDefaultAddress" name="rdDefaultAddress" groupname="rdAddress" style="margin-top: -50px;margin-left: 2px;" onclick="return getAddress('@item.Pk_AddressId','@item.Name','@item.MobileNo','@item.Address','@item.Locality','@item.Landmark','@item.Pincode','@item.State','@item.City')" />
+
+                                                                    <span class="_2dQV-8"><b>@item.Name,</b></span>
+                                                                    <span class="_3mmRDy _2dQV-8">
+                                                                        <b>@item.MobileNo</b>
+
+                                                                    </span>
+                                                                    <span style="float:right;">
+                                                                        <button type="button" class="_1MM7ZD " data-bs-toggle="collapse" data-bs-target="#item-3" aria-expanded="true" onclick="Editaddress('@item.Pk_AddressId','@item.Name','@item.MobileNo','@item.Address','@item.Locality','@item.Landmark','@item.Pincode','@item.State','@item.City')"><i class="fa-solid fa-pen-to-square"></i></button>
+                                                                        <button type="button" class="_1MM7ZD " onclick="Deleteaddress('@item.Pk_AddressId')"><i class="fa-solid fa-trash"></i></button>
+
+                                                                    </span>
+                                                                    @* <span class="_3mmRDy _2dQV-8">Edit</span>*@
+                                                                </p>
+                                                                <span class="rPNEXT Br27Zz">
+                                                                    @item.Address<br />
+                                                                </span>
+                                                                <span class="rPNEXT Br27Zz">
+                                                                    @item.Locality,@item.Landmark<br />
+                                                                </span>
+                                                                <span class="rPNEXT Br27Zz">
+                                                                    @item.State,@item.City,<b>@item.Pincode</b>
+                                                                </span>
+
+
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            i++;
+                                        }
+                                        if (totalcount > 0)
+                                        {
+                                            <a onclick="return showalladdress('@totalcount');" id="viewallbutton">View all @totalcount address</a>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion_component-item">
+                        <h5 id="editAddress" class="accordion_component-item_header d-flex justify-content-between align-items-center collapse" data-bs-toggle="collapse" data-bs-target="#item-3" aria-expanded="false" style="background-color: #258f67;color: white;padding: 19px;">
+                            <span id="addeditaddress"> Add Address</span>
+                            <span class="wrapper">
+                                <i class="icon-caret_down icon"></i>
+                            </span>
+                        </h5>
+                        <div id="item-3" class="accordion-collapse collapse" data-bs-parent="#accordionComponent">
+                            <div class="accordion_component-item_body">
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input type="text" asp-for="Name" class="addressinput" style="width: 100%;border-radius:0px" placeholder="Name" maxlength="150" />
+
+
+                                    </div>
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input type="text" asp-for="MobileNo" class="addressinput" placeholder="Mobile No" style="width: 100%;border-radius:0px" maxlength="10" onkeypress="return isNumberKey(event)" />
+                                    </div>
+
+
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-12">
+                                        <input type="text" asp-for="Address" class="addressinput" style="width: 100%;border-radius:0px" placeholder="Address" />
+                                    </div>
+
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input type="text" asp-for="Locality" class="addressinput" style="width: 100%;border-radius:0px" placeholder="Locality" />
+                                    </div>
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input type="text" asp-for="Pincode" class="addressinput" style="width: 100%;border-radius:0px" placeholder="Pincode" onchange="return GetStateCity();" />
+                                    </div>
+
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input type="text" asp-for="State" class="addressinput" style="width: 100%;border-radius:0px" placeholder="State" readonly />
+                                    </div>
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input type="text" asp-for="City" class="addressinput" style="width: 100%;border-radius:0px" placeholder="City" readonly />
+                                    </div>
+
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input type="text" asp-for="Landmark" class="addressinput" style="width: 100%;border-radius:0px" placeholder="Landmark" />
+                                    </div>
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input type="button" class="btn btn-success" name="btnSave" id="btnSave" style="" value="Add Address" onclick="return fvalidate();" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--  for Promo Code -->
+                    <div class="accordion_component-item">
+                        <h5 class="accordion_component-item_header d-flex justify-content-between align-items-center collapse" data-bs-toggle="collapse" data-bs-target="#item-6" aria-expanded="false" style="background-color: #258f67;color: white;padding: 19px;">
+                            Apply Promo Code
+                            <span class="wrapper">
+                                <i class="icon-caret_down icon"></i>
+                            </span>
+                        </h5>
+                        <div id="item-6" class="accordion-collapse collapse" data-bs-parent="#accordionComponent" style="">
+                            <div class="accordion_component-item_body">
+                                <div id="divPayment" style="padding: 34px;border-radius-bottom-left: 10px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">
+
+                                    <div class="_2jIO64">
+                                        <div class="_2SkKgB">
+                                            @*   <div class="tDHRfA _3a5__h" id="">
+                                            <input type="text" placeholder="Enter upi id" />
+                                            </div> *@
+                                            <div class="row">
+                                                <div class="tDHRfA _3a5__h col-md-6">
+                                                    <input id="PromoCode" type="text" class="addressinput" style="border-radius:3px" placeholder="Apply Promo Code" />
+                                                </div>
+                                                <div class="col-md-6 bold">
+                                                    <b>Order Amount --</b>     @Context.Session.GetString("Amount")
+                                                    <div id="ShowDiscount" style="display:none;">
+                                                        <b>    Discount --</b>
+                                                        <span id="DiscountAmount">
+                                                        </span><br/><b>
+                                                            Total Amount to Pay--
+                                                        </b>
+                                                        <span id="Total">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 d-flex justify-content-center" style="margin:10px;">
+                                                    <p id="promocodeMessage" style="color:red;"></p>
+                                                </div>
+                                                <div class="col-md-12 d-flex justify-content-center">
+                                                    <a class="cart_summary-btn btn-sm btn" href="#" onclick="return applyPromoCode();">Apply</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item 2 -->
+                    <div class="accordion_component-item">
+                        <h5 class="accordion_component-item_header d-flex justify-content-between align-items-center collapse" data-bs-toggle="collapse" data-bs-target="#item-2" aria-expanded="false" style="background-color: #258f67;color: white;padding: 19px;">
+                            Payment option
+                            <span class="wrapper">
+                                <i class="icon-caret_down icon"></i>
+                            </span>
+                        </h5>
+                        <div id="item-2" class="accordion-collapse collapse" data-bs-parent="#accordionComponent" style="">
+                            <div class="accordion_component-item_body">
+
+                                <div id="divPayment" style="display:flex;padding: 34px;background-color: #fff;border-radius-bottom-left: 10px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">
+
+                                    <div class="_2jIO64">
+                                        <div class="_2SkKgB">
+                                            <div class="mb-3">
+                                                <p><b>Order Amount --</b>     @Context.Session.GetString("Amount")</p>
+                                            </div>
+                                            <div id="" class="tDHRfA _3a5__h" style="padding-left: 5px;">
+                                                <p class="rPNEXT">
+                                                    <input type="radio" name="rdbWallet" onchange="changeWalletType()" value="KaryonWallet" checked />
+                                                    <span class="_2dQV-8"><b>Pay with Karyon Wallet </b></span>
+                                                    <span class="_3mmRDy _2dQV-8"><b><input type="text" id="WalletBalance" value="@ViewBag.KaryonBalance" class="form-control" readonly /></b></span>
+                                                    @* <span class="_3mmRDy _2dQV-8">Edit</span>*@
+                                                </p>
+
+                                            </div>
+                                            <div id="" class="tDHRfA _3a5__h" style="padding-left: 5px;">
+                                                <p class="rPNEXT">
+                                                    <input type="radio" name="rdbWallet" onchange="changeWalletType()" value="FUPWallet" />
+                                                    <span class="_2dQV-8"><b>Pay with FUP Wallet </b></span>
+                                                    <span class="_3mmRDy _2dQV-8"><b><input type="text" id="FUPBalance" value="@ViewBag.FUPWallet" class="form-control" readonly /></b></span>
+
+                                                </p>
+
+                                            </div>
+                                            <div id="" class="tDHRfA _3a5__h" style="padding-left: 5px;display:none" >
+                                                <p class="rPNEXT">
+                                                    <input type="radio" name="rdbWallet" onchange="changeWalletType()" value="Paytm" />
+                                                    <span class="_2dQV-8"><b>Pay with UPI/Credit/Debit/ATM Card </b></span>
+
+                                                    @* <span class="_3mmRDy _2dQV-8">Edit</span>*@
+                                                </p>
+
+                                            </div>
+                                            <div id="" class="tDHRfA _3a5__h" style="padding-left: 5px;display:none;">
+                                                <p class="rPNEXT">
+                                                    <input type="radio" name="rdbWallet" onchange="changeWalletType()" value="QrCode" />
+                                                    <span class="_2dQV-8"><b>Scan QR </b></span>
+
+                                                    @* <span class="_3mmRDy _2dQV-8">Edit</span>*@
+                                                </p>
+
+                                            </div>
+                                             <div class="tDHRfA _3a5__h" id="qrcode" style="display:none">
+                                                <img src="#" style="width:150px;height:150px" id="barcodeimg" />
+                                            </div>
+                                            <div id="" class="tDHRfA _3a5__h" style="padding-left: 5px;display:none;">
+                                                <p class="rPNEXT">
+                                                    <input type="radio" name="rdbWallet" onchange="changeWalletType()" value="UPIId" />
+                                                    <span class="_2dQV-8"><b>UPI id </b></span>
+
+                                                    @* <span class="_3mmRDy _2dQV-8">Edit</span>*@
+                                                </p>
+
+                                            </div>
+                                            <div class="tDHRfA _3a5__h" id="upino" style="display:none">
+                                                
+                                                <input type="text" class="addressinput" style="width: 100%;border-radius:0px" placeholder="Enter UPI Id" maxlength="150" id="txtuppino" name="txtuppino" value="">
+                                            </div>
+                                            <br />
+                                            <a class="cart_summary-btn btn" href="#" onclick="return getOrderAmount();" id="btnPlaceOrder">Place Order</a>
+                                            @*<div class="_1AXmWp">
+                                            <button type="button" class="_1MM7ZD">EDIT</button>
+                                            </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" id="PromoDiscountPrice"  />
+            <input type="hidden" value="@Context.Session.GetString("Amount")" id="Amount1" />
+            @Html.HiddenFor(m=>m.WalletType)
+            @Html.HiddenFor(m=>m.MerchantTranId)
+        </div>
+
+    </main>
+</form>
+
+<script src="~/assets/js/jquery-3.6.0.min.js"></script>
+
+
+<script>
+     $(document).ready(function () {
+         $('.overlay').hide();
+     });
+    function GetBiddingData() {
+        $.ajax({ 
+            url: '/Associate/GetOrderListForQr',
+            type: 'GET',
+            dataType: 'JSON',
+            data: { 'OrderId': $('#MerchantTranId').val() },
+            success: function (response) {
+                $("#btnPlaceOrder").hide();
+                if (response != null) {
+                    if (response.status == "Pending") {
+
+                        GetBiddingData();
+                    }
+                    else if (response.status == "TXN_FAILURE") {
+                        alert('Payment Failed please contact admin.');
+                    }
+                    else {
+                        window.location.href = "/Associate/OrderList";
+                    }
+                }
+                else {
+                    GetBiddingData();
+                }
+            },
+            error: function () {
+                GetBiddingData();
+            }
+        })
+    }
+
+    function changeWalletType() {
+        var rdbWallet = $('input[name="rdbWallet"]:checked').val();
+        $('#WalletType').val(rdbWallet);
+        if(rdbWallet=="UPIId")
+        {
+            $('#upino').show();
+        }
+        else
+        {
+            $('#upino').hide();
+        }
+
+    }
+    function showalladdress(totalcount) {
+
+        var count = 3;
+        for (var i = 0; i <= totalcount - 1; i++) {
+            $('#divshowaddress_' + count).show();
+            count = count + 1;
+        }
+
+
+        $('#viewallbutton').hide();
+    }
+    function ckeckProduct() {
+        debugger
+        if ($('#Pk_AddressId').val() == "0") {
+            alert("Please Select Address");
+            return false;
+        }
+        if ($('#CheckName').text() == "") {
+            alert("Please Update Address");
+            return false;
+        }
+        if ($('#CheckMobileNo').text() == "") {
+            alert("Please Update Address");
+            return false;
+        }
+        if ($('#CheckAddress').text() == "") {
+            alert("Please Update Address");
+            return false;
+        }
+        if ($('#CheckLocality').text() == "") {
+            alert("Please Update Address");
+            return false;
+        }
+        if ($('#CheckLandmark').text() == "") {
+            alert("Please Update Address");
+            return false;
+        }
+        if ($('#CheckPincode').text() == "") {
+            alert("Please Update Address");
+            return false;
+        }
+        if ($('#CheckState').text() == "") {
+            alert("Please Update Address");
+            return false;
+        }
+        if ($('#CheckCity').text() == "") {
+            alert("Please Update Address");
+            return false;
+        }
+        var rdbWallet = $('input[name="rdbWallet"]:checked').val();
+        var finalamt = $('#Amount').val();
+
+        if (rdbWallet == "FUPWallet") {
+            if (Number($('#FUPBalance').val()) < Number(finalamt)) {
+                window.location.href = "/Associate/CheckOut?Status=1" + "&PromoCode=" + $('#PromoCode').val() + "&PromoCodeDiscountPrice=" + $('#PromoDiscountPrice').val();
+                return false;
+            }
+            $('#WalletType').val(rdbWallet);
+            window.location.href = "/Home/CartList?WalletType=" + $('#WalletType').val() + "&checkout=1" + "&Pk_AddressId=" + $('#Pk_AddressId').val() + "&PromoCode=" + $('#PromoCode').val() + "&PromoCodeDiscountPrice=" + $('#PromoDiscountPrice').val();
+        }
+        else if (rdbWallet == "KaryonWallet") {
+            if (Number($('#WalletBalance').val()) < Number(finalamt)) {
+                window.location.href = "/Associate/CheckOut?Status=1"+ "&PromoCode=" + $('#PromoCode').val() + "&PromoCodeDiscountPrice=" + $('#PromoDiscountPrice').val();
+                return false;
+            }
+            $('#WalletType').val(rdbWallet);
+            window.location.href = "/Home/CartList?WalletType=" + $('#WalletType').val() + "&checkout=1" + "&Pk_AddressId=" + $('#Pk_AddressId').val() + "&PromoCode=" + $('#PromoCode').val() + "&PromoCodeDiscountPrice=" + $('#PromoDiscountPrice').val();
+        }
+        else if (rdbWallet == "UPIId") {
+            $.ajax({
+                url: '/Home/PayUPIID',
+                type: 'Post',
+                data: { PayerVPA: $('#txtuppino').val(), amount: $('#Amount').val(), Type: "Place Order", LoginId: $('#LoginId').val(), merchantTranId: $('#MerchantTranId').val(), Pk_AddressId: $('#Pk_AddressId').val() },
+                success: function (response) {
+                    if (response.success=="true")
+                    {
+                        window.location.href = "/Home/ProcessingPayment?OrderId=" + response.merchantTranId;
+                       // $('#MerchantTranId').val(response.merchantTranId);
+                       // GetBiddingData();
+                    }
+                   else
+                   {
+                        alert(response.message);
+                   }
+                    // $('.overlay').show();
+
+                    
+                    return false;
+
+                }, error: function () {
+                    //alert('Some Thing wrong!');
+
+
+                }
+            });
+            //window.location.href = "/Home/CartList?WalletType=" + $('#WalletType').val() + "&checkout=1" + "&Pk_AddressId=" + $('#Pk_AddressId').val() + "&PromoCode=" + $('#PromoCode').val() + "&PromoCodeDiscountPrice=" + $('#PromoDiscountPrice').val();
+        }
+        else if (rdbWallet == "QrCode") {
+
+            $.ajax({
+                url: '/Home/GenerateQRCODE',
+                type: 'Post',
+                data: { amount: $('#Amount1').val(), Type: "Place Order", LoginId: $('#LoginId').val(), merchantTranId: $('#MerchantTranId').val(), Pk_AddressId: $('#Pk_AddressId').val() },
+                success: function (response) {
+                    debugger
+                    $('#barcodeimg').attr("src", response[0].qrcodeimg);
+                    $('#MerchantTranId').val(response[0].merchantTranId);
+                    // console.log(response);
+                    //$('.overlay').hide();
+                    $('#qrcode').show();
+                    GetBiddingData();
+                   // $('.overlay').show();
+
+                    $("#btnPlaceOrder").show();
+                    return false;
+
+                }, error: function () {
+                    //alert('Some Thing wrong!');
+
+
+                }
+            });
+        }
+        else {
+            window.location.href = "/Home/CartList?WalletType=" + $('#WalletType').val() + "&checkout=1" + "&Pk_AddressId=" + $('#Pk_AddressId').val() + "&PromoCode=" + $('#PromoCode').val() + "&PromoCodeDiscountPrice=" + $('#PromoDiscountPrice').val();
+        }
+    }
+    function GetStateCity() {
+        $(".errortext").removeClass("errortext");
+        $("#pre-loader").show();
+        $.ajax({
+            url: '/Home/GetStateCity',
+            type: 'Post',
+            data: { PinCode: $('#Pincode').val() },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        $('#State').val(response.response.state);
+                        $('#City').val(response.response.city);
+                    }
+                    else {
+                        $('#Pincode').val('');
+                        $("#Pincode").addClass('errortext');
+                        $('#Pincode').focus();
+                        alert(response.message);
+
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function getAddress(addressId, Name, MobileNo, Address, Locality, Pincode, Landmark, State, City) {
+        $('#Pk_AddressId').val(addressId);
+        $('#CheckName').text(Name);
+        $('#CheckMobileNo').text(MobileNo);
+        $('#CheckAddress').text(Address);
+        $('#CheckLocality').text(Locality);
+        $('#CheckLandmark').text(Pincode);
+        $('#CheckPincode').text(Landmark);
+        $('#CheckState').text(State);
+        $('#CheckCity').text(City);
+        //alert($('#CheckState').text());
+    }
+    function fvalidate() {
+        $(".errortext").removeClass("errortext");
+        if ($('#Name').val() == "") {
+            $("#Name").addClass('errortext');
+            $('#Name').focus();
+            return false;
+        }
+        if ($('#MobileNo').val() == "") {
+            $("#MobileNo").addClass('errortext');
+            $('#MobileNo').focus();
+            return false;
+        }
+        let mobile = $('#MobileNo').val();
+        if (mobile.length < 10) {
+            $("#MobileNo").addClass('errortext');
+            $('#MobileNo').focus();
+            return false;
+        }
+        if ($('#Address').val() == "") {
+            $("#Address").addClass('errortext');
+            $('#Address').focus();
+            return false;
+        }
+        if ($('#Locality').val() == "") {
+            $("#Locality").addClass('errortext');
+            $('#Locality').focus();
+            return false;
+        }
+
+        if ($('#Pincode').val() == "") {
+            $("#Pincode").addClass('errortext');
+            $('#Pincode').focus();
+            return false;
+        }
+        if ($('#Landmark').val() == "") {
+            $("#Landmark").addClass('errortext');
+            $('#Landmark').focus();
+            return false;
+        }
+        var model = {
+            Name: $('#Name').val(),
+            MobileNo: $('#MobileNo').val(),
+            Address: $('#Address').val(),
+            Locality: $('#Locality').val(),
+            Pincode: $('#Pincode').val(),
+            Landmark: $('#Landmark').val()
+        };
+        $.ajax({
+            url: '/Associate/AddAddres',
+            type: 'Post',
+
+            data: { Name: $('#Name').val(), MobileNo: $('#MobileNo').val(), Address: $('#Address').val(), Locality: $('#Locality').val(), Pincode: $('#Pincode').val(), Landmark: $('#Landmark').val(), State: $('#State').val(), City: $('#City').val(), Pk_AddressId: $('#Pk_AddressId').val() },
+
+            success: function (response) {
+                if (response != null) {
+                    if (response.status == 1) {
+                        window.location.href = "/Home/AddressList";
+                    }
+                    else {
+                        alert(response.message);
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function Editaddress(AddressId, Name, MobileNo, Address, Locality, Landmark, Pincode, State, City) {
+        $('#Pk_AddressId').val(AddressId);
+        $('#Name').val(Name);
+        $('#MobileNo').val(MobileNo);
+        $('#Address').val(Address);
+        $('#Locality').val(Locality);
+        $('#Landmark').val(Landmark);
+        $('#Pincode').val(Pincode);
+        $('#State').val(State);
+        $('#City').val(City);
+        $('#btnSave').val("Update Address");
+        $('#addeditaddress').text("Edit Address");
+
+
+    }
+    function Deleteaddress(AddressId) {
+        if (confirm('Are you sure to delete address') == false) {
+            return false;
+        }
+        $.ajax({
+            url: '/Associate/DeleteAddress',
+            type: 'Post',
+
+            data: { Pk_AddressId: AddressId },
+
+            success: function (response) {
+                if (response != null) {
+                    window.location.href = "/Home/AddressList";
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode != 46 && charCode > 31
+            && (charCode < 48 || charCode > 57))
+            return false;
+    }
+    function getOrderAmount() {
+        $.ajax({
+            url: '/Home/GetOrderAmount',
+            type: 'Post',
+            success: function (response) {
+                $('#Amount').val(response);
+                ckeckProduct();
+            }, error: function () {
+                //alert('Some Thing wrong!');
+
+
+            }
+        });
+    }
+    function applyPromoCode() {
+        debugger
+        if ($('#PromoCode').val() == null || $('#PromoCode').val() == "" || $('#PromoCode').val() == 0) {
+            $('#PromoCode').focus()
+            $("#PromoCode").css("border-color", "red");
+            return false;
+        }
+        else {
+            $("#PromoCode").css("border-color", "green");
+
+        }
+        let PromoCode = $('#PromoCode').val();
+        let Amount = $('#Amount').val();
+        if (PromoCode != '') {
+            $.ajax({
+                url: '/Home/ApplyPromoCode',
+                type: 'Post',
+                data: { PromoCode: PromoCode, Amount: Amount },
+                success: function (response) {
+                    if (response.status == 0) {
+                        debugger
+                        $('#promocodeMessage').html(response.message)
+                        $('#Amount1').val(response.orderAmount)
+                    }
+                    else {
+                        debugger
+                        $('#ShowDiscount').show()
+                        $('#promocodeMessage').html(response.message)
+                        $('#DiscountAmount').html(response.orderAmount)
+                        $('#PromoDiscountPrice').val(response.orderAmount)
+                        let Total = parseFloat(Amount) - parseFloat(response.orderAmount)
+                        $('#Total').html(Total)
+                        $('#Amount1').val(Total)
+                    }
+                }, error: function () {
+                }
+            });
+        }
+    }
+</script>

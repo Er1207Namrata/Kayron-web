@@ -1,0 +1,831 @@
+﻿@model Karyon.Models.CreateOrder
+@{
+    ViewData["Title"] = "OrderList";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+<link href="/Content/dist/css/quantitybutton.css" rel="stylesheet">
+
+<style>
+    .main_rating-stars_star {
+        list-style-type: none;
+    }
+
+    @@media (max-width: 480px) {
+        .rating-div {
+            display: flex;
+            justify-content: center !important;
+            padding-left: 15%
+        }
+    }
+
+    .star-div:click {
+        color: red;
+    }
+
+    .rate-input input, .shop-swatch-color-02 .swatches-item::before {
+        display: none;
+    }
+
+
+    .rate-input {
+        direction: rtl;
+    }
+
+        .rate-input label {
+            margin-left: -2px;
+            margin-right: -2px;
+            color: #9b9b9b;
+            font-size: 18px;
+            padding: 3px;
+        }
+
+        .rate-input input:checked ~ label {
+            color: #EFC368;
+        }
+
+</style>
+
+<form asp-action="OrderList">
+   
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="page-title">
+                    <div class="row">
+                        <div class="col-sm-6 ps-0">
+                            <h3>View Orders</h3>
+                        </div>
+                        <div class="col-sm-6 pe-0">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">
+                                        <svg class="stroke-icon">
+                                            <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">View Orders</li>
+                                @*<li class="breadcrumb-item active"> Reward Reports</li>*@
+                            </ol>
+                            <span style="color:red;">
+                                @TempData["CancelOrder"]
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="row">
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">Order No </label>
+                                <input type="text" asp-for="OrderNo" class="web form-control" placeholder="Order No" maxlength="50" />
+                                <input type="hidden" id="hdfOrderNo" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">From Date </label>
+                                <input type="text" asp-for="FromDate" class="form-control" readonly placeholder="From Date" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">To Date </label>
+
+                                <input type="text" asp-for="ToDate" class="web form-control" placeholder="To Date" />
+                            </div>
+                            @*<div class="section-field mb-20 col-sm-3">
+                            <label class="mb-10" for="name">Status </label>
+
+                            @Html.DropDownListFor(m => m.Status, new SelectList(ViewBag.ddlStatus, "Value", "Text"), new { @class = "form-control" })
+                            </div>*@
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                            </div>
+                        </div>
+                        <br />
+
+                        <input type="hidden" asp-for="Page" />
+                        <div class="table-responsive">
+                            <table class="table table-bordered radio-first-col-width">
+                                <thead style="background: #40541d;">
+                                    <tr>
+                                        <th class="text-white">S. No.</th>
+                                        <th class="text-white">Order No</th>
+                                        <th class="text-white">Counter Collect OTP</th>
+                                        <th class="text-white">Order Date</th>
+                                        <th class="text-white">Order Amount</th>
+                                        <th class="text-white">Total PV</th>
+                                        <th class="text-white">Order Type</th>
+                                        <th class="text-white">Status</th>
+                                        <th class="text-white">Calculation Status</th>
+                                        <th class="text-white">Action</th>
+
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+
+
+                                                int i = 1;
+
+                                                int page = Model.Pager.CurrentPage;
+                                                page = (page - 1);
+                                                i = ((page) * (Model.Pager.PageSize));
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+                                                    string cssclass = "";
+                                                    <tr>
+                                                        <td>@(j + 1)</td>
+
+                                                        <td><a style="color:blue" href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="return GetOrderDetails('@Model.dtDetails.Rows[j]["OrderNo"]','@Model.dtDetails.Rows[j]["OrderAmount"]','@Model.dtDetails.Rows[j]["TotalPV"]')">@Model.dtDetails.Rows[j]["OrderNo"]</a></td>
+                                                        <td>
+                                                            @if (Model.dtDetails.Rows[j]["IsCounterCollect"].ToString() == "False")
+                                                            {
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <a>Please share the OTP with counter @Model.dtDetails.Rows[j]["CounterOTP"].ToString()</a>
+                                                            }
+
+                                                        </td>
+                                                        <td>@Model.dtDetails.Rows[j]["OrderDate"]</td>
+
+                                                        <td>@Model.dtDetails.Rows[j]["OrderAmount"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["TotalPV"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["OrderType"] </td>
+                                                        <td>
+                                                            @if (Model.dtDetails.Rows[j]["Status"].ToString() == "Pending")
+                                                            {
+                                                                cssclass = "badge bg-info";
+                                                            }
+                                                            else if (Model.dtDetails.Rows[j]["Status"].ToString() == "Approved")
+                                                            {
+                                                                cssclass = "badge bg-success";
+                                                            }
+                                                            else if (Model.dtDetails.Rows[j]["Status"].ToString() == "Dispatched")
+                                                            {
+                                                                cssclass = "badge bg-primary";
+                                                            }
+                                                            else
+                                                            {
+                                                                cssclass = "badge bg-danger";
+                                                            }
+
+                                                            <span class="@cssclass">@Model.dtDetails.Rows[j]["Status"]</span>
+                                                        </td>
+                                                        <td>
+                                                            @if (Model.dtDetails.Rows[j]["IsBusinessCalculated"].ToString() == "True")
+                                                            {
+                                                                <span class="badge bg-success">Calculated </span>
+
+                                                                <br />
+                                                                @Model.dtDetails.Rows[j]["CalcDate"]
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="badge bg-danger">Pending </span>
+
+                                                                <br />
+                                                            }
+
+                                                        </td>
+                                                        <td>
+                                                            @if (int.Parse(Model.dtDetails.Rows[j]["Fk_DispachFranchiseId"].ToString()) == 0)
+                                                            {
+                                                                @if (Model.dtDetails.Rows[j]["Status"].ToString() != "Cancelled")
+                                                                {
+                                                                    <a style="color:blue" href="#" data-bs-target="#pickupfranchisee" onclick="return GetOrderNo('@Model.dtDetails.Rows[j]["OrderNo"]')" data-bs-toggle="modal">Select Option For Pickup</a>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+
+                                                            }
+                                                            @if (Model.dtDetails.Rows[j]["OrderType"].ToString() == "FUP Shopping")
+                                                            {
+                                                                <a target="_blank" href="/Associate/PrintFUPOrder?OrderNo=@Model.dtDetails.Rows[j]["OrderNo"]"><i class="fa fa-print"></i></a>
+
+                                                            }
+                                                            else if (Model.dtDetails.Rows[j]["OrderType"].ToString() == "Offer Point")
+                                                            {
+                                                                <a target="_blank" href="/Associate/PrintOfferPoint?OrderNo=@Model.dtDetails.Rows[j]["OrderNo"]"><i class="fa fa-print"></i></a>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <a target="_blank" href="/Associate/PrintCustomerOrder?OrderNo=@Model.dtDetails.Rows[j]["OrderNo"]"><i class="fa fa-print"></i></a>
+
+                                                            }
+                                                            @if (Model.dtDetails.Rows[j]["IsCancel"].ToString() == "1" || Model.dtDetails.Rows[j]["Status"].ToString() != "Dispatched")
+                                                            {
+                                                                <a href="/Associate/CancelOrder?OrderId=@Model.dtDetails.Rows[j]["Pk_OrderId"]" class="badge bg-danger" onclick="return confirm('Are you sure to cancel this order')">Cancel Order</a>
+
+                                                            }
+                                                            else
+                                                            {
+
+
+                                                            }
+
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+
+                            <footer class="card-footer bg-white p-2">
+
+                                <div class="d-md-flex align-items-center justify-content-between">
+                                    @if (Model != null)
+                                    {
+                                        if (Model.Pager != null)
+                                        {
+                                            @if (Model.Pager.EndPage > 1)
+                                            {
+                                                <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                                <div>
+                                                    <ul class="pagination mb-0">
+                                                        @if (Model.Pager.CurrentPage > 1)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                            </li>
+
+
+
+                                                            <li class="page-item">
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                            </li>
+                                                        }
+                                                        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                        {
+                                                            var P = @page;
+                                                            <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                                <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                            </li>
+
+                                                        }
+                                                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                            </li>
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
+
+                                    }
+
+
+                                </div>
+                            </footer>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Order Details</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row row-sm">
+                        <div class="col-xl-8">
+                            <div class="card">
+
+                                <div class="card-body">
+                                    <div class="table-responsive border radius-7">
+                                        <table class="table mb-0 border-0" id="tblOrderDetails">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="12" class="tx-uppercase bg-custom">order number : <span style="color:blue" id="lblOrderNo"></span></th>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>S. No.</th>
+                                                    <th>Pickup From</th>
+                                                    <th>Product Name</th>
+                                                    <th>MRP</th>
+                                                    <th>PV</th>
+                                                    <th>Qty</th>
+                                                    <th style="text-align:right">Grand Total</th>
+                                                    <th>Action</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Order Summary</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-3 tx-muted tx-14">Order Amount</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-3 tx-14" id="lblOrderAmount"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-0 tx-muted tx-14">Total PV</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-0 tx-14" id="lblTotalPV"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 card">
+                                <div style="padding-left: 4%;" class="row" id="tblReview">
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+
+                        <div class="col-xl-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Customer Details</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-3 tx-muted tx-14">Name</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-3 tx-14" id="CustomerName"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-3 tx-muted tx-14">Mobile Number</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-3 tx-14" id="MobileNo"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-3 tx-muted tx-14">Billing Address</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-3 tx-14" id="Address">
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-0 tx-muted tx-14">Shipping Address</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-0 tx-14" id="SAddress">
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Payment Details</div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-3 tx-muted tx-14">Mode Of Payment</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-3 tx-14" id="PaymentMode"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-4">
+                                            <p class="mb-3 tx-muted tx-14">Purchase By</p>
+                                        </div>
+                                        <div class="col-xl-8">
+                                            <p class="mb-3 tx-14" id="PurchaseBy"></p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" onclick="return window.location.reload(true)" type="button">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="pickupfranchisee" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Select Option</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row row-sm">
+
+                        <div class="col-xl-4">
+                            <a href="#" onclick="return showpickupdetails(1)">
+                                <div class="card">
+
+                                    <div class="card-body" style="background: linear-gradient(to right, #ffbf3b, #a5f7f3);
+    box-shadow: 0px 0px 6px 3px;">
+                                        <h5>Counter Collect</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+
+                        <div class="col-xl-4">
+                            <a href="#" onclick="return showpickupdetails(2)">
+                                <div class="card">
+
+                                    <div class="card-body" style="background: linear-gradient(to right, #ffbf3b, #a5f7f3);
+    box-shadow: 0px 0px 6px 3px;">
+                                        <h5>Pickup Franchisee</h5>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+
+
+                        <div class="col-xl-4">
+                            <a href="#" onclick="return showpickupdetails(3)">
+                                <div class="card">
+
+                                    <div class="card-body" style="background: linear-gradient(to right, #ffbf3b, #a5f7f3);
+    box-shadow: 0px 0px 6px 3px;">
+                                        <h5>Skip To Company</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="row" id="divpincode" style="display:none">
+                        <div class="col-md-4">
+                            <input type="text" id="Pincode" name="Pincode" class="form-control" placeholder="Enter Pincode" />
+                        </div>
+                        <div class="col-md-4">
+                            <a onclick="return GetFranchiseByPincode()" class="btn btn-sm btn-primary" style="color:white">Get Franchisee</a>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="table-responsive" id="divfranchiseList" style="display:none">
+                        <table class="table table-striped" id="tblfranchiseList">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Name</th>
+                                    <th>Contact No</th>
+                                    <th>Action</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" id="ReviewModel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Review</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form asp-action="ProductReview">
+
+                <div class="modal-body">
+
+
+                    <div class="row">
+                        @*   <div class="main_rating">
+                        </div>
+                        *@
+                        <div class="form-group mb-6 d-flex justify-content-start">
+                            <div class="rate-input">
+                                <input type="radio" id="star5" asp-for="StarRating" value="5">
+                                <label for="star5" title="text">
+                                    <i class="icon-star_fill"></i>
+                                </label>
+                                <input type="radio" id="star4" asp-for="StarRating" value="4">
+                                <label for="star4" title="text" class="mb-0 mr-1 lh-1">
+                                    <i class="icon-star_fill"></i>
+                                </label>
+                                <input type="radio" id="star3" asp-for="StarRating" value="3">
+                                <label for="star3" title="text" class="mb-0 mr-1 lh-1">
+                                    <i class="icon-star_fill"></i>
+                                </label>
+                                <input type="radio" id="star2" asp-for="StarRating" value="2">
+                                <label for="star2" title="text" class="mb-0 mr-1 lh-1">
+                                    <i class="icon-star_fill"></i>
+                                </label>
+                                <input type="radio" id="star1" asp-for="StarRating" value="1">
+                                <label for="star1" title="text" class="mb-0 mr-1 lh-1">
+                                    <i class="icon-star_fill"></i>
+                                </label>
+                            </div>
+
+                            <input type="hidden" asp-for="Fk_ProductId" />
+                            <input type="hidden" asp-for="Fk_OrderId" />
+                        </div>
+                        <div class="col-md-12">
+                            <label>Review Message</label>
+                            <textarea class="form-control" asp-for="ReviewMsg" placeholder="Your Review" rows="5"></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" name="btnProductReview" class="btn btn-sm btn-success" />
+                    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
+<script>
+    $(document).ready(function () {
+        $("#tblfranchiseList tbody").html('');
+    });
+    $('#FromDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+    $('#ToDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+    function showpickupdetails(value) {
+        if (value == 2) {
+            $('#divpincode').show();
+            $('#divfranchiseList').show();
+        }
+        else {
+            $('#divpincode').hide();
+            $('#divfranchiseList').hide();
+        }
+        if (value == 3) {
+            selectfranchisee(0);
+        }
+        if (value == 1) {
+            window.location.href = "/Associate/CounterCollect?OrderNo=" + $('#hdfOrderNo').val();
+        }
+
+    }
+    function GetFranchiseByPincode() {
+        $("#tblfranchiseList tbody").html('');
+        $.ajax({
+            url: '/Associate/GetPincodeFranchise',
+            type: 'Post',
+            data: { Pincode: $('#Pincode').val() },
+            success: function (result) {
+                if (result != null) {
+                    console.log(result);
+                    var srno = 1;
+                    var str = "";
+
+                    for (var i = 0; i < result.response.requestList.length; i++) {
+
+                        str += "<tr><td>" + srno + "</td><td  nowrap>" + result.response.requestList[i].name + "</td><td >" + result.response.requestList[i].mobile + "</td><td ><a href='#' onclick='return selectfranchisee(" + result.response.requestList[i].pk_Id + ")'><i class='fa fa-eye'></i></a></td></tr>";
+                        srno = srno + 1;
+                    }
+
+                    //str += "<tr><th colspan='2'>Total</th><th>" + TotalReqQty + "</th><th>" + PointValue + "</th><th>" + TotalPV + "</th><th>" + TotalProdAmt + "</th><th>" + FinalAmt + "</th></tr>";
+
+                    $("#tblfranchiseList tbody").html(str);
+
+                }
+                else {
+
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function GetOrderNo(OrderNo) {
+        $('#hdfOrderNo').val(OrderNo);
+    }
+    function GetOrderDetails(OrderNo, OrderAmount, TotalPV) {
+        $('#lblOrderNo').text(OrderNo);
+        $('#lblOrderAmount').text(OrderAmount);
+        $('#lblTotalPV').text(TotalPV);
+        $.ajax({
+            url: '/Home/GetCustomerOrderDetails',
+            type: 'Post',
+            data: { OrderNo: OrderNo },
+            success: function (result) {
+
+                if (result[0].orderdetails != null) {
+                    var srno = 1;
+                    var str = "";
+                    $('#CustomerName').text(result[0].orderdetails[0].customerName);
+                    $('#Address').text(result[0].orderdetails[0].address);
+                    $('#SAddress').text(result[0].orderdetails[0].address);
+                    $('#MobileNo').text(result[0].orderdetails[0].mobileNo);
+                    $('#PaymentMode').text(result[0].orderdetails[0].paymentMode);
+                    $('#PurchaseBy').text(result[0].orderdetails[0].purchaseBy);
+                    $("#Fk_OrderId").val(result[0].orderdetails[0].fk_OrderId)
+                    $("#tblOrderDetails tbody").html('');
+
+                    for (var i = 0; i < result[0].orderdetails.length; i++) {
+
+                        str += "<tr><td>" + srno + "</td><td>" + result[0].orderdetails[i].companyName + "<br/><span class='badge bg-info'>" + result[0].orderdetails[i].isDispatched + "</span></td><td>" + result[0].orderdetails[i].productName + "</td><td >" + result[0].orderdetails[i].amount + "</td><td >" + result[0].orderdetails[i].pv + "</td><td >" + result[0].orderdetails[i].qty + "</td><td style='text-align:right'>" + result[0].orderdetails[i].subTotal + "</td><td><a  class='btn btn-info text-light' data-bs-target='#ReviewModel'data-bs-toggle='modal' onclick='return GetProductId(" + result[0].orderdetails[i].fk_ProductId + "," + result[0].orderdetails[i].fk_OrderId + ")' >GiveReview</a></td></tr>";
+                        srno = srno + 1;
+
+
+                    }
+
+                    //str += "<tr><th colspan='2'>Total</th><th>" + TotalReqQty + "</th><th>" + PointValue + "</th><th>" + TotalPV + "</th><th>" + TotalProdAmt + "</th><th>" + FinalAmt + "</th></tr>";
+
+                    $("#tblOrderDetails tbody").html(str);
+
+                    //GetProductId(null, result[0].fk_OrderId)
+                }
+                if (result[0].reviewList != null) {
+                    var str1 = "";
+                    $("#tblReview").html('');
+                    for (var i = 0; i < result[0].reviewList.length; i++) {
+                        if (result[0].reviewList[i].star == 5) {
+                            str1 += '<div class="col-md-4 d-flex justify-content-center" style="padding:5%;margin-top: 2%;"><img style="max-width:55%;height: 62%;" src="' + 'https://admin.karyon.organic/' + result[0].reviewList[i].productImage
+                                + '" /></div><div class="col-md-8"><div class=""><div class="mt-3 col-md-10"><div class="card-title rating-div" style="padding-left:15%;"><p>' + result[0].reviewList[i].productName
+                                + '</p></div> </div> <div class=""><div class="row"> <div class="col-xl-8 rating-div" style="display: flex; justify-content: start; padding-left:14%;"><div class="main_rating" style="color:#EFC368;"> <ul class="main_rating-stars d-flex align-items-center accent p-0"><li class="main_rating-stars_star"><i class="icon-star_fill"></i></li><li class="main_rating-stars_star"><i class="icon-star_fill"></i> </li><li class="main_rating-stars_star"><i class="icon-star_fill"></i></li><li class="main_rating-stars_star"><i class="icon-star_fill"></i></li><li class="main_rating-stars_star"> <i class="icon-star_fill"></i></li> </ul></div></div> <div class="col-xl-4"><p class="mb-3 tx-14 rating-div" style="padding-left:13%;">' + result[0].reviewList[i].addedDate
+                                + '</p></div></div></div><div class="col-md-12"><div class="card-title rating-div" style="padding-left:13%;text-align: justify;padding-right:5%;"><small>' + result[0].reviewList[i].rating +
+                                '</small></div></div></div></div><hr class="pl-1 pr-1" style = "max-width: 86%;"/>'
+
+                        }
+                        else if (result[0].reviewList[i].star == 4) {
+                            str1 += '<div class="col-md-4 d-flex justify-content-center" style="padding:5%;margin-top: 2%;"><img style="max-width:55%;height: 62%;" src="' + 'https://admin.karyon.organic/' + result[0].reviewList[i].productImage
+                                + '" /></div><div class="col-md-8"><div class=""><div class="mt-3 col-md-10"><div class="card-title rating-div" style="padding-left:15%;"><p>' + result[0].reviewList[i].productName
+                                + '</p></div> </div> <div class=""><div class="row"> <div class="col-xl-8 rating-div" style="display: flex; justify-content: start; padding-left:14%;"><div class="main_rating" style="color:#EFC368;"> <ul class="main_rating-stars d-flex align-items-center accent p-0"><li class="main_rating-stars_star"><i class="icon-star_fill"></i></li><li class="main_rating-stars_star"><i class="icon-star_fill"></i> </li><li class="main_rating-stars_star"><i class="icon-star_fill"></i></li><li class="main_rating-stars_star"><i class="icon-star_fill"></i></li><li class="main_rating-stars_star"> <i class="icon-star"></i></li> </ul></div></div> <div class="col-xl-4"><p class="mb-3 tx-14 rating-div" style="padding-left:13%;">' + result[0].reviewList[i].addedDate
+                                + '</p></div></div></div><div class="col-md-12"><div class="card-title rating-div" style="padding-left:13%;text-align: justify;padding-right:5%;"><small>' + result[0].reviewList[i].rating +
+                                '</small></div></div></div></div><hr class="pl-1 pr-1" style = "max-width: 86%;"/>'
+                        }
+                        else if (result[0].reviewList[i].star == 3) {
+                            str1 += '<div class="col-md-4 d-flex justify-content-center" style="padding:5%;margin-top: 2%;"><img style="max-width:55%;height: 62%;" src="' + 'https://admin.karyon.organic/' + result[0].reviewList[i].productImage
+                                + '" /></div><div class="col-md-8"><div class=""><div class="mt-3 col-md-10"><div class="card-title rating-div" style="padding-left:15%;"><p>' + result[0].reviewList[i].productName
+                                + '</p></div> </div> <div class=""><div class="row"> <div class="col-xl-8 rating-div" style="display: flex; justify-content: start; padding-left:14%;"><div class="main_rating" style="color:#EFC368;"> <ul class="main_rating-stars d-flex align-items-center accent p-0"><li class="main_rating-stars_star"><i class="icon-star_fill"></i></li><li class="main_rating-stars_star"><i class="icon-star_fill"></i> </li><li class="main_rating-stars_star"><i class="icon-star_fill"></i></li><li class="main_rating-stars_star"><i class="icon-star"></i></li><li class="main_rating-stars_star"> <i class="icon-star"></i></li> </ul></div></div> <div class="col-xl-4"><p class="mb-3 tx-14 rating-div" style="padding-left:13%;">' + result[0].reviewList[i].addedDate
+                                + '</p></div></div></div><div class="col-md-12"><div class="card-title rating-div" style="padding-left:13%;text-align: justify;padding-right:5%;"><small>' + result[0].reviewList[i].rating +
+                                '</small></div></div></div></div><hr class="pl-1 pr-1" style = "max-width: 86%;"/>'
+                        }
+                        else if (result[0].reviewList[i].star == 2) {
+                            str1 += '<div class="col-md-4 d-flex justify-content-center" style="padding:5%;margin-top: 2%;"><img style="max-width:55%;height: 62%;" src="' + 'https://admin.karyon.organic/' + result[0].reviewList[i].productImage
+                                + '" /></div><div class="col-md-8"><div class=""><div class="mt-3 col-md-10"><div class="card-title rating-div" style="padding-left:15%;"><p>' + result[0].reviewList[i].productName
+                                + '</p></div> </div> <div class=""><div class="row"> <div class="col-xl-8 rating-div" style="display: flex; justify-content: start; padding-left:14%;"><div class="main_rating" style="color:#EFC368;"> <ul class="main_rating-stars d-flex align-items-center accent p-0"><li class="main_rating-stars_star"><i class="icon-star_fill"></i></li><li class="main_rating-stars_star"><i class="icon-star_fill"></i> </li><li class="main_rating-stars_star"><i class="icon-star"></i></li><li class="main_rating-stars_star"><i class="icon-star"></i></li><li class="main_rating-stars_star"> <i class="icon-star"></i></li> </ul></div></div> <div class="col-xl-4"><p class="mb-3 tx-14 rating-div" style="padding-left:13%;">' + result[0].reviewList[i].addedDate
+                                + '</p></div></div></div><div class="col-md-12"><div class="card-title rating-div" style="padding-left:13%;text-align: justify;padding-right:5%;"><small>' + result[0].reviewList[i].rating +
+                                '</small></div></div></div></div><hr class="pl-1 pr-1" style = "max-width: 86%;"/>'
+                        }
+                        else if (result[0].reviewList[i].star == 1) {
+                            str1 += '<div class="col-md-4 d-flex justify-content-center" style="padding:5%;margin-top: 2%;"><img style="max-width:55%;height: 62%;" src="' + 'https://admin.karyon.organic/' + result[0].reviewList[i].productImage
+                                + '" /></div><div class="col-md-8"><div class=""><div class="mt-3 col-md-10"><div class="card-title rating-div" style="padding-left:15%;"><p>' + result[0].reviewList[i].productName
+                                + '</p></div> </div> <div class=""><div class="row"> <div class="col-xl-8 rating-div" style="display: flex; justify-content: start; padding-left:14%;"><div class="main_rating" style="color:#EFC368;"> <ul class="main_rating-stars d-flex align-items-center accent p-0"><li class="main_rating-stars_star"><i class="icon-star_fill"></i></li><li class="main_rating-stars_star"><i class="icon-star"></i> </li><li class="main_rating-stars_star"><i class="icon-star"></i></li><li class="main_rating-stars_star"><i class="icon-star"></i></li><li class="main_rating-stars_star"> <i class="icon-star"></i></li> </ul></div></div> <div class="col-xl-4"><p class="mb-3 tx-14 rating-div" style="padding-left:13%;">' + result[0].reviewList[i].addedDate
+                                + '</p></div></div></div><div class="col-md-12"><div class="card-title rating-div" style="padding-left:13%;text-align: justify;padding-right:5%;"><small>' + result[0].reviewList[i].rating +
+                                '</small></div></div></div></div><hr class="pl-1 pr-1" style = "max-width: 86%;"/>'
+                        }
+                        else {
+                            str1 += '<div class="col-md-4 d-flex justify-content-center" style="padding:5%;margin-top: 2%;"><img style="max-width:55%;height: 62%;" src="' + 'https://admin.karyon.organic/' + result[0].reviewList[i].productImage
+                                + '" /></div><div class="col-md-8"><div class=""><div class="mt-3 col-md-10"><div class="card-title rating-div" style="padding-left:15%;"><p>' + result[0].reviewList[i].productName
+                                + '</p></div> </div> <div class=""><div class="row"> <div class="col-xl-8 rating-div" style="display: flex; justify-content: start; padding-left:14%;"><div class="main_rating" style="color:#EFC368;"> <ul class="main_rating-stars d-flex align-items-center accent p-0"><li class="main_rating-stars_star"><i class="icon-star"></i></li><li class="main_rating-stars_star"><i class="icon-star"></i> </li><li class="main_rating-stars_star"><i class="icon-star"></i></li><li class="main_rating-stars_star"><i class="icon-star"></i></li><li class="main_rating-stars_star"> <i class="icon-star"></i></li> </ul></div></div> <div class="col-xl-4"><p class="mb-3 tx-14 rating-div" style="padding-left:13%;">' + result[0].reviewList[i].addedDate
+                                + '</p></div></div></div><div class="col-md-12"><div class="card-title rating-div" style="padding-left:13%;text-align: justify;padding-right:5%;"><small>' + result[0].reviewList[i].rating +
+                                '</small></div></div></div></div><hr class="pl-1 pr-1" style = "max-width: 86%;"/>'
+                        }
+                    }
+                    $("#tblReview").html(str1);
+                }
+
+                else {
+
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+
+    function selectfranchisee(FranchiseeId) {
+        $.ajax({
+            url: '/Associate/UpdatePickupFranchisee',
+            type: 'Post',
+            data: { FranchiseeId: FranchiseeId, OrderNo: $('#hdfOrderNo').val() },
+            success: function (result) {
+                if (result != null) {
+                    console.log(result);
+                    if (result.status == "1") {
+                        window.location.href = "/Associate/OrderList";
+                    }
+                    else {
+                        alert(result.message);
+                    }
+
+                }
+                else {
+
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function GetProductId(Fk_ProductId, fk_OrderId) {
+        $("#Fk_ProductId").val(Fk_ProductId)
+        $("#Fk_OrderId").val(fk_OrderId)
+
+
+    }
+</script>
+

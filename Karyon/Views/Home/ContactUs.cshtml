@@ -1,0 +1,156 @@
+﻿@using Karyon.Models
+@model Karyon.Models.ContactUs
+@{
+    ViewData["Title"] = "ContactUs";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/Websitecss/css/contacts.min.css" />
+
+    <div class="page_main container-fluid">
+        <div class="container">
+            <h1 class="page_header">Contacts</h1>
+            <p class="page_text"></p>
+        </div>
+    </div>
+    <div class="container">
+        <ul class="page_breadcrumbs d-flex flex-wrap">
+            <li class="page_breadcrumbs-item">
+                <a class="link" href="/Home/Index">Home</a>
+            </li>
+
+            <li class="page_breadcrumbs-item current">
+                <span>Contact</span>
+            </li>
+        </ul>
+    </div>
+
+<!-- Contacts content start -->
+<main>
+    <div class="contacts section">
+        <div class="container d-flex flex-wrap flex-xl-nowrap justify-content-between">
+            <div class="contacts_form col-12 col-lg-5">
+                <div class="contacts_form-header">
+                    <h2 class="contacts_form-header_title">Have any Questions?</h2>
+                    
+                </div>
+                <form class="contacts_form-form d-flex flex-column" data-type="feedback" asp-action="ContactUs">
+                    <label class="contacts_form-form_label" >Your Name</label>
+                    <input class="contacts_form-form_field field "
+                           type="text"
+                           name="Name"
+                           id="Name"
+                           placeholder="Your name" />
+                    <label class="contacts_form-form_label" for="contactsEmail">Your Email</label>
+                    
+                      
+                   
+
+                    <input class="contacts_form-form_field field required"
+                           type="text"
+                           data-type="email"
+                           name="Email"
+                           id="Email"
+                           placeholder="you@example.com" />
+                    <label class="contacts_form-form_label" for="contactsMessage">Message</label>
+                    <textarea class="contacts_form-form_field field required"
+                              data-type="message"
+                              name="Message"
+                              id="Message"
+                              placeholder="Type Your Message"></textarea>
+                    <input name="SendMail" id="SendMail" value="Send a Message" class="contacts_form-form_btn btn" onclick="return fvalidate()" type="submit" />
+                </form>
+            </div>
+            <div class="contacts_info col-12 col-lg-6 col-xl-auto flex-xl-grow-1">
+                <div class="contacts_info-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.195623236981!2d73.9096194348877!3d18.5652173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bbdcc2269f2d%3A0xd028c9f6df22f68f!2sKaryon%20Organic%20Private%20Limited!5e0!3m2!1sen!2sin!4v1672470300043!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <ul class="contacts_info-list">
+                    <li class="contacts_info-list_item d-flex flex-column flex-sm-row align-items-center">
+                        <span class="icon d-flex justify-content-center align-items-center">
+                            <i class="icon-location"></i>
+                        </span>
+                        <div class="main d-flex flex-column">
+                            <span>@CompanyDetails.Address1 @CompanyDetails.Address2 </span>
+                            <span>
+                                @CompanyDetails.Address3
+                            </span>
+                        </div>
+                    </li>
+                    <li class="contacts_info-list_item d-flex flex-column flex-sm-row align-items-center">
+                        <span class="icon d-flex justify-content-center align-items-center">
+                            <i class="icon-call"></i>
+                        </span>
+                        <div class="main d-flex flex-column">
+                            <a class="link" href="tel:+1234567890">@CompanyDetails.Phone</a>
+                            <a class="link" href="tel:+1234567890"><strong>Whatsapp : </strong>@CompanyDetails.WhatsUp</a>
+                        </div>
+                    </li>
+                    <li class="contacts_info-list_item d-flex flex-column flex-sm-row align-items-center">
+                        <span class="icon d-flex justify-content-center align-items-center">
+                            <i class="icon-envelope_open"></i>
+                        </span>
+                        <div class="main d-flex flex-column">
+                            <a class="link" href="#">@CompanyDetails.Email</a>
+                        </div>
+
+                    </li>
+                </ul>
+                <ul class="contacts_info-socials d-flex align-items-center justify-content-center justify-content-sm-start">
+                    <li class="list-item">
+                        <a class="link" href="https://facebook.com" target="_blank" rel="noopener norefferer">
+                            <i class="icon-facebook icon"></i>
+                        </a>
+                    </li>
+                    <li class="list-item">
+                        <a class="link" href="https://instagram.com" target="_blank" rel="noopener norefferer">
+                            <i class="icon-instagram icon"></i>
+                        </a>
+                    </li>
+                    <li class="list-item">
+                        <a class="link" href="https://twitter.com" target="_blank" rel="noopener norefferer">
+                            <i class="icon-twitter icon"></i>
+                        </a>
+                    </li>
+                    <li class="list-item">
+                        <a class="link" href="https://whatsapp.com" target="_blank" rel="noopener norefferer">
+                            <i class="icon-whatsapp icon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    function fvalidate() {
+        if ($('#Name').val() == "") {
+            $('#Name').addClass('errortext');
+            $('#Name').focus();
+            return false;
+        }
+
+        if ($('#Email').val() == "") {
+            $('#Email').addClass('errortext');
+            $('#Email').focus();
+            return false;
+        }
+        if (ValidateEmail() == false) {
+            return false;
+        }
+        if ($('#Message').val() == "") {
+            $('#Message').addcClass('errortext');
+            $('#Message').focus();
+            return false;
+        }
+    }
+    function ValidateEmail() {
+        var email = $('#Email').val();
+        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        if (!expr.test(email)) {
+            alert("Invalid email address.");
+            return false;
+        }
+    }
+</script>

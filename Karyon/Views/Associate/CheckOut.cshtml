@@ -1,0 +1,144 @@
+﻿@model Karyon.Models.PlaceOrder
+@{
+    ViewData["Title"] = "CheckOut";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/Websitecss/css/shop.min.css" />
+<header class="page">
+    <div class="page_main container-fluid">
+        <div class="container">
+            <h1 class="page_header">Order Not Placed</h1>
+            <p class="page_text">@TempData["Placeorder"]</p>
+        </div>
+    </div>
+
+</header>
+
+<main>
+    <section class="cart section" style="padding-top:0px">
+        <div class="container d-md-flex justify-content-between align-content-start">
+            <div class="cart_main">
+                <ul class="cart_main-list">
+
+                    <li class="cart_main-list_item">
+                        <div class="wrapper d-flex flex-wrap flex-xl-nowrap align-items-center justify-content-between">
+                           
+                            <div class="price_wrapper d-flex flex-column">
+
+                                <span class="price price--new">Account Name : Karyon Organic Private Limited</span>
+                            </div>
+                          
+                           
+                        </div>
+                    </li>  
+                    <li class="cart_main-list_item">
+                        <div class="wrapper d-flex flex-wrap flex-xl-nowrap align-items-center justify-content-between">
+                           
+                           <div class="price_wrapper price_wrapper--subtotal d-flex flex-column">
+                              
+                                <span class="price price--total">Account No. : @Model.LoginId</span>
+                            </div>
+                           
+                           
+                        </div>
+                    </li>  
+                    <li class="cart_main-list_item">
+                        <div class="wrapper d-flex flex-wrap flex-xl-nowrap align-items-center justify-content-between">
+                           
+                          <div class="price_wrapper price_wrapper--subtotal d-flex flex-column">
+                                 <span class="price price--total">IFSC Code : ICIC0000104</span>
+                                
+                            </div>
+                           
+                           
+                           
+                        </div>
+                    </li>
+                    <li class="cart_main-list_item">
+                        <div class="wrapper d-flex flex-wrap flex-xl-nowrap align-items-center justify-content-between">
+                           
+                            <div class="price_wrapper price_wrapper--subtotal d-flex flex-column">
+                                 <span class="price price--total">Branch : ICICI BANK LTD, CMS</span>
+                                
+                            </div>
+                           
+                           
+                           
+                        </div>
+                    </li>
+
+                </ul>
+                <br/>
+                <h4 class="cart_main-header d-flex align-items-center justify-content-between" style="color:#6a813b">
+                    How we can transfer funds to wallet?
+                    <br />
+                    It is very simple, you can use google pay ,Phone Pay, or any UPI Application or NEFT, RTGS, IMPS facility or Physical Bank transfer also you can do.
+                    Example: suppose if you are using google pay then select bank transfer> add account no of company which are given you on this Page (account Number)>
+                    Re-enter account no (ID)>Enter IFSC Code > Enter Company Name (Karyon Organic Private Limited)>Click on Confirm> Enter Order Amount >click on Next Arrow >
+                    Enter your UPI Pin and done Your order will be generated successfully.(Limit applicable as per daily transaction limit)
+                    For NEFT RTGS IMPS
+                    You need to add beneficiary in your banking application or on bank website.
+                    (NO limit)
+                    Physical Bank transfer:
+                    You can visit your bank or any bank to make NEFT RTGS or IMPS transaction.
+                    (NO Limit)
+                </h4>
+                
+            </div>
+        </div>
+    </section>
+    <br/>
+    <br/><br/>
+    @*<div class="row">
+    <div class="col-lg-12">
+    <div class="card">
+
+    <div class="card-body">
+    <div class="row">
+    <div class="row">
+
+    <div class="col-md-12">
+    <p style="color:red">
+
+    </p>
+
+    </div>
+
+    </div>
+    <br />
+    <div class="table-responsive">
+    <table class="table table-striped" id="MyDirectList">
+    <tbody>
+    <tr>
+    <th>Account Name</th>
+    <th>Karyon Organic Private Limited</th>
+
+    </tr>
+    <tr>
+    <th>Account No.</th>
+    <th>@Model.LoginId</th>
+
+    </tr>
+    <tr>
+    <th>IFSC Code</th>
+    <th>ICIC0000104</th>
+
+    </tr>
+    <tr>
+    <th>Branch</th>
+    <th>ICICI BANK LTD, CMS</th>
+
+    </tr>
+    </tbody>
+
+    </table>
+
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>*@
+</main>

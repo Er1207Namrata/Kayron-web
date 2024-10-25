@@ -1,0 +1,51 @@
+﻿@model Karyon.Models.Menu
+
+
+@if (Context.Session.GetObjectFromJson<Menu>("_menu").menuList != null && Context.Session.GetObjectFromJson<Menu>("_submenu").subMenuList != null)
+{
+
+    @foreach (var item in Context.Session.GetObjectFromJson<Menu>("_menu").menuList)
+    {
+
+        @foreach (var item1 in Context.Session.GetObjectFromJson<Menu>("_submenu").subMenuList)
+        {
+            @if (int.Parse(item.MenuId) == int.Parse(item1.Fk_MenuId))
+            {
+                if (item1.Url == "/Franchisee/CreateOrder" || item1.Url == "/Franchisee/ViewOrders" || item1.Url == "/Franchisee/Stock" || item1.Url == "/Franchisee/CreateCustomerOrder" || item1.Url == "/Franchisee/OrderList" || item1.Url == "/Franchisee/Ledger" )
+                {
+                    <div class="col-xl-3 col-lg-6">
+                        <div class="card">
+                            <a href="@item1.Url">
+                                <div class="card-body">
+                                    <div class="d-flex flex-column mb-0">
+                                        <div class="mb-3">
+
+                                            <div class="avatar radius-4 bg-primary-transparent">
+                                                <i class="@item1.SubMenuIcon"></i>
+
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0"> @item1.SubMenuName</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
+                
+            }
+        }
+
+    }
+}
+
+
+
+
+

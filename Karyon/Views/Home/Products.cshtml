@@ -1,0 +1,350 @@
+﻿@model Karyon.Models.ProductReposne
+
+@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+
+<link href="~/AutoFill/jquery-ui.css" rel="stylesheet" />
+<section class="page-title jarallax" data-speed="0.6" data-img-src="/assets/images/contact-us-01.jpg">
+
+    <div class="container">
+        <div class="w-100 text-center px-3">
+            <div class="page-title-name">
+                <h1>Contact</h1>
+                <p>We know the secret of your success</p>
+                <ul class="page-breadcrumb">
+                    <li><a href="#"><i class="fa fa-home"></i> Home</a> <i class="fa fa-angle-double-right"></i></li>
+                    <li><span>Contact</span> </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="mt-5 pt-5">
+
+</section>
+
+
+<section class="shop grid page-section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="sidebar-widgets-wrap">
+                    <div class="sidebar-widget mb-40">
+                        <h5 class="mb-20">Search</h5>
+                        <div class="widget-search">
+                            <i class="fa fa-search"></i>
+                            <input type="search" id="txtProductName" class="form-control placeholder" placeholder="Search....">
+                        </div>
+                    </div>
+                    <div class="sidebar-widget mb-40">
+                        <h5 class="mb-20">Categories</h5>
+                        <div class="widget-link">
+                            <ul>
+                                @if (Model != null)
+                                {
+                                    if (Model.Response != null)
+                                    {
+                                        if (Model.Response.CategoryList != null)
+                                        {
+                                            foreach (var item in Model.Response.CategoryList)
+                                            {
+                                                <li> <a href="/Home/Products?Id=@Karyon.Models.Crypto.Encrypt(@item.CategoryId.ToString())"> <i class="fa fa-angle-double-right"></i> @item.CategoryName </a></li>
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="sidebar-widget mb-0">
+                        <h5 class="mb-20">Popular items</h5>
+                        @if (Model != null)
+                        {
+                            if (Model.Response != null)
+                            {
+                                if (Model.Response.PopularItemsList != null)
+                                {
+                                    foreach (var item in Model.Response.PopularItemsList)
+                                    {
+                                        <div class="recent-item clearfix">
+                                            <div class="recent-image">
+                                                <a href="shop-single.html"><img class="img-fluid" src="@item.PrimaryImage" alt=""></a>
+                                            </div>
+                                            <div class="recent-info">
+                                                <div class="recent-title">
+                                                    <a href="/Home/ProductDetails?Id=@Karyon.Models.Crypto.Encrypt(item.VarientId.ToString())">@item.ProductName</a>
+                                                </div>
+                                                <div class="recent-meta">
+                                                    <ul class="list-style-unstyled">
+                                                        <li class="color">Rs @item.MRP /</li>
+                                                        <li>
+                                                            @if (item.StarRating == "1")
+                                                            {
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+
+                                                            }
+                                                            @if (item.StarRating == "2")
+                                                            {
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                            }
+                                                            @if (item.StarRating == "3")
+                                                            {
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                            }
+                                                            @if (item.StarRating == "4")
+                                                            {
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                            }
+                                                            @if (item.StarRating == "5")
+                                                            {
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                            }
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                }
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9 sm-mt-40">
+                @if (Model != null)
+                {
+                    if (Model.Response != null)
+                    {
+                        if (Model.Response.ProductList != null)
+                        {
+                            int kk = 0;
+                            foreach (var item in Model.Response.ProductList)
+                            {
+                                <div class="product listing">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <div class="product-image">
+                                                <img class="img-fluid mx-auto" src="@item.Image" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <div class="product-des text-start">
+                                                <div class="product-title">
+                                                    <a href="/Home/ProductDetails?Id=@Karyon.Models.Crypto.Encrypt(item.ProductId.ToString())">@item.ProductName</a>
+                                                </div>
+
+                                                <div class="product-rating">
+                                                    @if (item.StarRating == "1")
+                                                    {
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+
+                                                    }
+                                                    @if (item.StarRating == "2")
+                                                    {
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    }
+                                                    @if (item.StarRating == "3")
+                                                    {
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    }
+                                                    @if (item.StarRating == "4")
+                                                    {
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    }
+                                                    @if (item.StarRating == "5")
+                                                    {
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    }
+
+                                                </div>
+                                                <div class="product-price">
+                                                    <del>Rs @item.MRP</del> <ins>Rs @item.MRP</ins>
+                                                </div>
+                                                <div class="product-info mt-20">
+                                                    <p>
+                                                        @item.ProductsDetails
+                                                    </p>
+
+
+                                                    @foreach (var cart in item.VarientList)
+                                                    {
+                                                        if (cart.CartStatus == "1")
+                                                        {
+                                                            <a href="/Home/CartList" class="button small mt-20"> <span class="ti-shopping-cart"></span> Go to cart</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (kk == 0)
+                                                            {
+                                                                <a class="button small mt-20" href="/Home/Login?Status=@Karyon.Models.Crypto.Encrypt("AddToCart")&&ProductId=@Karyon.Models.Crypto.Encrypt(cart.VarientId.ToString())"> <span class="ti-shopping-cart"></span> Add to cart</a>
+                                                            }
+                                                        }
+
+                                                        kk++;
+                                                    }
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divider mt-30 mb-30"></div>
+                            }
+                        }
+                        else
+                        {
+                            <section class="page-section-ptb">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-12">
+                                            <div class="search-no-result text-start text-sm-center clearfix position-relative">
+
+                                                <div class="search-icon d-inline-block mr-30 mr-sm-40 position-relative theme-color">
+                                                    <i class="fa fa-search"></i>
+                                                </div>
+                                                <div class="search-contant d-inline-block text-start position-relative mt-20 mt-sm-0">
+                                                    <h2 class="theme-color">Nothing was found</h2>
+                                                    <p>Perhaps searching, or one of the links below, can help.</p>
+                                                    <div class="error-info mt-30">
+                                                        <a class="button xs-mb-10" href="/Home/Shop">back to home</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        }
+                    }
+                    else
+                    {
+                        <section class="page-section-ptb">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-12">
+                                        <div class="search-no-result text-start text-sm-center clearfix position-relative">
+
+                                            <div class="search-icon d-inline-block mr-30 mr-sm-40 position-relative theme-color">
+                                                <i class="fa fa-search"></i>
+                                            </div>
+                                            <div class="search-contant d-inline-block text-start position-relative mt-20 mt-sm-0">
+                                                <h2 class="theme-color">Nothing was found</h2>
+                                                <p>Perhaps searching, or one of the links below, can help.</p>
+                                                <div class="error-info mt-30">
+                                                    <a class="button xs-mb-10" href="/Home/Shop">back to home</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    }
+                }
+
+
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#divload").css({ 'display': 'none' })
+        var productDetails = [];
+
+        $.ajax({
+            url: '/Home/GetProductList',
+            type: 'Post',
+            success: function(response) {
+                if (response != null) {
+
+                    //alert("Respose is not null");
+                    $(response).each(function(index, item) {
+                        var name = item.productName;
+                        var id = item.productEncryptId;
+                        productDetails.push({ value: name, data: id });
+                    });
+
+                    $('#txtProductName').autocomplete({
+                        source: productDetails,
+                        select: function(event, ui) {
+
+                            var productId = ui.item.data;
+
+
+                            window.location.href = "/Home/Products?ProductId=" + productId;
+
+                        }
+                    })
+                    $("#divload").css({ 'display': 'none' })
+
+                }
+                else {
+                    $("#divload").css({ 'display': 'none' })
+                }
+            }, error: function() {
+                //alert('Some Thing wrong!');
+                $("#loader").css({ 'display': 'none' });
+
+            }
+        });
+    });
+</script>

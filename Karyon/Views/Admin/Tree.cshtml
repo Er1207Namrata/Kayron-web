@@ -1,0 +1,318 @@
+﻿﻿
+@model Karyon.Models.DirectRequest
+@{
+    ViewData["Title"] = "Tree";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    //Layout = null;
+}
+
+
+<!doctype html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Binary Tree</title>
+    <link rel="stylesheet" type="text/css" href="~/assets/Tree/css/binrary-tree.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <script>
+        function openNav(Name, sponsorname, joiningdate, activationdate, sponsorId, PermanentLeg1, PermanentLeg2, TotalPermanent, InactiveLeft, InactiveRight, Totalinactive, AllLeg1, AllLeg2, TotalLeg, PcountLeg1, PcountLeg2, TotalBusiness) {
+
+            var sponsordetails = sponsorname + '(' + sponsorId + ')';
+            $('#txtName').text(Name);
+            $('#sponsordetails').text(sponsordetails);
+            $('#joiningdate').text(joiningdate);
+            $('#activationdate').text(activationdate);
+            $('#PermanentLeg1').text(PermanentLeg1);
+            $('#PermanentLeg2').text(PermanentLeg2);
+            $('#TotalPermanent').text(TotalPermanent);
+            $('#InactiveLeft').text(InactiveLeft);
+            $('#InactiveRight').text(InactiveRight);
+            $('#Totalinactive').text(Totalinactive);
+            $('#AllLeg1').text(AllLeg1);
+            $('#AllLeg2').text(AllLeg2);
+            $('#TotalLeg').text(TotalLeg);
+            $('#PcountLeg1').text(PcountLeg1);
+            $('#PcountLeg2').text(PcountLeg2);
+            $('#TotalBusiness').text(TotalBusiness);
+            document.getElementById("mySidenav").style.width = "314px";
+            $(".sidenav").css({ 'display': 'block' });
+
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            $(".sidenav").css({ 'display': 'none' });
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Tree</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Team</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Tree</a></li>
+
+                </ol>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <form asp-action="Tree">
+                        <div class="card-body">
+
+
+                            <div class="row">
+
+                                <div class="section-field mb-20 col-sm-4">
+
+                                    <input type="text" asp-for="LoginId" class="web form-control" placeholder="LoginId" maxlength="50" />
+
+                                </div>
+                                <div class="section-field mb-20 col-sm-4">
+                                    <button type="submit" value="Search" class="btn btn-success btn-sm" name="Search">Search</button>
+                                    @if (TempData["OldLoginId"] != null)
+                                    {
+                                        <a href="/Admin/Tree?LoginId=@TempData["OldLoginId"].ToString()" class="btn btn-primary btn-sm">Back</a>
+                                    }
+
+                                </div>
+
+
+                                @if (Model != null)
+                                {
+                                    if (Model.dtDetails != null)
+                                    {
+
+
+                                        if (Model.dtDetails.Rows.Count > 0)
+                                        {
+
+                                            <div class="tf-tree example">
+                                                <br />
+                                                <ul style="width: 100%;overflow: auto;margin: 30px 10px;height:500px">
+                                                    <li>
+
+                                                        <span class="tf-nc">
+                                                            <span class="id-icon"><img src="@Model.dtSelfData.Rows[0]["ImageURL"].ToString()" style="width:30px;" alt=""></span>
+                                                            <span class="id">@Model.dtSelfData.Rows[0]["LoginId"].ToString()</span>
+                                                            <span class="id-name">
+                                                                <a href="#" class="hover-link">
+                                                                    @Model.dtSelfData.Rows[0]["FirstName"].ToString()
+                                                                    <div class="hover-data">
+                                                                        <div class="hover-data-content">
+                                                                            <h4> @Model.dtSelfData.Rows[0]["FirstName"].ToString()</h4>
+                                                                            <table cellpadding="0" cellspacing="0">
+                                                                                <tr>
+                                                                                    <th style="width:120px;">Sponsor Details:</th>
+                                                                                    <td>@Model.dtSelfData.Rows[0]["SponsorName"].ToString() (@Model.dtSelfData.Rows[0]["SponsorLoginId"].ToString())</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Joining On:</th>
+                                                                                    <td>@Model.dtSelfData.Rows[0]["JoiningDate"].ToString()</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Rank:</th>
+                                                                                    <td>@Model.dtSelfData.Rows[0]["PerformanceLevel"].ToString()</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Activation Date:</th>
+                                                                                    <td>@Model.dtSelfData.Rows[0]["PermanentDate"].ToString() </td>
+                                                                                </tr>
+
+
+                                                                            </table>
+                                                                            <table cellpadding="0" cellspacing="0">
+                                                                                <tr>
+                                                                                    <th>Self PV</th>
+                                                                                    <th>UID PV</th>
+                                                                                    <th>Team PV</th>
+                                                                                    
+
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>@Model.dtSelfData.Rows[0]["SelfPV"].ToString()</td>
+                                                                                    <td>@Model.dtSelfData.Rows[0]["UIDPV"].ToString()</td>
+                                                                                    <td>@Model.dtSelfData.Rows[0]["TeamPV"].ToString()</td>
+
+                                                                                </tr>
+                                                                            </table>
+                                                                            <table cellpadding="0" cellspacing="0">
+                                                                                <tr>
+                                                                                    <th>Current Self PV</th>
+                                                                                    <th>Current Team PV</th>
+                                                                                    <th>Current Total PV</th>
+
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>@Model.dtSelfData.Rows[0]["CurrentSelfPV"].ToString()</td>
+                                                                                    <td>@Model.dtSelfData.Rows[0]["CurrentUIDPV"].ToString()</td>
+                                                                                    <td>@Model.dtSelfData.Rows[0]["CurrentTeamPV"].ToString()</td>
+
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            </span>
+                                                        </span>
+                                                        <ul>
+                                                            @for (int i = 0; i <= Model.dtDetails.Rows.Count - 1; i++)
+                                                            {
+                                                                <li>
+
+                                                                    <span class="tf-nc">
+
+                                                                        <span class="id-icon"><img src="@Model.dtDetails.Rows[i]["ImageURL"].ToString()" style="width:30px;" alt=""></span>
+                                                                        <span class="id">@Model.dtDetails.Rows[i]["LoginId"].ToString()</span>
+                                                                        <span class="id-name">
+                                                                            <a href="/Admin/Tree?LoginId=@Model.dtDetails.Rows[i]["LoginId"].ToString()" class="hover-link">
+                                                                                @Model.dtDetails.Rows[i]["FirstName"].ToString()
+                                                                                <div class="hover-data">
+                                                                                    <div class="hover-data-content">
+                                                                                        <h4>@Model.dtDetails.Rows[i]["FirstName"].ToString()</h4>
+                                                                                        <table cellpadding="0" cellspacing="0">
+                                                                                            <tr>
+                                                                                                <th style="width:120px;">Sponsor Details:</th>
+                                                                                                <td>@Model.dtDetails.Rows[i]["SponsorName"].ToString() (@Model.dtDetails.Rows[i]["SponsorLoginId"].ToString())</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th>Joining On:</th>
+                                                                                                <td>@Model.dtDetails.Rows[i]["JoiningDate"].ToString()</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th>Rank:</th>
+                                                                                                <td>@Model.dtDetails.Rows[i]["PerformanceLevel"].ToString()</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th>Activation Date:</th>
+                                                                                                <td>@Model.dtDetails.Rows[i]["PermanentDate"].ToString() </td>
+                                                                                            </tr>
+
+
+                                                                                        </table>
+                                                                                        <table cellpadding="0" cellspacing="0">
+                                                                                            <tr>
+                                                                                                <th>Self PV</th>
+                                                                                                <th>Team PV</th>
+                                                                                                <th>Total PV</th>
+
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td>@Model.dtDetails.Rows[0]["SelfPV"].ToString()</td>
+                                                                                                <td>@Model.dtDetails.Rows[0]["UIDPV"].ToString()</td>
+                                                                                                <td>@Model.dtDetails.Rows[0]["TeamPV"].ToString()</td>
+
+
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                        <table cellpadding="0" cellspacing="0">
+                                                                                            <tr>
+                                                                                                <th>Current Self PV</th>
+                                                                                                <th>Current Team PV</th>
+                                                                                                <th>Current Total PV</th>
+
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td>@Model.dtDetails.Rows[0]["CurrentSelfPV"].ToString()</td>
+                                                                                                <td>@Model.dtDetails.Rows[0]["CurrentUIDPV"].ToString()</td>
+                                                                                                <td>@Model.dtDetails.Rows[0]["CurrentTeamPV"].ToString()</td>
+
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </span>
+                                                                    </span>
+
+
+                                                                </li>
+                                                            }
+
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+
+
+                                        }
+                                    }
+
+                                }
+
+                                <div id="mySidenav" class="sidenav">
+                                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                                    <div class="hover-data-content">
+                                        <h4 id="txtName"></h4>
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <th style="width:120px;">Sponsor Details:</th>
+                                                <td id="sponsordetails"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Joining On:</th>
+                                                <td id="joiningdate"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Activation Date:</th>
+                                                <td id="activationdate"></td>
+                                            </tr>
+                                        </table>
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <th>Type</th>
+                                                <th>Left</th>
+                                                <th>Right</th>
+                                                <th>Total</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Active</td>
+                                                <td id="PermanentLeg1"></td>
+                                                <td id="PermanentLeg2"></td>
+                                                <td id="TotalPermanent"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Inactive</td>
+                                                <td id="InactiveLeft"></td>
+                                                <td id="InactiveRight"></td>
+                                                <td id="Totalinactive"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total</td>
+                                                <td id="AllLeg1"></td>
+                                                <td id="AllLeg2"></td>
+                                                <td id="TotalLeg"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Business</td>
+                                                <td id="PcountLeg1"></td>
+                                                <td id="PcountLeg2"></td>
+                                                <td id="TotalBusiness"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

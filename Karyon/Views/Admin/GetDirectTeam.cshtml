@@ -1,0 +1,123 @@
+﻿@model Karyon.Models.DirectRequest
+
+@{
+    ViewData["Title"] = "GetDirectTeam";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-action="GetDirectTeam">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Direct Team</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">My Team</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Direct Team</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">Login Id </label>
+                                <input type="text" asp-for="LoginId" class="web form-control" placeholder="LoginId" maxlength="50" />
+
+                            </div>
+
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                                @if (TempData["OldLoginId"]!=null)
+                                {
+                                    <a class="btn btn-primary" href="/Admin/GetDirectTeam?LoginId=@TempData["OldLoginId"]">Back</a>
+                                }
+                                
+                                   
+                            </div>
+                            <span>
+                                @ViewBag.Message
+                            </span>
+                        </div>
+                        <br />
+                        <input type="hidden" asp-for="Page" />
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="MyDirectList">
+                                <thead>
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th>Login Id</th>
+                                        <th>Name</th>
+                                        <th>Parent Id</th>
+                                        <th>Parent Name</th>
+                                        <th>Zone</th>
+                                        <th>Mobile No</th>
+                                        <th>Joining Date</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        int j ;
+
+                                        if (Model.dtDetails != null)
+                                        {
+
+                                            for (j=0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                            {
+                                                <tr>
+                                                    <td>@(j + 1)</td>
+                                                    <td><a style="color:blue;cursor:pointer" href="/Admin/GetDirectTeam?LoginId=@Model.dtDetails.Rows[j]["LoginId"].ToString()">@Model.dtDetails.Rows[j]["LoginId"]</a></td>
+                                                    <td>@Model.dtDetails.Rows[j]["AssName"]</td>
+
+                                                    <td>@Model.dtDetails.Rows[j]["ParentId"] </td>
+                                                    <td>@Model.dtDetails.Rows[j]["ParentName"] </td>
+                                                    <td><span class="badge bg-info">@Model.dtDetails.Rows[j]["Leg"]</span></td>
+                                                    <td>@Model.dtDetails.Rows[j]["MobileNo"] </td>
+                                                    <td>@Model.dtDetails.Rows[j]["JoiningDate"] </td>
+                                                                                                                                                                                                      
+                                                </tr>
+                                            }
+                                            @Html.Hidden("Count", (int)j)
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<script>
+    function fCallPaging(val, IsExport) {
+        
+        if (val == undefined || val == NaN || val == null || val == "" || val == 0) {
+            val = 1;
+        }
+        $("#IsExport").val(IsExport);
+        $("#Page").val(val);
+        $('#BtnSearch').trigger('click');
+
+    }
+    function fgetleg(val,j)
+    {        
+        $("#Leg"+j).val(val);  
+    }
+
+
+</script>

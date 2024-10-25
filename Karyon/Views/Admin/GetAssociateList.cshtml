@@ -1,0 +1,227 @@
+﻿@model Karyon.Models.UpdateMemberDetails
+@{
+    ViewData["Title"] = "Associate Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<form asp-controller="Admin" asp-action="GetAssociateList">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Associate Details</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">My Team </a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Associate Details</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <p style="color:red">@TempData["AssociateList"]</p>
+                        <div class="row">
+                            <div class="section-field mb-20 col-sm-2">
+                                <label class="mb-10" for="name">Login Id </label>
+                                <input type="text" asp-for="LoginId" class="form-control"/>
+                            </div>
+                            <div class="section-field mb-20 col-sm-2">
+                                <label class="mb-10" for="name">Mobile No </label>
+                                <input type="text" asp-for="Mobile" class="form-control" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-2">
+                                <label class="mb-10" for="name">Email </label>
+                                <input type="text" asp-for="Email" class="form-control" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-2">
+                                <label class="mb-10" for="name">Pincode </label>
+                                <input type="text" asp-for="PinCode" class="form-control" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-2">
+                                <label class="mb-10" for="name">From Date</label>
+                                <input type="text" asp-for="FromDate" readonly class="form-control" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-2">
+                                <label class="mb-10" for="name">To Date </label>
+                                <input type="text" asp-for="ToDate" readonly class="form-control" />
+                            </div>
+
+                            <div class="section-field mb-10 col-sm-2">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                                <a href="/Admin/GetAssociateList" class="btn btn-dark">Reset </a>
+                            </div>
+                        </div>
+                        <br />
+                        <input type="hidden" asp-for="Page" />
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th>Login Id</th>
+                                        <th>Password</th>
+                                        <th>Associate Name</th>
+                                        <th>Mobile</th>
+                                        <th>Email</th>
+                                        <th>Pincode</th>
+                                        <th>State</th>
+                                        <th>City</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+                                                int i = 0;
+                                                int page = Model.Pager.CurrentPage;
+                                                page = (page - 1);
+                                                i = ((page) * (Model.Pager.PageSize));
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+                                                    <tr>
+                                                        <td>@(i + 1)</td>
+                                                        <td>@Model.dtDetails.Rows[j]["LoginId"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["Password"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["ContactPerson"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["MobileNo"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["Email"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["Pincode"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["StateName"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["CitiesName"] </td>
+                                                        <td>
+                                                            @if (Model.dtDetails.Rows[j]["IsBlocked"].ToString() == "True")
+                                                            {
+                                                                <a href="/Admin/BlockUnblockAssociate?Id=@Model.dtDetails.Rows[j]["Fk_memId"]&Status=Unblock" class="text-dark" onclick="return confirm('Are you sure want to UnBlock this Associate?')">
+                                                                    <i class="fa fa-unlock"></i>
+                                                                </a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a href="/Admin/BlockUnblockAssociate?Id=@Model.dtDetails.Rows[j]["Fk_memId"]&Status=Block" class="text-dark" onclick="return confirm('Are you sure want to Block this Associate?')">
+                                                                    <i class="fa fa-lock"></i>
+                                                                </a>
+                                                            }
+                                                        </td>
+
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+
+                            <footer class="card-footer bg-white p-2">
+
+                                <div class="d-md-flex align-items-center justify-content-between">
+                                     @if (Model != null)
+                                    {
+                                    if (Model.Pager != null)
+                                    {
+                                    @if (Model.Pager.EndPage > 1)
+                                    {
+                                    <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                    <div>
+                                    <ul class="pagination mb-0">
+                                    @if (Model.Pager.CurrentPage > 1)
+                                    {
+                                    <li class="page-item">
+
+                                    <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                    </li>
+
+
+
+                                    <li class="page-item">
+                                    <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                    </li>
+                                    }
+                                    @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                    {
+                                    var P = @page;
+                                    <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                    <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                    </li>
+
+                                    }
+                                    @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                    {
+                                    <li class="page-item">
+
+                                    <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                    </li>
+                                    <li class="page-item">
+
+                                    <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                    </li>
+                                    }
+                                    </ul>
+                                    </div>
+                                    }
+                                    }
+
+                                    }
+
+                                </div>
+                            </footer>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<script>
+    function fCallPaging(val, IsExport) {
+        
+        if (val == undefined || val == NaN || val == null || val == "" || val == 0) {
+            val = 1;
+        }
+        $("#IsExport").val(IsExport);
+        $("#Page").val(val);
+        $('#BtnSearch').trigger('click');
+
+    }
+    $('#FromDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+    $('#ToDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+</script>
+

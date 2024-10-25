@@ -1,0 +1,147 @@
+﻿@using Karyon.Models
+@model Karyon.Models.ContactUs
+@{
+    ViewData["Title"] = "Review About Us";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+
+<style>
+       .star-rating {
+     font-size: 23px;
+      display:flex;
+      flex-direction: row-reverse;
+      justify-content:space-around;
+      padding:0 .2em;
+      width:5em;
+    }
+
+    .star-rating input {
+      display:none;
+    }
+
+    .star-rating label {
+      color:#ccc;
+      cursor:pointer;
+    }
+
+    .star-rating :checked ~ label {
+      color: #EFC368;
+    }
+
+    
+
+               
+</style>
+<link rel="stylesheet" href="~/Websitecss/css/contacts.min.css" />
+@*<link href="/Content/dist/css/quantitybutton.css" rel="stylesheet">
+*@<link rel="icon" href="~/assets/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="~/websitecss/img/image.png" type="image/x-icon" />
+
+
+    <div class="page_main container-fluid">
+        <div class="container">
+            <h1 class="page_header">Review And Rating About Us</h1>
+            <p class="page_text"></p>
+        </div>
+    </div>
+    <div class="container">
+        <ul class="page_breadcrumbs d-flex flex-wrap">
+            <li class="page_breadcrumbs-item">
+                <a class="link" href="/Home/Index">Home</a>
+            </li>
+
+            <li class="page_breadcrumbs-item current">
+                <span>Review About Us</span>
+            </li>
+        </ul>
+    </div>
+
+<!-- Contacts content start -->
+<main>
+    <div class="contacts section">
+        <div class="container d-flex justify-content-center">
+            <div class="col-md-6">
+                <div class="contacts_form col-12 col-md-12">
+                    <div class="contacts_form-header">
+                        <h2 class="contacts_form-header_title">Please Give Review And Rating!</h2>
+                        
+                    </div>
+                    <form class="contacts_form-form d-flex flex-column" data-type="feedback" asp-action="ReviewAboutus" enctype="multipart/form-data">
+                        <label class="contacts_form-form_label" asp-for="Star"></label>
+                        <div class="form-group mb-6 d-flex justify-content-start contacts_form-form_field field " style="border:none;">
+                            <div class="star-rating">
+                                <input type="radio" asp-for="Star" id="5-stars"  value="5" />
+                                <label for="5-stars" class="star">&#9733;</label>
+                                <input type="radio" asp-for="Star" id="4-stars"  value="4" />
+                                <label for="4-stars"  class="star">&#9733;</label>
+                                <input type="radio" asp-for="Star" id="3-stars"  value="3" />
+                                <label for="3-stars" class="star">&#9733;</label>
+                                <input type="radio" asp-for="Star" id="2-stars"  value="2" />
+                                <label for="2-stars" class="star">&#9733;</label>
+                                <input type="radio" asp-for="Star"  id="1-star"  value="1" />
+                                <label for="1-star" class="star">&#9733;</label>
+                            </div>
+                        </div>
+                        <label class="contacts_form-form_label">Your Picture</label>
+                        <img src="" id="imagePreview" style="width: 100px;height: 100px;" />
+                        <br/>
+                        <input type="file" class="contacts_form-form_field field " onchange="ShowImagePreview(this)" asp-for="ProfileImage" />
+                        
+                        <label class="contacts_form-form_label" asp-for="Name">Your Name<span style="color:red;">*</span></label>
+                        <input class="contacts_form-form_field field " asp-for="Name" type="text" placeholder="Your name" />
+                        <label class="contacts_form-form_label" for="contactsEmail">Your Email<span style="color:red;">*</span></label>
+                        <input class="contacts_form-form_field field required"  asp-for="Email" type="text"  data-type="email"    placeholder="you@example.com" />
+                        <label class="contacts_form-form_label" for="contactsMessage">Review<span style="color:red;">*</span></label>
+                        <textarea class="contacts_form-form_field  field required"  asp-for="Message" data-type="message" placeholder="Type Your Review "></textarea>
+                        <input name="Save" id="Save" value="Save" class="contacts_form-form_btn btn" onclick="return fvalidate()" type="submit" />
+                        <p style="color:red">@TempData["Feedback"]</p>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+<script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+    function fvalidate() {
+        if ($('#Name').val() == "") {
+            alert("Please Enter Your Name");
+            $('#Name').focus();
+            return false;
+        }
+
+        if ($('#Email').val() == "") {
+            alert("Please Enter Your Email");
+            $('#Email').focus();
+            return false;
+        }
+        if (ValidateEmail() == false) {
+            return false;
+        }
+        if ($('#Message').val() == "") {
+            alert("Please Enter Your Review");
+            $('#Message').focus();
+            return false;
+        }
+        $('#imagePreview').prop('src','');
+    }
+    function ValidateEmail() {
+        var email = $('#Email').val();
+        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        if (!expr.test(email)) {
+            alert("Invalid email address.");
+            return false;
+        }
+    }
+    function ShowImagePreview(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreview').prop('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

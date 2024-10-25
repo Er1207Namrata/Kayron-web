@@ -1,0 +1,157 @@
+﻿@{
+    ViewData["Title"] = "Congratulations";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+
+<style type="text/css">
+    .header-top {
+        width: 100%;
+        background-color: green;
+    }
+
+    ul.header-top-mail-number li {
+        list-style-type: none;
+        float: left;
+        padding: 5px;
+        font-size: 16px;
+        color: aliceblue;
+    }
+
+    ul.header-top-login-inv li {
+        list-style-type: none;
+        float: left;
+        padding: 5px;
+        font-size: 16px;
+        color: aliceblue;
+        text-align: right;
+    }
+
+        ul.header-top-login-inv li a {
+            color: aliceblue;
+            line-height: 0px;
+            margin: 10px;
+            background-color: #27990c;
+            padding: 10px;
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+    .icon-header-item li a {
+        color: #fff;
+    }
+
+        .icon-header-item li a:hover {
+            color: green;
+        }
+</style>
+<style type="text/css">
+    .header-top {
+        width: 100%;
+        background-color: green;
+    }
+
+    ul.header-top-mail-number li {
+        list-style-type: none;
+        float: left;
+        padding: 5px;
+        font-size: 16px;
+        color: aliceblue;
+    }
+
+    ul.header-top-login-inv li {
+        list-style-type: none;
+        float: left;
+        padding: 5px;
+        font-size: 16px;
+        color: aliceblue;
+        text-align: right;
+    }
+
+        ul.header-top-login-inv li a {
+            color: aliceblue;
+            line-height: 0px;
+            margin: 10px;
+            background-color: #27990c;
+            padding: 10px;
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+    .icon-header-item li a {
+        color: #fff;
+    }
+
+        .icon-header-item li a:hover {
+            color: green;
+        }
+</style>
+
+
+    <div class="page-body">
+        <div class="container-fluid">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-sm-6 ps-0">
+                        <h3>Congratulations</h3>
+                    </div>
+                    <div class="col-sm-6 pe-0">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">
+                                    <svg class="stroke-icon">
+                                        <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">Congratulations</li>
+                            @*<li class="breadcrumb-item active"> Karyon Wallet List</li>*@
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- /breadcrumb -->
+
+
+                    <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="section-wrapper white left">
+                                    <section class="custom-padding about-us">
+                                        <div class="container">
+
+                                            <div class="row text-center">
+                                                <div class="col-md-12 form-group">
+                                                    <br><br> <h2 style="color:#0fad00">Success</h2>
+
+                                                    <img src="~/assets/images/confirmation.gif" style="height:200px" />
+                                                    <h3>Dear, @Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")</h3>
+                                                    <p style="font-size:20px;color:#5C5C5C;text-align:center">
+                                                        Thank you for your registration. Now you are Karyon Family Members.Your Details are as Below:
+                                                        <br />
+                                                        <span class="border-box">Login ID: @Context.Session.GetString("LoginId")</span>
+                                                        <span class="border-box">Password:  @Context.Session.GetString("Password")</span>
+                                                    </p>
+
+                                                   
+                                                    <a href="/Associate/Registration" class="btn btn-info">     New Registration    </a>
+                                                    <br><br>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </section>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        

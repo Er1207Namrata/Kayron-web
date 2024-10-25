@@ -1,0 +1,276 @@
+﻿@using Karyon.Models
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <me
+    <link rel="icon" href="~/associatepanel/assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="~/associatepanel/assets/images/favicon.png" type="image/x-icon">
+    <title>@ViewBag.Title</title>
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Outfit:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/font-awesome.css">
+    <!-- ico-font-->
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/icofont.css">
+    <!-- Themify icon-->
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/themify.css">
+    <!-- Flag icon-->
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/flag-icon.css">
+    <!-- Feather icon-->
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/feather-icon.css">
+    <!-- Plugins css start-->
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/slick.css">
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/slick-theme.css">
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/animate.css">
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/datatables.css">
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/owlcarousel.css">
+    <!-- Plugins css Ends-->
+    <!-- Bootstrap css-->
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/vendors/bootstrap.css">
+    <!-- App css-->
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/style.css">
+    <link id="color" rel="stylesheet" href="~/associatepanel/assets/css/color-1.css" media="screen">
+    <!-- Responsive css-->
+    <link rel="stylesheet" type="text/css" href="~/associatepanel/assets/css/responsive.css">
+    <style>
+        .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper {
+    background: #40541d !important;
+   
+}
+.page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links .simplebar-wrapper .simplebar-mask .simplebar-content-wrapper .simplebar-content > li .sidebar-submenu li a.active {
+    color: #ffc755;
+}
+
+.page-wrapper.compact-wrapper .page-body-wrapper .page-body {
+  
+    background-color: #f1efed !important;
+}
+.promo{
+    color: #ffbf3c;
+    padding: 3px;
+    /* background: #eaf2fe; */
+   /*  width: 24%; */
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 18px;
+    border-radius: 2px;
+}
+
+/* .project-dashboard .web-card .flex-shrink-0 {
+    margin-top: 27px !important;
+} */
+.active-1{
+        margin-left: 15px;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #fff !important;
+    background-color: #40541d !important;
+    border: 1px solid #40541d !important;
+}
+.name-1{
+    padding-left: 5px;
+}
+.project-dashboard .upcoming-launch .meeting p {
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    color: #9B9B9B;
+    text-overflow: auto; 
+    overflow: show;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2000 !important;
+    -webkit-box-orient: bo;
+    white-space: normal;
+}
+    </style>
+</head>
+<body>
+    <!-- loader starts-->
+    <div class="loader-wrapper" id="pre-loader">
+        <div class="theme-loader">
+            <div class="loader-p"></div>
+        </div>
+    </div>
+    <!-- loader ends-->
+    <!-- tap on top starts-->
+    <div class="tap-top"><i data-feather="chevrons-up"></i></div>
+    <!-- tap on tap ends-->
+    <!-- page-wrapper Start-->
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+        <!-- Page Header Start-->
+        <div class="page-header">
+            <div class="header-wrapper row m-0">
+                <div class="header-logo-wrapper col-auto p-0">
+                    <div class="logo-wrapper">
+                        <a href="/Home/NewDashBoard">
+                            <img class="img-fluid for-light" src="~/associatepanel/assets/images/logo.svg" alt="">
+                            <img class="img-fluid for-dark" src="~/associatepanel/assets/images/logo.svg" alt="">
+                        </a>
+                    </div>
+                    <div class="toggle-sidebar">
+                        <svg class="sidebar-toggle">
+                            <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-animation"></use>
+                        </svg>
+                    </div>
+                </div>
+                @* <div class="left-header col-xxl-5 col-xl-6 col-auto box-col-6 horizontal-wrapper p-0">
+                    <div class="left-menu-header">
+                        <ul class="app-list">
+                            <li class="onhover-dropdown">
+                                <div class="app-menu"> <i data-feather="folder-plus"></i></div>
+                                <ul class="onhover-show-div left-dropdown">
+                                    <li> <a href="file-manager.html">File Manager</a></li>
+                                    <li> <a href="kanban.html"> Kanban board</a></li>
+                                    <li> <a href="social-app.html"> Social App</a></li>
+                                    <li> <a href="bookmark.html"> Bookmark</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div> *@
+                <div class="d-flex justify-content-end col-xxl-7 col-xl-6 col-auto box-col-6 pull-right right-header p-0 ms-auto">
+                    <ul class="nav-menus">
+                        <li class="profile-nav onhover-dropdown p-0">
+                            <div class="d-flex align-items-center profile-media">
+                                <img class="b-r-10 img-40" src="~/Franchisepanel/assets//img/users/11.jpg" alt="">
+                                <div class="flex-grow-1 name-1">
+                                    <span> @Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")</span>
+                                    <p class="mb-0">@Context.Session.GetString("LoginId") <i class="middle fa fa-angle-down"></i></p>
+                                </div>
+                            </div>
+                            <ul class="profile-dropdown onhover-show-div">
+                               @*  <li><a href="user-profile.html"><i data-feather="user"></i><span>Account </span></a></li>
+                                <li><a href="email-application.html"><i data-feather="mail"></i><span>Inbox</span></a></li>
+                                <li><a href="task.html"><i data-feather="file-text"></i><span>Taskboard</span></a></li>
+                                <li><a href="edit-profile.html"><i data-feather="settings"></i><span>Settings</span></a></li> *@
+                                <li><a href="/Home/Login?Status=Status" class="d-flex align-items-center"><i data-feather="log-in"> </i><span>Logout</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <script class="result-template" type="text/x-handlebars-template">
+                    <div class="ProfileCard u-cf">
+                    <div class="ProfileCard-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay m-0"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg></div>
+                    <div class="ProfileCard-details">
+                    <div class="ProfileCard-realName"> @Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")</div>
+                    </div>
+                    </div>
+                </script>
+                <script class="empty-template" type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
+            </div>
+        </div>
+        <!-- Page Header Ends-->
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper" >
+            <!-- Page Sidebar Start-->
+            <div class="sidebar-wrapper" data-layout="fill-svg">
+                <div>
+                    <div class="logo-wrapper">
+                        <a href="#"><img width="120" class="img-fluid" src="~/associatepanel/assets/images/logo.svg" alt=""></a>
+                        <div class="toggle-sidebar">
+                            <svg class="sidebar-toggle">
+                                <use href="/AssociatePanel/assets/svg/icon-sprite.svg#toggle-icon"></use>
+                                
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="logo-icon-wrapper"><a href="#"><img width="20" class="img-fluid" src="~/associatepanel/assets/images/favicon.png" alt=""></a></div>
+                    @{
+                        Html.RenderPartial("_AssociatePartialLayout");
+                    }
+                    
+                </div>
+            </div>
+
+            <!-- Page Sidebar Ends-->
+            @RenderBody();
+            <!-- footer start-->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 p-0 footer-copyright">
+                            <p class="mb-0">Copyright 2024 © Karyon Organic.</p>
+                        </div>
+                        <div class="col-md-6 p-0">
+                            @*  <p class="heart mb-0">
+                            Hand crafted &amp; made with
+                            <svg class="footer-icon">
+                            <use href="../../associatepanel/assets/svg/icon-sprite.svg#heart"></use>
+                            </svg>
+                            </p> *@
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <!-- latest jquery-->
+    <script src="~/associatepanel/assets/js/jquery.min.js"></script>
+    <!-- Bootstrap js-->
+    <script src="~/associatepanel/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- feather icon js-->
+    <script src="~/associatepanel/assets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="~/associatepanel/assets/js/icons/feather-icon/feather-icon.js"></script>
+    <!-- scrollbar js-->
+    <script src="~/associatepanel/assets/js/scrollbar/simplebar.js"></script>
+    <script src="~/associatepanel/assets/js/scrollbar/custom.js"></script>
+    <!-- Sidebar jquery-->
+    <script src="~/associatepanel/assets/js/config.js"></script>
+    <!-- Plugins JS start-->
+    <script src="~/associatepanel/assets/js/sidebar-menu.js"></script>
+    <script src="~/associatepanel/assets/js/sidebar-pin.js"></script>
+    <script src="~/associatepanel/assets/js/slick/slick.min.js"></script>
+    <script src="~/associatepanel/assets/js/slick/slick.js"></script>
+    <script src="~/associatepanel/assets/js/header-slick.js"></script>
+    <script src="~/associatepanel/assets/js/chart/morris-chart/raphael.js"></script>
+    <script src="~/associatepanel/assets/js/chart/morris-chart/morris.js"> </script>
+    <script src="~/associatepanel/assets/js/chart/morris-chart/prettify.min.js"></script>
+    <script src="~/associatepanel/assets/js/chart/apex-chart/apex-chart.js"></script>
+    <script src="~/associatepanel/assets/js/chart/apex-chart/stock-prices.js"></script>
+    <script src="~/associatepanel/assets/js/chart/apex-chart/moment.min.js"></script>
+    <script src="~/associatepanel/assets/js/notify/bootstrap-notify.min.js"></script>
+    <script src="~/associatepanel/assets/js/notify/index.js"></script>
+    <script src="~/associatepanel/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/associatepanel/assets/js/datatable/datatables/datatable.custom.js"></script>
+    <script src="~/associatepanel/assets/js/datatable/datatables/datatable.custom1.js"></script>
+    <script src="~/associatepanel/assets/js/owlcarousel/owl.carousel.js"></script>
+    <script src="~/associatepanel/assets/js/owlcarousel/owl-custom.js"></script>
+    <script src="~/associatepanel/assets/js/typeahead/handlebars.js"></script>
+    <script src="~/associatepanel/assets/js/typeahead/typeahead.bundle.js"></script>
+    <script src="~/associatepanel/assets/js/typeahead/typeahead.custom.js"></script>
+    <script src="~/associatepanel/assets/js/typeahead-search/handlebars.js"></script>
+    <script src="~/associatepanel/assets/js/typeahead-search/typeahead-custom.js"></script>
+    <script src="~/associatepanel/assets/js/height-equal.js"></script>
+    <!-- Plugins JS Ends-->
+    <!-- Theme js-->
+    <script src="~/associatepanel/assets/js/script.js"></script>
+    <!-- Plugin used-->
+</body>
+
+
+</html>
+<script>
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode != 46 && charCode > 31
+            && (charCode < 48 || charCode > 57))
+            return false;
+    }
+    function fCallPaging(val, IsExport) {
+        if (val == undefined || val == NaN || val == null || val == "" || val == 0) {
+            val = 1;
+        }
+        $("#IsExport").val(IsExport);
+        $("#Page").val(val);
+        $('#BtnSearch').trigger('click');
+
+    }
+</script>

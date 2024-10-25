@@ -1,0 +1,157 @@
+﻿@model Karyon.Models.ActivationMember
+@{
+    ViewData["Title"] = "ActivationMemberLog";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-action="ActivationMemberLog">
+  <div class="main-container container-fluid">
+
+    <!-- breadcrumb -->
+    <div class="breadcrumb-header justify-content-between">
+        <div class="left-content">
+            <span class="main-content-title mg-b-0 mg-b-lg-1">Activation Member Log</span>
+        </div>
+        <div class="justify-content-center mt-2">
+            <ol class="breadcrumb breadcrumb-style3">
+                <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Activation Member Log</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- /breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="section-field mb-20 col-sm-3">
+                            <label class="mb-10" for="name">Login Id </label>
+                            <input type="text" asp-for="LoginId" class="web form-control" placeholder="LoginId" maxlength="50" />
+
+                        </div>
+                        <div class="section-field mb-10 col-sm-3">
+                            <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="display:none;"  value="Search">
+
+                                <input type="submit" class="btn btn-success "  value="Search" onclick="fCallPaging(1,0)">
+                        </div>
+                    </div>
+                    <br />
+                    <input type="hidden" asp-for="Page" />
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="MyDirectList">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Login Id</th>
+                                    <th>Name</th>
+                                    <th>Old Status</th>
+                                    <th>New Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    int j;
+
+                                        if (Model.dtDetails != null && Model.dtDetails.Rows.Count > 0)
+                                    {
+                                            int i = 1;
+                                            int page = Model.Pager.CurrentPage;
+                                            page = (page - 1);
+                                            i = ((page) * (Model.Pager.PageSize));
+
+                                        for (j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                        {
+                                            <tr>
+                                                <td>@(i + 1)</td>
+                                                <td>@Model.dtDetails.Rows[j]["LoginId"]</td>
+                                                <td>@Model.dtDetails.Rows[j]["Name"]</td>
+
+                                                <td>@Model.dtDetails.Rows[j]["OldStatus"] </td>                                              
+                                                <td>@Model.dtDetails.Rows[j]["NewStatus"] </td>                                              
+                                                </tr>
+                                                i++;
+                                            }
+                                        @Html.Hidden("Count", (int)j)
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                        <footer class="card-footer bg-white p-2">
+
+                            <div class="d-md-flex align-items-center justify-content-between">
+                                @if (Model != null)
+                                {
+                                    if (Model.Pager != null)
+                                    {
+                                        @if (Model.Pager.EndPage > 1)
+                                        {
+                                            <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                            <div>
+                                                <ul class="pagination mb-0">
+                                                    @if (Model.Pager.CurrentPage > 1)
+                                                    {
+                                                        <li class="page-item">
+
+                                                            <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                        </li>
+
+
+
+                                                        <li class="page-item">
+                                                            <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                        </li>
+                                                    }
+                                                    @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                    {
+                                                        var P = @page;
+                                                        <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                            <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                        </li>
+
+                                                    }
+                                                    @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                    {
+                                                        <li class="page-item">
+
+                                                            <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                        </li>
+                                                        <li class="page-item">
+
+                                                            <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        }
+                                    }
+
+                                }
+
+                            </div>
+                        </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+ </form>
+<script>
+    function fCallPaging(val, IsExport) {
+
+        if (val == undefined || val == NaN || val == null || val == "" || val == 0) {
+            val = 1;
+        }
+        $("#IsExport").val(IsExport);
+        $("#Page").val(val);
+        $('#BtnSearch').trigger('click');
+
+    }
+   
+</script>
+

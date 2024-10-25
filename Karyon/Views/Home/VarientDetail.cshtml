@@ -1,0 +1,462 @@
+﻿@model Karyon.Models.ProductReposne
+
+@{
+    ViewData["Title"] = "VarientDetail";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+
+<style>
+    .swiper-slide {
+        width: 100%; 
+        max-height: 500px;
+        min-height: 500px;
+        overflow: hidden; 
+    }
+
+    .slide-image {
+        width: 100%;
+        max-height: 500px;
+        min-height: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: start;
+    }
+
+        .slide-image img {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+        }
+
+    .button {
+        float: left;
+        margin: 0 5px 0 0;
+        width: 100px;
+        height: 40px;
+        position: relative;
+        border: 1px solid;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+        .button label,
+        .button input {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+            .button input[type="radio"] {
+                opacity: 0.011;
+                z-index: 100;
+            }
+
+                .button input[type="radio"]:checked + label {
+                    background: #52622c;
+                    color: #fff;
+                    border-radius: 4px;
+                }
+
+        .button label {
+            cursor: pointer;
+            z-index: 90;
+            line-height: 2.3em;
+        }
+</style>
+
+<link rel="stylesheet" href="~/Websitecss/css/product.min.css" />
+<header class="page">
+    <div class="page_main container-fluid">
+        <div class="container">
+            <h1 class="page_header">Product Details</h1>
+
+        </div>
+    </div>
+    <div class="container">
+        <ul class="page_breadcrumbs d-flex flex-wrap">
+            <li class="page_breadcrumbs-item">
+                <a class="link" href="/Home/Index">Home</a>
+            </li>
+
+            <li class="page_breadcrumbs-item current">
+                <span>Product Details</span>
+            </li>
+        </ul>
+    </div>
+</header>
+<!-- Single product content start -->
+<main>
+    <section class="about section--nopb">
+        <div class="container">
+            <!-- Product main -->
+            <div class="about_main d-md-flex flex-nowrap justify-content-between align-items-start">
+                <div class="about_main-slider about_main-slider--destroy">
+                    <div class="swiper-wrapper">
+                            @if (Model != null)
+                            {
+                                if (Model.Response.ProductList[0].VarientList[0].ImageList != null)
+                                {
+                                    foreach (var item in Model.Response.ProductList[0].VarientList[0].ImageList)
+                                    {
+                                        <div class="swiper-slide">
+                                              <div class="slide-image">
+                                            <picture>
+                                                <source data-srcset="@item.ImageUrl"
+                                            srcset="@item.ImageUrl"
+                                            type="image/webp" />
+                                                <img class="lazy"
+                                         data-src="@item.ImageUrl"
+                                         src="@item.ImageUrl"
+                                         alt="media" />
+                                            </picture>
+                                        </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                            
+
+                        </div>
+                    </div>
+                <div class="about_main-info">
+                    <div class="about_main-info_product d-flex align-items-center justify-content-start">
+                        <div>
+                            <h2 class="title">@Model.Response.ProductList[0].ProductName</h2>
+                        </div>
+                        <div class="action d-flex" style="margin-left: 25px;">
+                            <a class="action_link d-flex align-items-center justify-content-center" href="#" data-role="wishlist">
+                                <i class="icon-heart"></i>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="about_main-info_rating d-flex align-items-center">
+                        <ul class="stars d-flex align-items-center accent">
+                            <li class="stars_star">
+                                <i class="icon-star_fill"></i>
+                            </li>
+                            <li class="stars_star">
+                                <i class="icon-star_fill"></i>
+                            </li>
+                            <li class="stars_star">
+                                <i class="icon-star_fill"></i>
+                            </li>
+                            <li class="stars_star">
+                                <i class="icon-star_fill"></i>
+                            </li>
+                            <li class="stars_star">
+                                <i class="icon-star_fill"></i>
+                            </li>
+                        </ul>
+                        <a class="reviews-amount" href="#reviews">(2 customer reviews)</a>
+                    </div>
+                    @{
+                        int k = 0;
+                        int kk = 0;
+                    }
+
+                    @*<li class="list-item">
+                    <span class="property">Category:</span>
+                    <span class="value">Oil</span>
+                    </li>*@
+                 
+
+                    <div class="d-flex align-items-center my-3">
+                    @foreach (var cart in Model.Response.ProductList[0].VarientList)
+                    {
+                        if (k == 0)
+                        {
+                            if (Context.Session.GetString("CustomerId") != "0")
+                            {
+                                <del id="mrpwithlogin">₹ @cart.MRP</del> <span id="offeredPrice" class="about_main-info_price">₹ @cart.OfferedPrice</span>
+                            }
+                            else
+                            {
+                                <span class="about_main-info_price" id="offeredPrice">₹ @cart.MRP</span>
+                            }
+                        }
+                        k++;
+                    }
+                    </div>
+                    <div class="d-flex align-items-center mb-5">
+                        @foreach (var cart in Model.Response.ProductList[0].VarientList)
+                        {
+                            if (kk == 0)
+                            {
+                                <div class="button">
+                                    <input type="radio" onclick="return getVarientDetails('@cart.MRP','@cart.OfferedPrice','@cart.CustomerId','@cart.VarientId')" checked value="@cart.VarientId" id="modalWeight_@kk" name="modalWeight">
+
+                                    <label for="modalWeight_@kk">&nbsp;&nbsp;@cart.Size @cart.UnitName</label>
+
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="button">
+                                    <input type="radio" onclick="return getVarientDetails('@cart.MRP','@cart.OfferedPrice','@cart.CustomerId','@cart.VarientId')" value="@cart.VarientId" id="modalWeight_@kk" name="modalWeight">
+
+                                    <label for="modalWeight_@kk">&nbsp;&nbsp;@cart.Size @cart.UnitName</label>
+                                </div>
+                            }
+                            kk++;
+                        }
+                    </div>
+                    <div class="about_main-info_buy d-flex align-items-center">
+                        <div class="qty d-flex align-items-center justify-content-between">
+                            <span class="qty_minus control disabled d-flex align-items-center">
+                                <i class="icon-minus"></i>
+                            </span>
+                            <input class="qty_amount" type="number" id="qty_amount" readonly value="1" min="1" max="99" />
+                            <span class="qty_plus control d-flex align-items-center">
+                                <i class="icon-plus"></i>
+                            </span>
+                        </div>
+                        <span id="varientid" style="display:none"></span>
+                        <a class="btn" href="#" onclick="return AddToCart(this)">Add to Cart</a>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Product additional information -->
+            <div class="about_secondary">
+                <div class="about_secondary-content">
+                    <ul class="about_secondary-content_nav nav nav-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <div class="nav-link active"
+                                 id="description-tab"
+                                 data-bs-toggle="tab"
+                                 data-bs-target="#description"
+                                 role="tab"
+                                 aria-selected="true">
+                                Description
+                            </div>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <div class="nav-link"
+                                 id="reviews-tab"
+                                 data-bs-toggle="tab"
+                                 data-bs-target="#reviews"
+                                 role="tab"
+                                 aria-selected="false">
+                                @if (Model.Response.RatingList != null)
+                                {
+                                    <p>Reviews (<span id="reviewsCount">@Model.Response.RatingList.Count</span>)</p>
+                                }
+                                else
+                                {
+                                    <p>Reviews (<span id="reviewsCount">0</span>)</p>
+                                }
+
+                            </div>
+                        </li>
+
+                    </ul>
+                    <div class="about_secondary-content_tabs tab-content" id="productTabs">
+                        <div class="wrapper">
+                            <h4 class="accordion_component-item_header d-flex justify-content-between align-items-center"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#description"
+                                aria-expanded="true">
+                                Description
+                                <i class="icon-caret_down transform icon"></i>
+                            </h4>
+                            <div class="tab-pane collapse show active"
+                                 id="description"
+                                 role="tabpanel"
+                                 aria-labelledby="description-tab"
+                                 data-bs-parent="#productTabs">
+                                <p class="text">
+                                    @Model.Response.ProductList[0].ProductsDetails
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="wrapper">
+                            <h4 class="accordion_component-item_header d-flex justify-content-between align-items-center"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#reviews">
+                                <span class="wrapper"> Reviews (<span id="reviewsCountResponsive">2</span>) </span>
+                                <i class="icon-caret_down icon"></i>
+                            </h4>
+                            <div class="tab-pane collapse"
+                                 id="reviews"
+                                 role="tabpanel"
+                                 aria-labelledby="reviews-tab"
+                                 data-bs-parent="#productTabs">
+                                <div class="reviews-section">
+                                    <ul class="reviews-section_list">
+                                        @if (Model.Response.RatingList != null)
+                                        {
+                                            if (Model.Response.RatingList.Count > 0)
+                                            {
+                                                foreach (var item in Model.Response.RatingList)
+                                                {
+                                                    <li class="review">
+                                                        <div class="review_header d-sm-flex flex-wrap">
+                                                            <span class="name">@item.Name</span>
+                                                            <div class="rating d-flex">
+                                                                @if (item.Star=="1")
+                                                                {
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star star"></i>
+                                                                    <i class="icon-star star"></i>
+                                                                    <i class="icon-star star"></i>
+                                                                    <i class="icon-star star"></i>
+
+                                                                }
+                                                                else if (item.Star == "2")
+                                                                {
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star star"></i>
+                                                                    <i class="icon-star star"></i>
+                                                                    <i class="icon-star star"></i>
+
+                                                                }
+                                                                else if (item.Star == "3")
+                                                                {
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star star"></i>
+                                                                    <i class="icon-star star"></i>
+
+                                                                }
+                                                                else if (item.Star == "4")
+                                                                {
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star star"></i>
+                                                                    <i class="icon-star star"></i>
+
+                                                                }
+                                                                else if (item.Star == "4")
+                                                                {
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star star"></i>
+
+                                                                }
+                                                                else if (item.Star == "5")
+                                                                {
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+                                                                    <i class="icon-star_fill star"></i>
+
+                                                                }
+                                                               
+                                                            </div>
+                                                            <span class="timestamp">@item.RatingDate</span>
+                                                        </div>
+                                                        <p class="review_main">
+                                                            @item.Rating
+                                                        </p>
+
+
+                                                    </li>
+                                                }
+                                            }
+
+
+                                        }
+
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                  @*      <div class="wrapper">
+                            <h4 class="accordion_component-item_header d-flex justify-content-between align-items-center"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#additionalInfo">
+                                Additional Information
+                                <i class="icon-caret_down icon"></i>
+                            </h4>
+                            <div class="tab-pane collapse"
+                                 id="additionalInfo"
+                                 role="tabpanel"
+                                 aria-labelledby="additional-tab"
+                                 data-bs-parent="#productTabs">
+                                <table class="table d-flex flex-column">
+                                    <tbody>
+                                        <tr class="table_row d-flex flex-column flex-lg-row">
+                                            <th class="table_row-header">Ingredients:</th>
+                                            <td class="table_row-cell">Organic MCT Oil, CBD Isolate</td>
+                                        </tr>
+                                        <tr class="table_row d-flex flex-column flex-lg-row">
+                                            <th class="table_row-header">Flavors:</th>
+                                            <td class="table_row-cell">
+                                                Natural 1500mg, Calm 750mg, Focus 750mg, Energize 750mg, Sleep 750mg, Recover 750mg
+                                            </td>
+                                        </tr>
+                                        <tr class="table_row d-flex flex-column flex-lg-row">
+                                            <th class="table_row-header">Recommended Usage:</th>
+                                            <td class="table_row-cell">
+                                                Once a day, place a full dropper under your tongue and hold for a minute. Repeat as
+                                                necessary
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Top products section start -->
+    <!-- Top products section end -->
+</main>
+
+<script src="~/assets/js/jquery-3.6.0.min.js"></script>
+<script>
+    function AddToCart(value) {
+
+       
+        var varientid = $('input[name="modalWeight"]:checked').val();
+      
+
+        $.ajax({
+            url: '/Home/CheckLogin',
+            type: 'Post',
+            data: { ProductId: varientid, Quantity: $('#qty_amount').val() },
+            success: function(response) {
+
+                window.location.href = "/Home/Login?Status=" + response + "&&ProductId=" +varientid+ "&&Quantity=" + $('#qty_amount').val();
+
+
+            }, error: function() {
+                //alert('Some Thing wrong!');
+
+
+            }
+        });
+    }
+    function getVarientDetails(mrp, offeredPrice, customerId, varientId) {
+        var mrp = "₹" + mrp;
+        var offeredPrice = "₹" + offeredPrice;
+        $('#varientid').text(varientId);
+        if (customerId != "0") {
+            $('#mrpwithlogin').show();
+
+            $('#mrpwithlogin').text(mrp);
+            $('#offeredPrice').text(offeredPrice);
+        }
+        else {
+            $('#mrpwithlogin').hide();
+            $('#offeredPrice').text(mrp);
+        }
+
+    }
+</script>

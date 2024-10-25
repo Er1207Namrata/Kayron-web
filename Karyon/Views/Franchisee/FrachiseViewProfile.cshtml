@@ -1,0 +1,961 @@
+﻿@model Karyon.Models.ProfileRequest
+
+@{
+    ViewData["Title"] = "Franchisee View Profile";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+<div class="main-container container-fluid">
+    <form asp-action="FrachiseViewProfile" enctype="multipart/form-data">
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">PROFILE</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0);">My Accounts</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"> Franchisee Profile</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card overflow-hidden">
+                    <div class="card-body p-0">
+                        <div class="profile-cover ht-350" style="height:64px;background-color: #40541d;"></div>
+                        <div class="px-4 pt-4 pos-relative">
+                            <div class="rounded-circle profile-img">
+                                <img src="@TempData["ProfilePicURL"]" alt="img" class="avatar-xxl rounded-circle">
+                            </div>
+                            <div class="mt-4 d-sm-flex">
+                                <div class="mt-0 mb-sm-0 mb-3">
+                                    <h3 class="mb-1">@Model.CompanyName</h3>
+                                    <span class="tx-muted">@Model.ContactPerson</span>
+                                </div>
+                                <div class="ms-auto mg-sm-t-0-f mt-2">
+                                    <div class="d-sm-flex">
+                                        <div class="d-flex align-items-center me-4 mb-2 mg-b-sm-0-f">
+                                            <span class="avatar rounded-circle bg-primary-transparent"><i class="fe fe-briefcase tx-primary"></i></span>
+                                            <div class="ms-2">
+                                                <p class="mb-1 font-weight-semibold">Total Orders</p>
+                                                <span class="tx-muted">@Model.TotalOrders</span>
+                                            </div>
+                                        </div>
+                                        @*<div class="d-flex align-items-center me-4 mb-2 mg-b-sm-0-f">
+                                        <span class="avatar rounded-circle bg-warning-transparent"><i class="fe fe-cast tx-warning"></i></span>
+                                        <div class="ms-2">
+                                        <p class="mb-1 font-weight-semibold">Following</p>
+                                        <span class="tx-muted">12K</span>
+                                        </div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                        <span class="avatar rounded-circle bg-green-transparent"><i class="fe fe-users tx-green"></i></span>
+                                        <div class="ms-2">
+                                        <p class="mb-1 font-weight-semibold">Followers</p>
+                                        <span class="tx-muted">325K</span>
+                                        </div>
+                                        </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel tabs-style7 scaleX mt-2">
+                            <div class="panel-head">
+                                <ul class="nav nav-tabs d-block d-sm-flex">
+                                    <li class="nav-item"><a class="nav-link tx-14 font-weight-semibold text-sm-center text-start @ViewBag.PersonalDetails" data-bs-toggle="tab" href="#profileTab1">About</a></li>
+                                    <li class="nav-item ms-sm-2 ms-0"><a class="nav-link tx-14 font-weight-semibold text-sm-center text-start" data-bs-toggle="tab" href="#profileTab2">Edit Profile</a></li>
+                                    <li class="nav-item ms-sm-2 ms-0"><a class="nav-link tx-14 font-weight-semibold text-sm-center text-start @ViewBag.KYCTabStatus" data-bs-toggle="tab" href="#profileTab3">KYC</a></li>
+                                    @*<li class="nav-item ms-sm-2 ms-0"><a class="nav-link tx-14 font-weight-semibold text-sm-center text-start" data-bs-toggle="tab" href="#profileTab4">Gallery</a></li>
+                                    <li class="nav-item ms-sm-2 ms-0"><a class="nav-link tx-14 font-weight-semibold text-sm-center text-start" data-bs-toggle="tab" href="#profileTab5">Friends</a></li>*@
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12">
+                <div class="panel-body p-0 border-0">
+                    <div class="tab-content">
+                        <div class="tab-pane @ViewBag.PersonalDetails" id="profileTab1">
+                            <div class="card">
+                                <div class="card-body p-0 border-0">
+
+                                    <div class="border-top"></div>
+                                    <div class="p-4">
+                                        <h4 class="tx-15 text-uppercase font-weight-semibold mb-3">Personal Details</h4>
+                                        <div class="d-sm-flex">
+                                            <div class="d-flex align-items-center me-4 mb-3 mb-sm-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Login Id</p>
+                                                    <span class="tx-muted">@Context.Session.GetString("LoginId")</span>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center me-4 mb-3 mb-sm-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Joining Date</p>
+                                                    <span class="tx-muted">@Model.JoiningDate</span>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                    <div class="border-top"></div>
+                                    <div class="p-4">
+                                        <h4 class="tx-15 text-uppercase font-weight-semibold mb-3">Contact Details</h4>
+                                        <div class="d-sm-flex">
+                                            <div class="d-flex align-items-center me-4 mb-3 mb-sm-0">
+                                                <span class="avatar rounded-circle bg-custom"><i class="icon ion-md-phone-portrait tx-muted op-7"></i></span>
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Mobile</p>
+                                                    <span class="tx-muted">+@Model.MobileNo</span>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center me-4 mb-3 mb-sm-0">
+                                                <span class="avatar rounded-circle bg-custom"><i class="icon ion-logo-slack tx-muted op-7"></i></span>
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Email</p>
+                                                    <span class="tx-muted">@Model.Email</span>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="avatar rounded-circle bg-custom"><i class="icon ion-md-locate tx-muted op-7"></i></span>
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Current Address</p>
+                                                    <span class="tx-muted">@Model.Address,@Model.State,@Model.City</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="border-top"></div>
+                                    <div class="p-4">
+                                        <h4 class="tx-15 text-uppercase font-weight-semibold mb-3">Bank Details</h4>
+                                        <div class="d-md-flex">
+
+                                            <div class="d-flex align-items-center me-4 mb-4 mb-md-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Pan No</p>
+                                                    <a href="javascript:void(0);" class="tx-inverse"> @Model.PanCard</a>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center me-4 mb-4 mb-md-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Bank Holder Name</p>
+                                                    <a href="javascript:void(0);" class="tx-inverse"> @Model.HolderName</a>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center me-4 mb-4 mb-md-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Bank Name</p>
+                                                    <a href="javascript:void(0);" class="tx-inverse">@Model.BankName</a>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center me-4 mb-4 mb-md-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Acc No</p>
+                                                    <a href="javascript:void(0);" class="tx-inverse">@Model.AccNo</a>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center me-4 mb-4 mb-md-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">IFSC Code</p>
+                                                    <a href="javascript:void(0);" class="tx-inverse">@Model.IFSC</a>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center me-4 mb-4 mb-md-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Branch</p>
+                                                    <a href="javascript:void(0);" class="tx-inverse">@Model.Branch</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="border-top"></div>
+                                    <div class="p-4">
+                                        <h4 class="tx-15 text-uppercase font-weight-semibold mb-3">KYC Details</h4>
+                                        <div class="d-md-flex">
+
+                                            <div class="d-flex align-items-center me-4 mb-4 mb-md-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Pan</p>
+                                                    @if (Model.PanStatus == "Pending")
+                                                    {
+                                                        <span class="badge badge-lg badge-info">@Model.PanStatus</span>
+                                                    }
+                                                    else if (Model.PanStatus == "Approved")
+                                                    {
+                                                        <span class="badge badge-lg badge-success">@Model.PanStatus</span>
+                                                    }
+                                                    else
+
+                                                    {
+                                                        <span class="badge badge-lg badge-danger">@Model.PanStatus</span>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center me-4 mb-4 mb-md-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Address Proof Front</p>
+                                                    @if (Model.AddressFrontStatus == "Pending")
+                                                    {
+                                                        <span class="badge badge-lg badge-info">@Model.AddressFrontStatus</span>
+                                                    }
+                                                    else if (Model.AddressFrontStatus == "Approved")
+                                                    {
+                                                        <span class="badge badge-lg badge-success">@Model.AddressFrontStatus</span>
+                                                    }
+                                                    else
+
+                                                    {
+                                                        <span class="badge badge-lg badge-danger">@Model.AddressFrontStatus</span>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center me-4 mb-4 mb-md-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Address Proof Back</p>
+                                                    @if (Model.AddressBackStatus == "Pending")
+                                                    {
+                                                        <span class="badge badge-lg badge-info">@Model.AddressBackStatus</span>
+                                                    }
+                                                    else if (Model.AddressBackStatus == "Approved")
+                                                    {
+                                                        <span class="badge badge-lg badge-success">@Model.AddressBackStatus</span>
+                                                    }
+                                                    else
+
+                                                    {
+                                                        <span class="badge badge-lg badge-danger">@Model.AddressBackStatus</span>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center me-4 mb-4 mb-md-0">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-1 font-weight-semibold">Bank</p>
+                                                    @if (Model.BankStatus == "Pending")
+                                                    {
+                                                        <span class="badge badge-lg badge-info">@Model.BankStatus</span>
+                                                    }
+                                                    else if (Model.BankStatus == "Approved")
+                                                    {
+                                                        <span class="badge badge-lg badge-success">@Model.BankStatus</span>
+                                                    }
+                                                    else
+
+                                                    {
+                                                        <span class="badge badge-lg badge-danger">@Model.BankStatus</span>
+                                                    }
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="profileTab2">
+
+                            <div class="card">
+                                <div class="card-body border-0">
+                                    <div class="d-flex">
+                                        <div class="ms-auto">
+                                            <input type="submit" id="btnEditProfile" name="btnUpdate" class="btn btn-sm btn-primary rounded-pill" value="Update" onclick="return fvalidate();" />
+                                            @* <a href="javascript:void(0);" class="btn btn-sm btn-primary rounded-pill">Save Changes</a>
+                                            <a href="javascript:void(0);" class="btn btn-sm btn-outline-danger rounded-pill">Cancel</a>*@
+                                        </div>
+                                    </div>
+
+                                    <h4 class="tx-15 text-uppercase font-weight-semibold mb-3">Contact Details</h4>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Email</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" asp-for="Email"  placeholder="Email" maxlength="50" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Address</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <textarea class="form-control" type="text" asp-for="Address" placeholder="Address"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Pincode</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="number" placeholder="Pincode" asp-for="Pincode" onchange=" GetStateCity()" min="1" class="form-control" maxlength="6" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">City</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" placeholder="City" asp-for="City" readonly class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">State</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" placeholder="State" asp-for="State" readonly class="form-control" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <h4 class="tx-15 text-uppercase font-weight-semibold mb-3">Bank Details</h4>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">A/C No</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" placeholder="Account No." asp-for="AccNo" min="1" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Bank Holder</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" placeholder="Holder Name" asp-for="HolderName" min="1" class="form-control" maxlength="50" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Pan Card</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" placeholder="PanCard" asp-for="PanCard" min="10" class="form-control" maxlength="10" onchange="return ValidatePAN()" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Bank Name</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" placeholder="BankName" asp-for="BankName" min="1" class="form-control" maxlength="50" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">IFSC</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" placeholder="IFSC" asp-for="IFSC" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Branch</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="Text" placeholder="Branch Name" asp-for="Branch" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <div class="row row-sm">
+                                            <div class="col-md-3">
+                                                <label class="form-label">GST NO.</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="Text" placeholder="GST NO." asp-for="GSTNo" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane @ViewBag.Tab3Status" id="profileTab3">
+                            <div class="row row-sm">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body border-0">
+                                            <div class="d-flex">
+                                                <div class="ms-auto">
+
+                                                    @* <a href="javascript:void(0);" class="btn btn-sm btn-primary rounded-pill">Save Changes</a>
+                                                    <a href="javascript:void(0);" class="btn btn-sm btn-outline-danger rounded-pill">Cancel</a>*@
+                                                </div>
+                                            </div>
+
+                                            <h4 class="tx-15 text-uppercase font-weight-semibold mb-3">KYC Details</h4>
+                                            <div class="form-group ">
+                                                <div class="row row-sm">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Profile Pic</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <input type="file" asp-for="ProfilePic" />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <img src="@TempData["ProfilePicURL"]" style="width:50px;" />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <input type="submit" class="btn btn-success" name="btnProfilePic" id="btnProfilePic" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div class="row row-sm">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Pan Image</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <input type="file" asp-for="ImageFile" />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <img src="@TempData["PanImage"]" style="width:50px;" />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <input type="submit" class="btn btn-success" name="btnpanimage" id="btnpanimage" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div class="row row-sm">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Address Proof Front</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input type="file" asp-for="AddressProofFront" />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <img src="@TempData["AddressProofFrontURL"]" style="width:50px;" />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <input type="submit" class="btn btn-success" name="btnaddressfront" id="btnaddressfront" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div class="row row-sm">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Address Proof Back</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input type="file" asp-for="AddressProofBack" />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <img src="@TempData["AddressProofBackURL"]" style="width:50px;" />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <input type="submit" class="btn btn-success" name="btnaddressback" id="btnaddressback" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div class="row row-sm">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Bank Doc</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input type="file" asp-for="BankDoc" />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <img src="@TempData["BankDocURL"]" style="width:50px;" />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <input type="submit" class="btn btn-success" name="btnbank" id="btnbank" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="profileTab4">
+                            <div class="masonry row">
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/1.jpg" class="js-img-viewer"
+                                           data-caption="IMAGE-01" data-id="lion">
+                                            <img src="../assets/img/photos/1.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/2.jpg" class="js-img-viewer"
+                                           data-caption="IMAGE-02" data-id="camel">
+                                            <img src="../assets/img/photos/2.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/3.jpg" class="js-img-viewer"
+                                           data-caption="IMAGE-03" data-id="hippo">
+                                            <img src="../assets/img/photos/3.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/4.jpg" class="js-img-viewer"
+                                           data-caption="IMAGE-04" data-id="koala">
+                                            <img src="../assets/img/photos/4.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/5.jpg" class="js-img-viewer"
+                                           data-caption="IMAGE-05" data-id=" bear">
+                                            <img src="../assets/img/photos/5.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/6.jpg" class=" js-img-viewer"
+                                           data-caption="IMAGE-06" data-id=" rhino">
+                                            <img src="../assets/img/photos/6.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/7.jpg" class=" js-img-viewer"
+                                           data-caption="IMAGE-07" data-id=" rhino">
+                                            <img src="../assets/img/photos/7.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/8.jpg" class=" js-img-viewer"
+                                           data-caption="IMAGE-08" data-id=" rhino">
+                                            <img src=" ../assets/img/photos/8.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/9.jpg" class=" js-img-viewer"
+                                           data-caption="IMAGE-09" data-id=" rhino">
+                                            <img src="../assets/img/photos/9.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/10.jpg" class=" js-img-viewer"
+                                           data-caption="IMAGE-10" data-id=" rhino">
+                                            <img src="../assets/img/photos/10.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/11.jpg" class=" js-img-viewer"
+                                           data-caption="IMAGE-11" data-id=" rhino">
+                                            <img src="../assets/img/photos/11.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="brick">
+                                        <a href="../assets/img/photos/12.jpg" class=" js-img-viewer"
+                                           data-caption="IMAGE-11" data-id=" rhino">
+                                            <img src="../assets/img/photos/12.jpg" alt="" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="profileTab5">
+                            <div class="row row-sm">
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    <div class="card border">
+                                        <div class="card-body text-center">
+                                            <div class="dropdown float-end">
+                                                <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fe fe-more-vertical"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-message-square me-2 float-start"></i> Message</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-edit-2 me-2  float-start"></i> Edit</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-eye me-2 float-start"></i> View</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-trash-2 me-2 float-start"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                            <a href="profile.html">
+                                                <img alt="avatar" class="rounded-circle" src="../assets/img/users/2.jpg">
+                                                <h4 class="fs-16 mb-0 mt-3 text-dark fw-semibold">James Thomas</h4>
+                                                <span class="tx-muted">Web designer</span>
+                                                <div class="mt-3 d-flex mx-auto text-center justify-content-center">
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-facebook tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-twitter tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-linkedin tx-18"></i></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    <div class="card border">
+                                        <div class="card-body text-center">
+                                            <div class="dropdown float-end">
+                                                <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fe fe-more-vertical"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-message-square me-2 float-start"></i> Message</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-edit-2 me-2  float-start"></i> Edit</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-eye me-2 float-start"></i> View</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-trash-2 me-2 float-start"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                            <a href="profile.html">
+                                                <img alt="avatar" class="rounded-circle"
+                                                     src="../assets/img/users/3.jpg">
+                                                <h4 class="fs-16 mb-0 mt-3 text-dark fw-semibold">Reynante Labares</h4>
+                                                <span class="tx-muted">Web designer</span>
+                                                <div class="mt-3 d-flex mx-auto text-center justify-content-center">
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-facebook tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-twitter tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-linkedin tx-18"></i></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    <div class="card border">
+                                        <div class="card-body text-center">
+                                            <div class="dropdown float-end">
+                                                <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fe fe-more-vertical"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-message-square me-2 float-start"></i> Message</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-edit-2 me-2  float-start"></i> Edit</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-eye me-2 float-start"></i> View</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-trash-2 me-2 float-start"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                            <a href="profile.html">
+                                                <img alt="avatar" class="rounded-circle"
+                                                     src="../assets/img/users/4.jpg">
+                                                <h4 class="fs-16 mb-0 mt-3 text-dark fw-semibold">Owen Bongcaras</h4>
+                                                <span class="tx-muted">Web designer</span>
+                                                <div class="mt-3 d-flex mx-auto text-center justify-content-center">
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-facebook tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-twitter tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-linkedin tx-18"></i></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    <div class="card border">
+                                        <div class="card-body text-center">
+                                            <div class="dropdown float-end">
+                                                <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fe fe-more-vertical"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-message-square me-2 float-start"></i> Message</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-edit-2 me-2  float-start"></i> Edit</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-eye me-2 float-start"></i> View</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-trash-2 me-2 float-start"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                            <a href="profile.html">
+                                                <img alt="avatar" class="rounded-circle"
+                                                     src="../assets/img/users/8.jpg">
+                                                <h4 class="fs-16 mb-0 mt-3 text-dark fw-semibold">Stephen Metcalfe</h4>
+                                                <span class="tx-muted">Administrator</span>
+                                                <div class="mt-3 d-flex mx-auto text-center justify-content-center">
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-facebook tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-twitter tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-linkedin tx-18"></i></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    <div class="card border">
+                                        <div class="card-body text-center">
+                                            <div class="dropdown float-end">
+                                                <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fe fe-more-vertical"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-message-square me-2 float-start"></i> Message</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-edit-2 me-2  float-start"></i> Edit</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-eye me-2 float-start"></i> View</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-trash-2 me-2 float-start"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                            <a href="profile.html">
+                                                <img alt="avatar" class="rounded-circle"
+                                                     src="../assets/img/users/12.jpg">
+                                                <h4 class="fs-16 mb-0 mt-3 text-dark fw-semibold">Socrates Itumay</h4>
+                                                <span class="tx-muted">Project Manager</span>
+                                                <div class="mt-3 d-flex mx-auto text-center justify-content-center">
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-facebook tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-twitter tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-linkedin tx-18"></i></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    <div class="card border">
+                                        <div class="card-body text-center">
+                                            <div class="dropdown float-end">
+                                                <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fe fe-more-vertical"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-message-square me-2 float-start"></i> Message</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-edit-2 me-2  float-start"></i> Edit</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-eye me-2 float-start"></i> View</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-trash-2 me-2 float-start"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                            <a href="profile.html">
+                                                <img alt="avatar" class="rounded-circle"
+                                                     src="../assets/img/users/13.jpg">
+                                                <h4 class="fs-16 mb-0 mt-3 text-dark fw-semibold">Odne Tho</h4>
+                                                <span class="tx-muted">Web Designer</span>
+                                                <div class="mt-3 d-flex mx-auto text-center justify-content-center">
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-facebook tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-twitter tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-linkedin tx-18"></i></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    <div class="card border">
+                                        <div class="card-body text-center">
+                                            <div class="dropdown float-end">
+                                                <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fe fe-more-vertical"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-message-square me-2 float-start"></i> Message</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-edit-2 me-2  float-start"></i> Edit</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-eye me-2 float-start"></i> View</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-trash-2 me-2 float-start"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                            <a href="profile.html">
+                                                <img alt="avatar" class="rounded-circle"
+                                                     src="../assets/img/users/14.jpg">
+                                                <h4 class="fs-16 mb-0 mt-3 text-dark fw-semibold">Ayran Myan</h4>
+                                                <span class="tx-muted">App Developer</span>
+                                                <div class="mt-3 d-flex mx-auto text-center justify-content-center">
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-facebook tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-twitter tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-linkedin tx-18"></i></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    <div class="card border">
+                                        <div class="card-body text-center">
+                                            <div class="dropdown float-end">
+                                                <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fe fe-more-vertical"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-message-square me-2 float-start"></i> Message</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-edit-2 me-2  float-start"></i> Edit</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-eye me-2 float-start"></i> View</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i class="fe fe-trash-2 me-2 float-start"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                            <a href="profile.html">
+                                                <img alt="avatar" class="rounded-circle"
+                                                     src="../assets/img/users/8.jpg">
+                                                <h4 class="fs-16 mb-0 mt-3 text-dark fw-semibold">Hawk Yso</h4>
+                                                <span class="tx-muted">Administrator</span>
+                                                <div class="mt-3 d-flex mx-auto text-center justify-content-center">
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-facebook tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-twitter tx-18"></i></div>
+                                                    <div class="btn btn-icon btn-outline-primary rounded-circle mx-3"><i class="bx bxl-linkedin tx-18"></i></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="~/assets/js/jquery-3.6.0.min.js"></script>
+<script>
+
+    function fvalidate() {
+        if ($('#Email').val() == "") {
+            $('#Email').focus();
+            alert("Please Add Email!");
+            return false;
+        }
+        if ($('#Address').val() == "") {
+            $('#Address').focus();
+            alert("Please Add Address!");
+            return false;
+        }
+        if ($('#Pincode').val() == "") {
+            $('#Pincode').focus();
+            alert("Please Add Pincode!");
+            return false;
+        }
+        if ($('#AccNo').val() == "") {
+            $('#AccNo').focus();
+            alert("Please Add Account Number!");
+            return false;
+        }
+        if ($('#HolderName').val() == "") {
+            $('#HolderName').focus();
+            alert("Please Add Holder's Name!");
+            return false;
+        }
+        if ($('#PanCard').val() == "") {
+            $('#PanCard').focus();
+            alert("Please Add PanCard!");
+            return false;
+        }
+        if ($('#BankName').val() == "") {
+            $('#BankName').focus();
+            alert("Please Add BankName!");
+            return false;
+        }
+        if ($('#IFSC').val() == "") {
+            $('#IFSC').focus();
+            alert("Please Add IFSC Code!");
+            return false;
+        }
+        if ($('#Branch').val() == "") {
+            $('#Branch').focus();
+            alert("Please Add Branch!");
+            return false;
+        }
+        
+    }
+    function GetStateCity() {
+        $(".errortext").removeClass("errortext");
+        $("#pre-loader").show();
+        $.ajax({
+            url: '/Home/GetStateCity',
+            type: 'Post',
+            data: { PinCode: $('#Pincode').val() },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        $('#State').val(response.response.state);
+                        $('#City').val(response.response.city);
+                    }
+                    else {
+                        $('#Pincode').val('');
+                        $('#State').val('');
+                        $('#City').val('');
+                        $("#Pincode").addClass('errortext');
+                        $('#Pincode').focus();
+                        alert(response.message);
+
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function ValidatePAN() {
+        var PanNo = $('#PanCard').val()
+        if (PanNo.value != "") {
+            var panPattern = /^([a-zA-Z]{5})(\d{4})([a-zA-Z]{1})$/;
+            if (PanNo.search(panPattern) == -1) {
+                alert("Please enter valid pan number");
+                $('#PanCard').val('');
+                return false;
+            }
+
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+

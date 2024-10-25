@@ -1,0 +1,144 @@
+﻿@{
+    ViewData["Title"] = "Congratulations";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+
+<style type="text/css">
+    .header-top {
+        width: 100%;
+        background-color: green;
+    }
+
+    ul.header-top-mail-number li {
+        list-style-type: none;
+        float: left;
+        padding: 5px;
+        font-size: 16px;
+        color: aliceblue;
+    }
+
+    ul.header-top-login-inv li {
+        list-style-type: none;
+        float: left;
+        padding: 5px;
+        font-size: 16px;
+        color: aliceblue;
+        text-align: right;
+    }
+
+        ul.header-top-login-inv li a {
+            color: aliceblue;
+            line-height: 0px;
+            margin: 10px;
+            background-color: #27990c;
+            padding: 10px;
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+    .icon-header-item li a {
+        color: #fff;
+    }
+
+        .icon-header-item li a:hover {
+            color: green;
+        }
+</style>
+<style type="text/css">
+    .header-top {
+        width: 100%;
+        background-color: green;
+    }
+
+    ul.header-top-mail-number li {
+        list-style-type: none;
+        float: left;
+        padding: 5px;
+        font-size: 16px;
+        color: aliceblue;
+    }
+
+    ul.header-top-login-inv li {
+        list-style-type: none;
+        float: left;
+        padding: 5px;
+        font-size: 16px;
+        color: aliceblue;
+        text-align: right;
+    }
+
+        ul.header-top-login-inv li a {
+            color: aliceblue;
+            line-height: 0px;
+            margin: 10px;
+            background-color: #27990c;
+            padding: 10px;
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+    .icon-header-item li a {
+        color: #fff;
+    }
+
+        .icon-header-item li a:hover {
+            color: green;
+        }
+</style>
+<div class="main-container container-fluid">
+
+    <!-- breadcrumb -->
+    <div class="breadcrumb-header justify-content-between">
+        <div class="left-content">
+            <span class="main-content-title mg-b-0 mg-b-lg-1">Congratulations</span>
+        </div>
+        <div class="justify-content-center mt-2">
+            <ol class="breadcrumb breadcrumb-style3">
+               
+                <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Congratulations</a></li>
+
+            </ol>
+        </div>
+    </div>
+    <!-- /breadcrumb -->
+
+
+                    <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="section-wrapper white left">
+                                    <section class="custom-padding about-us">
+                                        <div class="container">
+
+                                            <div class="row text-center">
+                                                <div class="col-md-12 form-group">
+                                                    <br><br> <h2 style="color:#0fad00">Success</h2>
+
+                                                    <img src="~/assets/images/confirmation.gif" style="height:200px" />
+                                                    <h3>Dear, @Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")</h3>
+                                                    <p style="font-size:20px;color:#5C5C5C;text-align:center">
+                                                        Your wallet has been credited successfully.
+                                                    </p>
+
+                                                   
+                                                    <a href="/Associate/KaryonPointsRequest" class="btn btn-info">    Back   </a>
+                                                    <br><br>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </section>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        

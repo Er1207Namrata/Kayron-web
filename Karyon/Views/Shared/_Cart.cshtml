@@ -1,0 +1,165 @@
+﻿@using Karyon.Models
+@using Microsoft.AspNetCore.Http;
+@*
+<div class="search-cart">
+    <div class="search">
+        <a class="search-btn not_click" href="javascript:void(0);"></a>
+        <div class="search-box not-click">
+            <form action="search.html" method="get">
+                <input type="text" class="not-click form-control" name="search" placeholder="Search.." value="">
+                <button class="search-button" type="submit"> <i class="fa fa-search not-click"></i></button>
+            </form>
+        </div>
+    </div>
+
+    @if(Context.Session.GetString("Count")!="0")
+    {
+        <div class="shpping-cart">
+        <a class="cart-btn" href="#"> <i class="fa fa-shopping-cart icon"></i> <strong class="item">@Context.Session.GetString("Count")</strong></a>
+        <div class="cart">
+            <div class="cart-title">
+                <h6 class="uppercase mb-0">Shopping cart</h6>
+            </div>
+            @if (Context.Session.GetObjectFromJson<CartSide>("_Cart").lstCartList != null)
+            {
+                decimal FinalAmount = 0;
+                @foreach (var item in Context.Session.GetObjectFromJson<CartSide>("_Cart").lstCartList)
+                {
+                    FinalAmount = FinalAmount + decimal.Parse(item.FinalPrice);
+                    <div class="cart-item">
+                        <div class="cart-image">
+                            <img class="img-fluid" src="@item.IMAGE" alt="">
+                        </div>
+                        <div class="cart-name clearfix">
+                            <a href="#">@item.ProductName  </a>
+                            <div class="cart-price">
+                                <ins>@item.MRP x @item.Quantity </ins>  <ins> = @item.FinalPrice</ins>
+                            </div>
+                        </div>
+                        <div class="cart-close">
+                            <a onclick="return confirm('Are you sure you want to delete this item?')" href="/Home/DeleteCartItem?Id=@Karyon.Models.Crypto.Encrypt(item.CartId.ToString())"> <i class="fa fa-times-circle"></i> </a>
+                        </div>
+                    </div>
+                }
+                <div class="cart-total">
+                    <h6 class="mb-15"> Total: Rs @FinalAmount</h6>
+                    <a class="button" href="/Home/CartList">View Cart</a>
+                    <a class="button black" href="/Home/CartList">Checkout</a>
+                </div>
+            }
+
+
+        </div>
+    </div>
+    }
+
+
+
+</div>
+*@
+
+
+<div class="cartOffcanvas offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas">
+    <div class="cartOffcanvas_header d-flex align-items-center justify-content-between">
+        <h2 class="cartOffcanvas_header-title" id="cartOffcanvasLabel">Cart</h2>
+        <button class="cartOffcanvas_header-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close">
+            <i class="icon-close"></i>
+        </button>
+    </div>
+    @{
+        decimal FinalAmount = 0;
+        decimal TotalPV = 0;
+        decimal singleBV = 0;
+    }
+    <div class="cartOffcanvas_body">
+        <ul class="cartOffcanvas_body-list">
+            @if (Context.Session.GetObjectFromJson<CartSide>("_Cart").lstCartList != null)
+            {
+
+                @foreach (var item in Context.Session.GetObjectFromJson<CartSide>("_Cart").lstCartList)
+                {
+                    FinalAmount = FinalAmount + decimal.Parse(item.FinalPrice);
+                    TotalPV = TotalPV + decimal.Parse(item.TotalBV);
+                      singleBV = decimal.Parse(item.TotalBV) / decimal.Parse(item.Quantity);
+                    <li class="cartOffcanvas_body-list_item d-sm-flex align-items-center">
+                        <div class="media">
+                            <a href="#" target="_blank" rel="noopener norefferer">
+                                <picture>
+                                    <source data-srcset="@item.IMAGE" srcset="@item.IMAGE" type="image/webp" />
+                                    <img class="lazy" data-src="@item.IMAGE" src="@item.IMAGE" alt="media" />
+                                </picture>
+                            </a>
+                        </div>
+                        <div class="main d-flex flex-wrap justify-content-between align-items-end align-items-lg-center">
+                            <a class="main_title" href="#" target="_blank" rel="noopener norefferer">
+                                <span class="main_title-product"> @item.ProductName <br />Rs @item.MRP<br/>PV @singleBV</span>
+                            </a>
+                             <div class="qty d-flex align-items-center justify-content-between">
+                                <span class="qty_minus control d-flex align-items-center minus">
+                                    <i class="icon-minus"></i>
+                                </span>
+                                @*@Html.TextBoxFor(m=>m.qty_amount,new{@class="form-control",@onchange="return AddToCart(this,@item.VarientId)"})*@
+                                <input id="qty_amount" type="number" style="max-width: 22px;text-align: center;font-weight: 700;line-height: 1" value="@item.Quantity" onchange="return AddToCart1(this,@item.VarientId)" min="1">
+                                <span class="qty_plus control d-flex align-items-center plus">
+                                    <i class="icon-plus"></i>
+                                </span>
+                            </div>
+                           @* <div class="qty d-flex align-items-center justify-content-between main_price">
+
+                                <input class="qty_amount" id="qty_amount" type="text" value="@item.Quantity" min="1" max="99" readonly onchange="return AddToCart(this,@item.VarientId)">
+
+                            </div>*@
+                            <div class="main_price qty" style="height: 67px;">
+                                <span class="price">
+                                    Rs @item.FinalPrice<br/>PV @item.TotalBV
+                                </span>
+
+                            </div>
+                           
+                            <a class="btn--underline" onclick="return confirm('Are you sure you want to delete this item?')" href="/Home/DeleteCartItem?Id=@Karyon.Models.Crypto.Encrypt(item.CartId.ToString())">Remove</a>
+                        </div>
+                    </li>
+                }
+            }
+
+
+        </ul>
+        <div class="cartOffcanvas_body-total d-flex justify-content-between align-items-center">
+            <span>Total</span>
+            <span class="cartTotal">₹ @FinalAmount</span>
+        </div>
+        <div class="cartOffcanvas_body-total d-flex justify-content-between align-items-center">
+            <span>Total PV</span>
+            <span class="cartTotal">₹ @TotalPV</span>
+        </div>
+        <a class="cartOffcanvas_body-btn btn" href="/Home/CartList">Proceed to checkout</a>
+    </div>
+</div>
+<script>
+    function AddToCart1(value, ProductId) {
+
+        $(".errortext").removeClass("errortext");
+
+        $.ajax({
+            url: '/Home/AddToCarts',
+            type: 'Post',
+            data: { ProductId: ProductId, Quantity: value.value },
+            success: function(response) {
+
+                window.location.href = "/Home/CartList";
+                // window.location.href = "/Home/CartList";
+
+
+            }, error: function() {
+                //alert('Some Thing wrong!');
+
+
+            }
+        });
+    }
+</script>
+
+
+
+
+

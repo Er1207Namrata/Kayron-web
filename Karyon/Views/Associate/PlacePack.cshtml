@@ -1,0 +1,290 @@
+﻿@model Karyon.Models.CreateOrder
+
+@{
+    ViewData["Title"] = "PlacePack";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+
+<form asp-action="PlacePack">
+    @{
+        decimal Balance = 0;
+        int TotalQty = 0;
+        decimal FinalBV = 0;
+        decimal TotalPrice = 0;
+        decimal TotalMRP = 0;
+        decimal BeforeTax = 0;
+        decimal Tax = 0;
+
+    }
+
+    <div class="page-body">
+        <div class="container-fluid">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-sm-6 ps-0">
+                        <h3>Create Order</h3>
+                    </div>
+                    <div class="col-sm-6 pe-0">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">
+                                    <svg class="stroke-icon">
+                                        <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">Create Order</li>
+                            <li class="breadcrumb-item active"> Create Order</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <label>Product</label>
+                        <br />
+                        @Html.DropDownListFor(m => m.Fk_ProductId, new SelectList(ViewBag.ddlProducts, "Value", "Text"), new { @class = "form-control" ,@onchange="fGetDetails()"})
+                    </div>
+                    <div class="col-md-2">
+                        <label>Quantity</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="Qty" placeholder="Quantity" min="1" maxlength="50" onchange="return GetSubtotal();" />
+                    </div>
+                    @Html.HiddenFor(m=>m.BoxQty)
+                    <div class="col-md-2">
+                        <label>Amount</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="Amount" disabled placeholder="Amount" min="1" maxlength="50" />
+                    </div>
+                    <div class="col-md-2" style="display:none">
+                        <label>PV</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="PV" disabled placeholder="PV" min="1" maxlength="50" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Sub Total</label>
+                        <br />
+                        <input class="web form-control" type="number" disabled asp-for="SubTotal" placeholder="Sub Total" min="1" maxlength="50" />
+                    </div>
+                    <div class="col-md-2">
+                        <br />
+                        <input type="submit" id="btnAdd" name="btnAdd" class="btn btn-success" value="Add" onclick="return FvalidateAdd();" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="MyDirectList">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+
+                                    <th>Total Price</th>
+
+
+
+
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+
+                                    if (Model.dtDetails != null)
+                                    {
+
+                                        for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                        {
+
+                                            TotalQty = TotalQty + int.Parse(Model.dtDetails.Rows[j]["Quantity"].ToString());
+                                            FinalBV = FinalBV + decimal.Parse(Model.dtDetails.Rows[j]["TotalBv"].ToString());
+                                            TotalPrice = TotalPrice + decimal.Parse(Model.dtDetails.Rows[j]["FinalPrice"].ToString());
+                                            TotalMRP = TotalMRP + decimal.Parse(Model.dtDetails.Rows[j]["MRP"].ToString());
+                                            BeforeTax = BeforeTax + decimal.Parse(Model.dtDetails.Rows[j]["BeforeTax"].ToString());
+
+                                            <tr>
+                                                <td>@(j + 1)</td>
+                                                <td><span>@Model.dtDetails.Rows[j]["ProductName"]</span></td>
+                                                <td>@Model.dtDetails.Rows[j]["MRP"]</td>
+                                                <td>@Model.dtDetails.Rows[j]["Quantity"] </td>
+
+                                                <td>@Model.dtDetails.Rows[j]["FinalPrice"] </td>
+
+
+
+                                                <td>
+                                                    <a href="/Home/DeleteCartItem?Id=@Crypto.Encrypt(Model.dtDetails.Rows[j]["CartId"].ToString())&&Status=Assocaite" onclick="return confirm('are you sure to delete this record?')" style="color:red"><i class="fa fa-trash"></i></a>
+                                                </td>
+
+                                            </tr>
+
+                                        }
+
+                                    }
+                                }
+
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th>@TotalQty</th>
+
+                                    <th>@TotalPrice</th>
+
+
+                                    <th></th>
+
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                @if (Model != null)
+                {
+
+                    if (Model.dtDetails != null)
+                    {
+                        if (Model.dtDetails.Rows.Count > 0)
+                        {
+
+                            Balance = decimal.Parse(Model.WalletBalance) - @TotalPrice;
+                            Tax = TotalPrice - BeforeTax;
+                            <div class="row">
+                                <div class="col-md-2" id="divWallet">
+                                    Wallet Balance
+                                    <br />
+                                    <input class="web form-control" type="number" disabled asp-for="WalletBalance" placeholder="Wallet Balance" style="color:blue" min="1" maxlength="50" />
+                                </div>
+                                <div class="col-md-2">
+                                    Before Tax
+                                    <br />
+                                    <input class="web form-control" type="number" readonly value="@BeforeTax" asp-for="BeforeTax" placeholder="Before Tax" style="color:blue" min="1" maxlength="50" />
+                                </div>
+                                <div class="col-md-2">
+                                    Tax
+                                    <br />
+                                    <input class="web form-control" type="number" readonly value="@Tax" placeholder="Before Tax" style="color:blue" min="1" maxlength="50" />
+                                </div>
+                                <div class="col-md-2">
+                                    Order Amount
+                                    <br />
+                                    <input class="web form-control" type="number" readonly value="@TotalPrice" asp-for="OrderAmount" placeholder="Order Amount" style="color:blue" min="1" maxlength="50" />
+                                </div>
+                                <div class="col-md-2" style="display:none">
+                                    Total PV
+                                    <br />
+                                    <input class="web form-control" type="number" readonly value="@FinalBV" asp-for="TotalPV" placeholder="Order Amount" style="color:blue" min="1" maxlength="50" />
+                                </div>
+
+                                <div class="col-md-2">
+                                    Balance
+                                    <br />
+                                    <input class="web form-control" type="number" disabled value="@Balance" placeholder="Balance" style="color:blue" min="1" maxlength="50" />
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <input type="submit" id="btnSave" name="btnSave" class="btn btn-success" value="Save" />
+                                </div>
+
+
+                            </div>
+                        }
+                    }
+                }
+                <div class="row">
+                    <p style="color:red">@TempData["CreateOrder"]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/assets/js/jquery-3.6.0.min.js"></script>
+    <script>
+
+
+        function fGetDetails() {
+
+            $(".errortext").removeClass("errortext");
+            $("#pre-loader").show();
+            $.ajax({
+                url: '/Associate/GetProductDetails',
+                type: 'Post',
+                data: { ProductId: $('#Fk_ProductId').val() },
+                success: function (response) {
+                    if (response != null) {
+
+                        console.log(response.response.singleProduct);
+                        $('#Amount').val(response.response.singleProduct[0].sellPrice);
+                        $('#PV').val(response.response.singleProduct[0].pv);
+                        $('#BoxQty').val(response.response.singleProduct[0].boxQty);
+                        GetSubtotal();
+
+                        $("#pre-loader").hide();
+
+                    }
+                    else {
+                        $("#pre-loader").hide();
+                    }
+                }, error: function () {
+                    //alert('Some Thing wrong!');
+                    $("#pre-loader").hide();
+
+                }
+            });
+        }
+        function GetSubtotal() {
+            var subtotal = $('#Amount').val() * $('#Qty').val();
+            $('#SubTotal').val(subtotal);
+        }
+        function FvalidateAdd() {
+            //var boxqty = Number($('#Qty').val())%Number($('#BoxQty').val()) ;
+            //if(boxqty!="0")
+            //{
+            //    alert('Please add more quantity');
+            //    return false;
+            //}
+            if ($('#Fk_ProductId').val() == '0') {
+                $("#Fk_ProductId").addClass('errortext');
+                $("#Fk_ProductId").focus()
+                return false;
+            }
+            if ($('#Qty').val() == '') {
+                $("#Qty").addClass('errortext');
+                $("#Qty").focus();
+                return false;
+            }
+
+        }
+        function fpaymentdetails() {
+
+            if ($('#PaymentMode').val() != "Cash") {
+                $('#divTransactionNo').css({ "display": "" });
+                $('#divTransactionDate').css({ "display": "" });
+                $('#divPaymentSlip').css({ "display": "" });
+            }
+            else {
+                $('#divTransactionNo').css({ "display": "none" });
+                $('#divTransactionDate').css({ "display": "none" });
+                $('#divPaymentSlip').css({ "display": "none" });
+            }
+        }
+    </script>
+</form>

@@ -1,0 +1,104 @@
+﻿@model Karyon.Models.ProfileReposne
+
+@{
+    ViewData["Title"] = "WelcomeLetter";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+<div class="page-body">
+    <div class="container-fluid">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-sm-6 ps-0">
+                    <h3>Welcome Letter</h3>
+                </div>
+                <div class="col-sm-6 pe-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">
+                                <svg class="stroke-icon">
+                                    <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">My Accounts</li>
+                        <li class="breadcrumb-item active"> Welcome Letter</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="testTable">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div id="content">
+                        <div>
+                            <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;">
+                                <div>
+                                    <img style="width: 150px;padding-left: 5px;margin-top: 0;" src="~/assets/images/logo.png" alt="">
+                                </div>
+                                <div>
+                                    <p>
+                                        <span style="font-weight: bold;color: rgb(71, 67, 67);">Corporate Office :</span>
+                                        @CompanyDetails.Address1,<br> @CompanyDetails.Address2,<br>
+                                        @CompanyDetails.Address3
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <h4 class="text-center font-weight-bold mb-5">Welcome Letter</h4>
+                            <div class="col-md-12 d-flex">
+                                <div class="col-md-9">
+                                    <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;">
+                                        <div><p>Name: @Model.Response.FirstName @Model.Response.LastName</p></div>
+
+                                    </div>
+                                    <p>Joining Date: @Model.Response.JoiningDate</p>
+                                    <p>Mobile No.: @Model.Response.MobileNo</p>
+                                    <p>PAN No.: @Model.Response.PanCard</p>
+                                    <p>Address: @Model.Response.Address</p>
+                                    <p>
+                                        The <span class="font-weight-bold">@CompanyDetails.ComapanyName</span>
+                                        Would like to welcome you as a valuable customer to our company.
+                                        We know that you will be satisfied with our projects and the services which we provide to our customers.
+                                    </p>
+                                    <p>
+                                        We recommend you to visit our website <span class="font-weight-bold"> @CompanyDetails.Website</span>
+                                        for login your user profile for edit your profile, view your business, register your clients etc
+                                        and also to access other products & Services being offered by <span class="font-weight-bold">@CompanyDetails.ComapanyName.</span>
+                                        Please intimate us by email on <span class="font-weight-bold">@CompanyDetails.Email</span> for any changes in your information i.e. Bank Details, mobile number with Proof along with a scanned copy of request letter duly signed by you so that we can update your information accordingly. Your login details are:
+                                    </p>
+                                    <p style="font-weight: bold;color: rgb(71, 67, 67);">User ID: @Model.Response.LoginId</p>
+                                    <p>We once again thank you for choosing <span class="font-weight-bold">@CompanyDetails.ComapanyName</span> and assure you of our best services at all times. I do hope you will afford us the opportunity to serve you in the near future.</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <img style="width:200px;padding-left: 100px;" src="~/assets/images/logo.png" alt="">
+                                </div>
+
+                            </div>
+                            <div class="offset-10">
+                                <button type="button" class="btn btn-success btn-rounded btnprint" onclick="printDiv('testTable')" title="" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<script>
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+</script>

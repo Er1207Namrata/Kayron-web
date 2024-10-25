@@ -1,0 +1,231 @@
+﻿@model Karyon.Models.EwayBilling.EwayBillingRequest
+
+@{
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+<style>
+    .heading-1 {
+        background-image: linear-gradient(to right, #5e8d60, #c4c485);
+        padding: 8px;
+        color: #fff;
+    }
+</style>
+<form asp-action="EwayGeneration">
+    <div class="main-container container-fluid">
+        <!-- breadcrumb -->
+
+        <div class="breadcrumb-header justify-content-between">
+
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Eway Billing</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15">
+                        <a href="javascript:void(0)">
+                            <p style="color:red">@TempData["EwayMesage"]</p>
+                        </a>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="row">
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">Order No </label>
+                                <input type="text" asp-for="OrderNoSearch" class="web form-control" placeholder="Order No" maxlength="50" />
+
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">From Date </label>
+                                <input type="text" asp-for="FromDate" class="form-control" readonly placeholder="From Date" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">To Date </label>
+
+                                <input type="text" asp-for="ToDate" class="web form-control" placeholder="To Date" />
+                            </div>
+
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                            </div>
+                        </div>
+                        <br />
+                        <input type="hidden" asp-for="Page" />
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th>Order Type</th>
+                                        <th>Order No</th>
+                                        <th>Invoice No</th>
+                                        <th>Dispatch Qty</th>
+                                        <th>Amount</th>
+                                        <th></th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+
+
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+
+                                                    <tr>
+                                                        <td>@(j + 1)</td>
+
+                                                        <td>@Model.dtDetails.Rows[j]["Type"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["OrderNo"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["InnvoiceNo"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["DispatchQty"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["Amount"]</td>
+                                                        <td>
+                                                            <a href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="openewaybillpopup('@Model.dtDetails.Rows[j]["Pk_Id"].ToString()','@Model.dtDetails.Rows[j]["InnvoiceNo"].ToString()','@Model.dtDetails.Rows[j]["OrderNo"]','@Model.dtDetails.Rows[j]["DispatchCount"]','@Model.dtDetails.Rows[j]["Type"]');" class="btn btn-primary btn-sm">Generate Eway Bill</a>
+                                                        </td>
+
+                                                    </tr>
+
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Details</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    @Html.HiddenFor(m=>m.document_number)
+                    @Html.HiddenFor(m=>m.OrderNo)
+                    @Html.HiddenFor(m=>m.DispatchCount)
+                    @Html.HiddenFor(m=>m.BillType)
+                    <h6 class="mb-3 heading-1">
+                        Transportation Details
+                    </h6>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            Transporter Id
+                            <br />
+                            @Html.DropDownListFor(m => m.TransporterId, new SelectList(ViewBag.ddlTransportId, "Value", "Text"), new { @class = "form-control" ,@onchange="fGetTransName()"})
+                            @Html.HiddenFor(m=>m.transporter_id)
+                        </div>
+                        <div class="col-md-8">
+                            Transporter Name
+                            <br />
+                            @Html.TextBoxFor(m => m.transporter_name, new { @class = "form-control"})
+                        </div>
+
+                    </div>
+                    <h6 class="mb-3 heading-1">
+                        Part B
+                    </h6>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            Mode
+                            <br />
+                            <select id="transportation_mode" class="form-control" type="text" name="transportation_mode">
+                                <option value="Road">Road</option>
+                                <option value="Rail">Rail</option>
+                                <option value="Air">Air</option>
+                                <option value="Ship or Ship Cum Road/Rail">Ship or Ship Cum Road/Rail</option>
+                            </select>
+
+                        </div>
+                        <div class="col-md-4">
+                            Vehicle Type
+                            <br />
+                            <select id="vehicle_type" class="form-control" type="text" name="vehicle_type">
+                                <option value="Regular">Regular</option>
+                                <option value="Over Dimensional Cargo">Over Dimensional Cargo</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            Vehicle Number
+                            <br />
+                            @Html.TextBoxFor(m => m.vehicle_number, new { @class = "form-control"})
+                        </div>
+
+                        <div class="col-md-4">
+                            Location Code
+                            <br />
+                            @Html.TextBoxFor(m => m.location_code, new { @class = "form-control"})
+                        </div>
+                        <div class="col-md-4">
+                            TransPorter Doc. No
+                            <br />
+                            @Html.TextBoxFor(m => m.transporter_document_number, new { @class = "form-control"})
+                        </div>
+                        <div class="col-md-4">
+                            TransPorter Date
+                            <br />
+                            @Html.TextBoxFor(m => m.transporter_document_date, new { @class = "form-control"})
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <input type="submit" name="GenerateEway" id="txtGenarate" class="btn btn-sm btn-primary" value="Generate" />
+                    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
+<script>
+    function openewaybillpopup(Pk_DispatchDetailsId, InnvoiceNo, OrderNo, DispatchCount,Type) {
+        $('#document_number').val(InnvoiceNo);
+        $('#OrderNo').val(OrderNo);
+        $('#DispatchCount').val(DispatchCount);
+        $('#BillType').val(Type);
+        //$('#largeModal').show();
+    }
+    function fGetTransName() {
+        var transportorName = $('#TransporterId').val();
+        var transfortorid = $("#TransporterId option:selected").text();
+        //$('select#TransporterId option:selected').val();
+
+        $('#transporter_name').val(transportorName);
+        $('#transporter_id').val(transfortorid);
+       
+    }
+</script>

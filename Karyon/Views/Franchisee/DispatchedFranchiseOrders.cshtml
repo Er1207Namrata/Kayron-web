@@ -1,0 +1,302 @@
+﻿@model Karyon.Models.CreateOrder
+
+@{
+    ViewData["Title"] = "Dispatched Franchisee Orders";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+<form asp-action="DispatchedFranchiseOrders">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Dispatched Franchisee Orders</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Transfer</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Dispatched Franchisee Orders</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="row">
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">Order No </label>
+                                <input type="text" asp-for="OrderNo" class="web form-control" placeholder="Order No" maxlength="50" />
+
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">From Date </label>
+                                <input type="text" asp-for="FromDate" class="form-control" readonly placeholder="From Date" />
+                            </div>
+                            <div class="section-field mb-20 col-sm-3">
+                                <label class="mb-10" for="name">To Date </label>
+
+                                <input type="text" asp-for="ToDate" class="web form-control" placeholder="To Date" />
+                            </div>
+
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                            </div>
+                        </div>
+                        <br />
+                        <input type="hidden" asp-for="Page" />
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th>Order No</th>
+                                        <th>Order Date</th>
+                                        <th>Dispatch Date</th>
+                                        <th>Name</th>
+                                        <th>Mobile No</th>
+                                        <th>Order Amount</th>
+                                        <th>Total PV</th>
+                                        <th>Status</th>
+                                        <th>Print Invoice</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+
+
+                                                int i = 1;
+
+                                                int page = Model.Pager.CurrentPage;
+                                                page = (page - 1);
+                                                i = ((page) * (Model.Pager.PageSize));
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+                                                    string cssclass = "";
+                                                    <tr>
+                                                        <td>@(j + 1)</td>
+                                                        <td><a style="color:blue" href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="return GetOrderDetails('@Model.dtDetails.Rows[j]["OrderNo"]','@Model.dtDetails.Rows[j]["DispatchCount"]')">@Model.dtDetails.Rows[j]["OrderNo"]/@Model.dtDetails.Rows[j]["DispatchCount"] </a></td>
+                                                        <td>@Model.dtDetails.Rows[j]["OrderDate"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["DispatchOn"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["Name"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["MobileNo"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["OrderAmount"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["TotalPV"] </td>
+                                                        <td>
+                                                            @if (Model.dtDetails.Rows[j]["Status"].ToString() == "Pending")
+                                                            {
+                                                                cssclass = "badge bg-info";
+                                                            }
+                                                            else if (Model.dtDetails.Rows[j]["Status"].ToString() == "Approved")
+                                                            {
+                                                                cssclass = "badge bg-success";
+                                                            }
+                                                            else
+                                                            {
+                                                                cssclass = "badge bg-danger";
+                                                            }
+
+                                                            <span class="@cssclass">@Model.dtDetails.Rows[j]["Status"]</span>
+                                                        </td>
+                                                        <td>
+                                                            <a target="_blank" href="/Franchisee/PrintFranchiseeDispatchNote?OrderNo=@Model.dtDetails.Rows[j]["OrderNo"]&&DispatchCount=@Model.dtDetails.Rows[j]["DispatchCount"]"><i class="fa-solid fa-print"></i></a>
+                                                            
+                                                        </td>
+                                                       
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+
+                            <footer class="card-footer bg-white p-2">
+
+                                <div class="d-md-flex align-items-center justify-content-between">
+                                    @if (Model != null)
+                                    {
+                                        if (Model.Pager != null)
+                                        {
+                                            @if (Model.Pager.EndPage > 1)
+                                            {
+                                                <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                                <div>
+                                                    <ul class="pagination mb-0">
+                                                        @if (Model.Pager.CurrentPage > 1)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                            </li>
+
+
+
+                                                            <li class="page-item">
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                            </li>
+                                                        }
+                                                        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                        {
+                                                            var P = @page;
+                                                            <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                                <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                            </li>
+
+                                                        }
+                                                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                            </li>
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
+
+                                    }
+
+                                </div>
+                            </footer>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Order Details</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tblOrderDetails">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Product Name</th>
+                                    <th>MRP</th>
+                                    <th>PV</th>
+                                    <th>Qty</th>
+                                    <th style="text-align:right">Grand Total</th>
+
+                                    <th>Dispatch Qty</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="OrderDetails">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+<script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
+<script>
+    $('#FromDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+    $('#ToDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        maxDate: 0,
+        changeYear: true,
+        changeMonth: true
+    });
+    function fCallPaging(val, IsExport) {
+
+        if (val == undefined || val == NaN || val == null || val == "" || val == 0) {
+            val = 1;
+        }
+        $("#IsExport").val(IsExport);
+        $("#Page").val(val);
+        $('#BtnSearch').trigger('click');
+
+    }
+    function GetOrderDetails(OrderNo, DispatchCount) {
+        $.ajax({
+            url: '/Home/GetFranchiseOrderDetails',
+            type: 'Post',
+            data: { OrderNo: OrderNo, Type: "Dispatched", DispatchCount: DispatchCount },
+            success: function (result) {
+                if (result != null) {
+                    var srno = 1;
+                    var str = "";
+                    var IsDispatch = "";
+                    console.log(result);
+                    $("#tblOrderDetails tbody").html('');
+                    for (var i = 0; i < result.length; i++) {
+
+                        IsDispatch = "IsDispatch" + i;
+                        str += "<tr><td>" + srno + "</td><td  nowrap>" + result[i].productName + "</td><td >" + result[i].amount + "</td><td >" + result[i].pv + "</td><td >" + result[i].qty + "</td><td style='text-align:right'>" + result[i].subTotal
+                        str += "</td> <td> " + result[i].dispatchQty + " </td></tr > ";
+
+
+                        srno = srno + 1;
+
+
+                    }
+
+                    str += "<input type='hidden' name='Count' value='" + srno + "'/><input type='hidden' name='Fk_OrderId' id='Fk_OrderId' value='" + result[0].fk_OrderId + "'/>"
+                    //str += "<tr><th colspan='2'>Total</th><th>" + TotalReqQty + "</th><th>" + PointValue + "</th><th>" + TotalPV + "</th><th>" + TotalProdAmt + "</th><th>" + FinalAmt + "</th></tr>";
+
+                    $("#tblOrderDetails tbody").html(str);
+
+                }
+                else {
+
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function fcheckisdispatched() {
+
+    }
+
+</script>

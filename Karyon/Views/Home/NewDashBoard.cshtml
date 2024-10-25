@@ -1,0 +1,1423 @@
+﻿@model Karyon.Models.AssociateDashBoard2ResponseWeb;
+
+@{
+    ViewData["Title"] = "DASHBOARD";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+
+<style>
+    .border-4 {
+        border-left: 2px solid #53A653 !important;
+        padding: 6px;
+    }
+
+    .border-2 {
+        border-left: 2px solid #DC3545 !important;
+        padding: 6px;
+    }
+
+    .border-3 {
+        border-left: 2px solid #EBA31D !important;
+        padding: 6px;
+    }
+</style>
+
+@{
+    decimal percentage = 0;
+    if (Model.Response.TargetPVTo != "0.00")
+    {
+        percentage = (decimal.Parse(Model.Response.AchivedPV) / decimal.Parse(Model.Response.TargetPVTo)) * 100;
+    }
+
+}
+<div class="page-body">
+    <div class="container-fluid">
+        <div class="page-title">
+
+            <div class="row">
+                <div class="col-sm-12 p-0 d-flex justify-content-start align-items-center">
+                    <h3 class="mr-2">
+                        @{
+                            var cssclass = "";
+                            var text = "";
+                        }
+
+                        Welcome @Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")
+                        @if (Model.Response.MemberStatus == "Active")
+                        {
+                            cssclass = "badge badge-success active-1";
+
+                        }
+                        else
+                        {
+                            cssclass = "badge badge-danger active-1";
+                            text = "Your id is inactive.Please ";
+                        }
+
+                    </h3>
+
+                    &nbsp;
+                    @if (Model.Response.MobileNo.Trim() != "+8052949381")
+                    {
+                        <span class="badge badge-primary">@Model.Response.BusinessStatus</span>
+                        <span class="@cssclass"> @Model.Response.MemberStatus </span>
+                    }
+                    
+
+                </div>
+            </div>
+            <br />
+            @*<div class="row">
+            <div class="col-sm-12 p-0 d-flex justify-content-start align-items-center">
+
+
+            @if (Model.Response.MemberStatus == "Active")
+            {
+
+            }
+            else
+            {
+            <h5 class="mr-2" style="color:red;font-weight: 700;">
+            Dear Associate,
+            To get payout for current month you need to do 500 PV Self PV+ UID PV OR Achieve the "Smart Royalty Bonus Criteria".
+            (This Criteria will be applicable for all Gold and Above Ranks)
+            </h5>
+            }
+
+
+
+            </div>
+            </div>*@
+        </div>
+    </div>
+    <!-- Container-fluid starts-->
+    @if (Model.Response.IsBid == "True")
+    {
+        <div class="container-fluid project-dashboard">
+            <div class="row">
+
+                <div class="col-xl-4 col-lg-4 col-md-4">
+                    <div class="card web-card">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="header-top">
+                                    <div class="mobile-app bg-light-primary">
+                                        <span></span>
+                                        <svg>
+
+                                            <use href="../../associatepanel/assets/svg/icon-sprite.svg#male"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h4>@Model.Response.PerformanceLevel (@Model.Response.LevelPercentage)</h4>
+                                    </div>
+                                </div>
+                                <div class="dropdown icon-dropdown">
+                                    @*  <button class="btn dropdown-toggle"
+                                id="userdropdown"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="icon-more-alt"></i>
+                                </button> *@
+                                    <div class="dropdown-menu dropdown-menu-end"
+                                         aria-labelledby="userdropdown">
+                                        <a class="dropdown-item" href="#">Weekly</a><a class="dropdown-item" href="#">Monthly</a><a class="dropdown-item" href="#">Yearly </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment mt-2">
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="progress-value">
+                                    <div class="d-flex justify-content between">
+                                        <h4 class="promo">Promo Tracker   </h4>
+                                        @if (Model.Response.OtherUnderLevelCount != "")
+                                        {
+                                            <h4>@Model.Response.OtherUnderAchivedCount/@Model.Response.OtherUnderLevelCount <br /> @Model.Response.UnderAchivedCount/@Model.Response.UnderLevelCount</h4>
+                                        }
+                                        else if (Model.Response.UnderLevelCount != "" && Model.Response.OtherUnderLevelCount == "")
+                                        {
+                                            <h4>@Model.Response.UnderAchivedCount/@Model.Response.UnderLevelCount</h4>
+                                        }
+
+
+
+                                    </div>
+                                    <span>@Model.Response.NextLevel<span>@Model.Response.AchivedPV / @Model.Response.TargetPVTo</span></span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-primary"
+                                             role="progressbar"
+                                             style="width: @percentage%"
+                                             aria-valuenow="10"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4">
+                    <div class="card web-card">
+                        <div class="card-body">
+                            <div class="d-flex twitter-card">
+                                <div class="header-top">
+                                    <div class="mobile-app bg-light-warning">
+                                        <span></span>
+                                        <svg>
+                                            <use href="../../AssociatePanel/assets/svg/icon-sprite.svg#management"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h4>Major Leg </h4>
+                                        <span>@Model.Response.MaxLegId</span>
+                                    </div>
+                                </div>
+                                <div class="dropdown icon-dropdown">
+                                    @*  <button class="btn dropdown-toggle"
+                                id="userdropdown2"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="icon-more-alt"></i>
+                                </button> *@
+                                    <div class="dropdown-menu dropdown-menu-end"
+                                         aria-labelledby="userdropdown2">
+                                        <a class="dropdown-item" href="#">Weekly</a><a class="dropdown-item" href="#">Monthly</a><a class="dropdown-item" href="#">Yearly </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment mt-5">
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <h4>@Model.Response.MaxLegBusiness</h4>
+                                        <span class="pv">Max Leg PV</span>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <h4>@Model.Response.Consideredbusiness</h4>
+                                        <span class="pv">Considered PV</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4">
+                    <div class="card web-card">
+                        <div class="card-body">
+                            <div class="d-flex twitter-card">
+                                <div class="header-top">
+                                    <div class="mobile-app bg-light-danger">
+                                        <span></span>
+                                        <svg>
+                                            <use href="../../AssociatePanel/assets/svg/icon-sprite.svg#management"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h4>Business Details</h4>
+                                    </div>
+                                </div>
+                                <div class="dropdown icon-dropdown">
+                                    @*  <button class="btn dropdown-toggle"
+                                id="userdropdown2"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="icon-more-alt"></i>
+                                </button> *@
+                                    <div class="dropdown-menu dropdown-menu-end"
+                                         aria-labelledby="userdropdown2">
+                                        <a class="dropdown-item" href="#">Weekly</a><a class="dropdown-item" href="#">Monthly</a><a class="dropdown-item" href="#">Yearly </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment mt-5">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>@Model.Response.SelfUIDPV</h4>
+                                        <span class="pv">Self PV</span>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <h4>@Model.Response.OtherPv</h4>
+                                        <span class="pv">Other Leg PV</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="card pending-project">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <a href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="getbusinessdetails('SelfCurrent')">
+                                        <h4 class="mb-2">Current Self Business</h4>
+                                        <h5>@Model.Response.CurrentSelfBusiness</h5>
+                                    </a>
+
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="bg-light-danger">
+                                        <svg>
+                                            <use href="../../AssociatePanel/assets/svg/icon-sprite.svg#stroke-charts"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="card pending-project">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <a href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="getbusinessdetails('UIDCurrent')">
+                                        <h4 class="mb-2">Current UID Buinsess</h4>
+                                        <h5>@Model.Response.CurrentUIDBusiness</h5>
+                                    </a>
+
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="bg-light-danger">
+                                        <svg>
+                                            <use href="../../AssociatePanel/assets/svg/icon-sprite.svg#stroke-charts"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="card pending-project">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <a href="#" data-bs-target="#largeModal2" data-bs-toggle="modal" onclick="getbusinessdetailsFirst('TeamCurrent')">
+                                        <h4 class="mb-2">Current Team PV</h4>
+                                        <h5>@Model.Response.CurrentTeamBusiness</h5>
+                                    </a>
+
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="bg-light-secondary">
+                                        <svg>
+                                            <use href="../../AssociatePanel/assets/svg/icon-sprite.svg#check"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3">
+                    <div class="card pending-project">
+                        <div class="card-body">
+                            <div class="d-flex align-items-end">
+                                <div class="flex-grow-1">
+                                    <a href="#">
+                                        <h4 class="mb-2">Current Total PV</h4>
+                                        <h5>@Model.Response.CurrentTotalPv</h5>
+                                    </a>
+
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="d-flex align-items-end" style="display: flex;align-items: self-end;">
+                                        <a href="/Associate/Criteria" class="btn btn-sm btn-success">Criteria</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="card pending-project">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <a href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="getbusinessdetails('Self')">
+                                        <h4 class="mb-2">Self PV</h4>
+                                        <h5>@Model.Response.SelfBusiness</h5>
+                                    </a>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="bg-light-danger">
+                                        <svg>
+                                            <use href="../../AssociatePanel/assets/svg/icon-sprite.svg#stroke-charts"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="card pending-project">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <a href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="getbusinessdetails('UID')">
+                                        <h4 class="mb-2">UID PV</h4>
+                                        <h5>@Model.Response.UIDBusiness</h5>
+                                    </a>
+
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="bg-light-danger">
+                                        <svg>
+                                            <use href="../../AssociatePanel/assets/svg/icon-sprite.svg#stroke-charts"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="card pending-project">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <a href="#" data-bs-target="#largeModal1" data-bs-toggle="modal" onclick="getbusinessdetailsFirst('Team')">
+                                        <h4 class="mb-2">Team PV</h4>
+                                        <h5>@Model.Response.TeamBusiness</h5>
+                                    </a>
+
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="bg-light-secondary">
+                                        <svg>
+                                            <use href="../../AssociatePanel/assets/svg/icon-sprite.svg#check"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3">
+                    <div class="card pending-project">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <a href="#" data-bs-target="#largeModalTotal" data-bs-toggle="modal" onclick="getbusinessdetailsFirst('Total')">
+                                        <h4 class="mb-2">Total PV</h4>
+                                        <h5>@Model.Response.TotalPV</h5>
+                                    </a>
+
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="bg-light-primary">
+                                        <svg>
+                                            <use href="../../AssociatePanel/assets/svg/icon-sprite.svg#danger"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8 col-xl-100 box-col-12">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="card">
+                                <div class="card-header pb-0">
+                                    <div class="header-top">
+                                        <h4>My Direct</h4>
+                                        <div class="dropdown icon-dropdown">
+
+                                            <div class="dropdown-menu dropdown-menu-end"
+                                                 aria-labelledby="userdropdown3">
+                                                <a class="dropdown-item" href="#">Weekly</a><a class="dropdown-item" href="#">Monthly</a><a class="dropdown-item" href="#">Yearly</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body pt-0 project-summary">
+                                    <div class="table-responsive custom-scrollbar">
+                                        <table class="table display"
+                                               id="project-summary"
+                                               style="width: 100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Sr.No.
+                                                    </th>
+                                                    <th>Associate Name</th>
+                                                    <th>Business</th>
+                                                    <th>Progress</th>
+                                                    <th class="text-end">Next Rank</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model != null)
+                                                {
+
+                                                    if (Model.Response != null)
+                                                    {
+                                                        if (Model.Response.lstAssociates != null)
+                                                        {
+                                                            int j = 1;
+
+                                                            foreach (var item in Model.Response.lstAssociates)
+                                                            {
+                                                                decimal perc = 0;
+                                                                if (item.Target != "0")
+                                                                {
+                                                                    perc = (decimal.Parse(item.Business) / decimal.Parse(item.Target)) * 100;
+                                                                }
+
+
+                                                                <tr>
+                                                                    <td>
+                                                                        @j
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="d-flex">
+                                                                            <div class="flex-shrink-0">
+                                                                                <img src="../assets/images/dashboard/user/2.png"
+                                                                                     alt="" />
+                                                                            </div>
+                                                                            <div class="flex-grow-1 ms-2">
+                                                                                <a href="#">
+                                                                                    <h6>@Html.Raw(item.Name)</h6>
+                                                                                    @Html.Raw(@item.PerformanceLevel)
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>@item.Business</td>
+
+                                                                    <td>
+                                                                        <div class="progress">
+                                                                            <div class="progress-bar bg-primary"
+                                                                                 role="progressbar"
+                                                                                 style="width: @perc%"
+                                                                                 aria-valuenow="10"
+                                                                                 aria-valuemin="0"
+                                                                                 aria-valuemax="100"></div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-end">
+                                                                        <button class="badge badge-light-primary rounded-pill txt-primary">
+                                                                            @item.NextLevel
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                                j++;
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+
+                <div class="col-xxl-4 col-xl-100 box-col-12 ps-4 pe-4 right-background">
+
+
+                    <div class="col-xl-12">
+                        <div class="card pending-project">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <a href="#">
+                                            <h4 class="mb-2">Previous Month Business</h4>
+                                        </a>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="border-4">
+                                                <h4>Self</h4>
+                                                <p>@Model.Response.PreviousSelfBusiness</p>
+                                            </div>
+                                            <div class="border-2">
+                                                <h4>UID</h4>
+                                                <p>@Model.Response.PreviousUIDBusiness</p>
+                                            </div>
+                                            <div class="border-3">
+                                                <h4>Team</h4>
+                                                <p>@Model.Response.PreviousTeamBusiness</p>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12">
+                        <div class="card upcoming-launch">
+                            <div class="card-header pb-0">
+                                <div class="header-top">
+                                    <h4>News & Update</h4>
+
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="meeting">
+
+                                    <p>@Model.Response.Message</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+
+    {
+        <div class="container-fluid project-dashboard">
+            <div class="row">
+                <div class="col-xxl-4 col-xl-100 box-col-12 ps-4 pe-4 right-background">
+                    <div class="row bg-light p-4">
+                        <div class="col-xl-12 col-xl-50 box-col-6 pe-30 ps-20">
+                            <div class="row">
+                                <div class="col-12 p-0">
+                                    <div class="card design-card">
+                                        <div class="card-body">
+                                            <h1>Hello, @Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")</h1>
+                                            <p>
+                                                Welcome back! Let's start from where you left.
+                                            </p>
+                                            @if (Model.Response.IsBid == "False")
+                                            {
+                                                @if (Model.Response.MobileNo.Trim() != "+8052949381")
+                                                {
+                                                    <a class="btn" href="/Home/NewDashboard" onclick="return BecomeaBid('@Context.Session.GetString("LoginId")');">Become BID</a>
+                                                }
+                                               
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-4 col-xl-100 box-col-12 ps-4 pe-4 right-background">
+                    <div class="col-xl-12 p-0 pe-30 ps-20">
+                        <div class="card upcoming-project">
+                            <div class="card-body">
+                                <a href="#">
+                                    <div class="d-flex">
+                                        <h4>News &amp; Update</h4>
+                                        <div class="flex-shrink-0">
+                                            <svg>
+                                                <use href="../../AssociatePanel/assets/svg/icon-sprite.svg#add"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!-- Container-fluid Ends-->
+</div>
+<div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="headingtext">Business Details</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="table-responsive">
+                    <table class="table display dataTable no-footer" id="businessdetails">
+                        <thead style="background: #40541d;">
+                            <tr>
+                                <th class="text-white">S. No.</th>
+                                <th class="text-white">LoginId</th>
+                                <th class="text-white">Name</th>
+                                <th class="text-white">Order Date</th>
+                                <th class="text-white">Order No</th>
+                                <th class="text-white">Order Amount</th>
+                                <th class="text-white">PV</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                @* <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" onclick="return window.location.reload(true)" type="button">Close</button>
+                *@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="largeModal1" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items center">
+                <h6 class="modal-title" id="headingtext">Business Details</h6>
+                <div>
+                    <button id="btnBack" class="btn btn-sm" style="background: #40541d;color:#fff;display:none" type="button" onclick="return getTeamData('Team')"><i class="fa fa-arrow-circle-o-left"></i> Back</button>
+
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="PreviousId" />
+                <div class="table-responsive">
+                    <p style="color:red" id="pbusinessOther">Loading...</p>
+                    <table class="table display dataTable no-footer" id="businessdetailsOtherSelf" style="display:none">
+                        <thead style="background: #40541d;">
+                            <tr>
+                                <th class="text-white">S. No.</th>
+                                <th class="text-white">Self Data</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <span id="SelfDataOthers"></span>
+                                </td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table display dataTable no-footer" id="businessdetailsOther" style="display:none">
+                        <thead style="background: #40541d;">
+                            <tr>
+                                <th class="text-white">S. No.</th>
+                                <th class="text-white">LoginId</th>
+                                <th class="text-white">Name</th>
+
+                                <th class="text-white">PV</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                @* <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" onclick="return window.location.reload(true)" type="button">Close</button>
+                *@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="largeModalTotal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items center">
+                <h6 class="modal-title" id="headingtext">Business Details</h6>
+                <div>
+                    <button id="btnTBack" class="btn btn-sm" style="background: #40541d;color:#fff;display:none" type="button" onclick="return getTotalData()"><i class="fa fa-arrow-circle-o-left"></i> Back</button>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="PreviousId" />
+                <div class="table-responsive">
+                    <p style="color:red" id="pbusinessdetailsTotal">Loading...</p>
+                    <table class="table display dataTable no-footer" id="businessdetailsTotalSelf" style="display:none">
+                        <thead style="background: #40541d;">
+                            <tr>
+                                <th class="text-white">S. No.</th>
+                                <th class="text-white">Self Data</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <span id="SelfDataTotal"></span>
+                                </td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table display dataTable no-footer" id="businessdetailsTotal" style="display:none">
+                        <thead style="background: #40541d;">
+                            <tr>
+                                <th class="text-white">S. No.</th>
+                                <th class="text-white">LoginId</th>
+                                <th class="text-white">Name</th>
+
+                                <th class="text-white">PV</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                @* <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" onclick="return window.location.reload(true)" type="button">Close</button>
+                *@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="largeModal2" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items center">
+                <h6 class="modal-title" id="headingtext">Business Details</h6>
+                <div>
+
+                    <button id="btnBackC" class="btn btn-sm" style="background: #40541d;color:#fff;display:none" type="button" onclick="return getTeamData('TeamCurrent')"><i class="fa fa-arrow-circle-o-left"></i> Back</button>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="PreviousId" />
+                <div class="table-responsive">
+                    <p style="color:red" id="pbusinessOtherC">Loading...</p>
+                    <table class="table display dataTable no-footer" id="businessdetailsOtherSelfC" style="display:none">
+                        <thead style="background: #40541d;">
+                            <tr>
+                                <th class="text-white">S. No.</th>
+                                <th class="text-white">Self Data</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <span id="SelfDataOthersC"></span>
+                                </td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table display dataTable no-footer" id="businessdetailsOtherC" style="display:none">
+                        <thead style="background: #40541d;">
+                            <tr>
+                                <th class="text-white">S. No.</th>
+                                <th class="text-white">LoginId</th>
+                                <th class="text-white">Name</th>
+
+                                <th class="text-white">PV</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                @* <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" onclick="return window.location.reload(true)" type="button">Close</button>
+                *@
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hdfLevel" />
+<input type="hidden" id="hdfTLevel" />
+<input type="hidden" value="@Model.Response.MemberStatus" id="getStatus" />
+<input type="hidden" value="@Model.Response.MobileNo" id="mobile_Number" />
+@*ask*@
+<div class="modal fade" id="ModalPopup" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items center">
+                <h6 class="modal-title" id="headingtext">Important Notice</h6>
+               
+            </div>
+            <div class="modal-body">
+
+                <h5 class="mr-2" style="color:red;font-weight: 700;">
+                    Dear Associate,
+                    To get payout for current month you need to do 50 PV Self PV+ UID PV OR Achieve the "Smart Royalty Bonus Criteria".
+                    (This Criteria will be applicable for all Gold and Above Ranks)
+                </h5>
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        debugger
+        var status = $('#getStatus').val();
+        var mobile_No = $('#mobile_Number').val();
+        if (status == "Inactive") {
+            if (mobile_No != "+8052949381"){
+                $('#ModalPopup').modal('show');
+            }
+        }
+    });
+    function getTeamData(Type) {
+        if (Type == "Team") {
+            $("#pbusinessOther").show();
+            $("#businessdetailsOther").hide();
+            $("#businessdetailsOtherSelf").hide();
+        }
+        else {
+            $("#pbusinessOtherC").show();
+            $("#businessdetailsOtherC").hide();
+            $("#businessdetailsOtherSelfC").hide();
+        }
+        var headingtext = Type + " Business Details";
+        $('#headingtext').text(headingtext);
+        $.ajax({
+            url: '/Associate/GetPreviousBusiness',
+            type: 'Post',
+            data: { Type: Type },
+            success: function (response) {
+                if (response != null) {
+                    if (response.lstData.length > 0) {
+                        var totalpv = 0;
+                        var str = "";
+                        var srno = 1;
+                        var fk_memId = 0;
+
+                        // $('#PreviousId').val(response.lstData[i].previousId);
+                        for (var i = 0; i < response.lstData.length; i++) {
+                            str += "<tr><td>" + srno + "</td><td>" + response.lstData[i].loginId + "</td><td>" + response.lstData[i].name + "</td><td><a href='#' onclick=getbusinessdetails('" + Type + "'," + response.lstData[i].fk_MemId + ")>" + response.lstData[i].totalPV + "</a></td></tr>";
+                            srno = srno + 1;
+                            totalpv = Number(totalpv) + Number(response.lstData[i].totalPV);
+                        }
+                        str += "<tr style='background: #40541d;'><td></td><td></td><td class='text-white'>Total</td><td class='text-white'>" + totalpv + "</td></tr>";
+                        var level = Number($('#hdfLevel').val()) - 1;
+                        $('#hdfLevel').val(level);
+                        if (Type == "Team") {
+                            $("#businessdetailsOther tbody").html(str);
+                            $("#pbusinessOther").hide();
+                            $("#businessdetailsOther").show();
+                            $("#businessdetailsOtherSelf").show();
+                            $("#SelfDataOthers").text(response.selfBusiness);
+                            if ($('#hdfLevel').val() < 1) {
+                                $('#hdfLevel').val('1');
+                            }
+                            if ($('#hdfLevel').val() <= 1) {
+                                $('#btnBack').hide();
+                            }
+                            else {
+                                $('#btnBack').show();
+                            }
+                        }
+                        else {
+                            $("#businessdetailsOtherC tbody").html(str);
+                            $("#pbusinessOtherC").hide();
+                            $("#businessdetailsOtherC").show();
+                            $("#businessdetailsOtherSelfC").show();
+                            $("#SelfDataOthersC").text(response.selfBusiness);
+                            if ($('#hdfLevel').val() < 1) {
+                                $('#hdfLevel').val('1');
+                            }
+                            if ($('#hdfLevel').val() <= 1) {
+                                $('#btnBackC').hide();
+                            }
+                            else {
+                                $('#btnBackC').show();
+                            }
+                        }
+                        $("#pre-loader").hide();
+                    }
+                    else {
+                        $("#pre-loader").hide();
+                        $("#businessdetailsOther tbody").html("");
+                        $("#SelfDataOthers").text(response.selfBusiness);
+                    }
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function getTotalData() {
+
+        $("#pbusinessdetailsTotal").show();
+        $("#businessdetailsTotal").hide();
+        $("#businessdetailsTotalSelf").hide();
+        $("#pre-loader").show();
+        var headingtext = "Total Business Details";
+        $('#headingtext').text(headingtext);
+        $.ajax({
+            url: '/Associate/GetPreviousTotal',
+            type: 'Post',
+            success: function (response) {
+                if (response != null) {
+                    if (response.lstData.length > 0) {
+                        var totalpv = 0;
+                        var str = "";
+                        var srno = 1;
+                        var fk_memId = 0;
+
+                        // $('#PreviousId').val(response.lstData[i].previousId);
+                        for (var i = 0; i < response.lstData.length; i++) {
+                            str += "<tr><td>" + srno + "</td><td>" + response.lstData[i].loginId + "</td><td>" + response.lstData[i].name + "</td><td><a href='#' onclick=getbusinessdetails('Total'," + response.lstData[i].fk_MemId + ")>" + response.lstData[i].totalPV + "</a></td></tr>";
+                            srno = srno + 1;
+                            totalpv = Number(totalpv) + Number(response.lstData[i].totalPV);
+                        }
+                        str += "<tr style='background: #40541d;'><td></td><td></td><td class='text-white'>Total</td><td class='text-white'>" + totalpv + "</td></tr>";
+
+                        $("#businessdetailsTotal tbody").html(str);
+                        $("#pbusinessdetailsTotal").hide();
+                        $("#businessdetailsTotal").show();
+                        $("#businessdetailsTotalSelf").show();
+                        $("#SelfDataTotal").text(response.selfBusiness);
+                        var level = Number($('#hdfTLevel').val()) - 1;
+                        $('#hdfTLevel').val(level);
+                        if ($('#hdfLevel').val() < 1) {
+                            $('#hdfLevel').val('1');
+                        }
+                        if ($('#hdfTLevel').val() <= 1) {
+                            $('#btnTBack').hide();
+                        }
+                        else {
+                            $('#btnTBack').show();
+                        }
+
+
+
+                        $("#pre-loader").hide();
+                    }
+                    else {
+                        $("#pre-loader").hide();
+                        $("#businessdetailsOther tbody").html("");
+                    }
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function getbusinessdetails(Type, Fk_MemId) {
+
+
+        $("#pbusinessOther").show();
+        $("#businessdetailsOther").hide();
+        $("#businessdetailsOtherSelf").hide();
+        $("#pbusinessdetailsTotal").show();
+        $("#businessdetailsTotal").hide();
+        $("#businessdetailsTotalSelf").hide();
+
+
+        $("#pre-loader").show();
+        var headingtext = Type + " Business Details";
+        $('#headingtext').text(headingtext);
+        $.ajax({
+            url: '/Associate/GetBusiness',
+            type: 'Post',
+            data: { Type: Type, Fk_MemId: Fk_MemId },
+            success: function (response) {
+                if (response != null) {
+                    if (Type == "Team" || Type == "TeamCurrent") {
+                        if ($('#hdfLevel').val() == "") {
+                            $('#hdfLevel').val(1);
+                        }
+                        else {
+                            var level = Number($('#hdfLevel').val()) + 1;
+                            $('#hdfLevel').val(level);
+                        }
+                    }
+                    else {
+                        if ($('#hdfTLevel').val() == "") {
+                            $('#hdfTLevel').val(1);
+                        }
+                        else {
+                            var level = Number($('#hdfTLevel').val()) + 1;
+                            $('#hdfTLevel').val(level);
+                        }
+                    }
+                    if (response.lstData.length > 0) {
+                        var totalpv = 0;
+                        var str = "";
+                        var srno = 1;
+                        var fk_memId = 0;
+                        if (Type == "Team" || Type == "TeamCurrent") {
+                            for (var i = 0; i < response.lstData.length; i++) {
+                                str += "<tr><td>" + srno + "</td><td>" + response.lstData[i].loginId + "</td><td>" + response.lstData[i].name + "</td><td><a href='#' onclick=getbusinessdetails('" + Type + "'," + response.lstData[i].fk_MemId + ")>" + response.lstData[i].totalPV + "</a></td></tr>";
+                                srno = srno + 1;
+                                totalpv = Number(totalpv) + Number(response.lstData[i].totalPV);
+                            }
+                            str += "<tr style='background: #40541d;'><td></td><td></td><td class='text-white'>Total</td><td class='text-white'>" + totalpv + "</td></tr>";
+
+                            if (Type == "Team") {
+                                $("#businessdetailsOther tbody").html(str);
+                                $("#pbusinessOther").hide();
+                                $("#businessdetailsOther").show();
+                                $("#businessdetailsOtherSelf").show();
+                                $("#SelfDataOthers").text(response.selfBusiness);
+
+                                if ($('#hdfLevel').val() < 1) {
+                                    $('#hdfLevel').val('1');
+                                }
+                                if ($('#hdfLevel').val() <= 1) {
+                                    $('#btnBack').hide();
+                                }
+                                else {
+                                    $('#btnBack').show();
+                                }
+                            }
+                            else {
+                                $("#businessdetailsOtherC tbody").html(str);
+                                $("#pbusinessOtherC").hide();
+                                $("#businessdetailsOtherC").show();
+                                $("#businessdetailsOtherSelfC").show();
+                                $("#SelfDataOthersC").text(response.selfBusiness);
+                                if ($('#hdfLevel').val() < 1) {
+                                    $('#hdfLevel').val('1');
+                                }
+                                if ($('#hdfLevel').val() <= 1) {
+                                    $('#btnBackC').hide();
+                                }
+                                else {
+                                    $('#btnBackC').show();
+                                }
+                            }
+                        }
+
+                        else if (Type == "Total") {
+                            for (var i = 0; i < response.lstData.length; i++) {
+                                str += "<tr><td>" + srno + "</td><td>" + response.lstData[i].loginId + "</td><td>" + response.lstData[i].name + "</td><td><a href='#' onclick=getbusinessdetails('Total'," + response.lstData[i].fk_MemId + ")>" + response.lstData[i].totalPV + "</a></td></tr>";
+                                srno = srno + 1;
+                                totalpv = Number(totalpv) + Number(response.lstData[i].totalPV);
+                            }
+                            str += "<tr style='background: #40541d;'><td></td><td></td><td class='text-white'>Total</td><td class='text-white'>" + totalpv + "</td></tr>";
+
+                            $("#businessdetailsTotal tbody").html(str);
+                            $("#pbusinessdetailsTotal").hide();
+                            $("#businessdetailsTotal").show();
+                            $("#businessdetailsTotalSelf").show();
+                            $("#SelfDataTotal").text(response.selfBusiness);
+                            if ($('#hdfTLevel').val() < 1) {
+                                $('#hdfTLevel').val('1');
+                            }
+                            if ($('#hdfTLevel').val() <= 1) {
+                                $('#btnTBack').hide();
+
+                            }
+                            else {
+                                $('#btnTBack').show();
+
+                            }
+                        }
+                        else {
+                            for (var i = 0; i < response.lstData.length; i++) {
+
+                                str += "<tr><td>" + srno + "</td><td>" + response.lstData[i].loginId + "</td><td>" + response.lstData[i].name + "</td><td>" + response.lstData[i].orderDate + "</td><td>" + response.lstData[i].orderNo + "</td><td>" + response.lstData[i].orderAmount + "</td><td>" + response.lstData[i].totalPV + "</td></tr>";
+                                srno = srno + 1;
+                                totalpv = Number(totalpv) + Number(response.lstData[i].totalPV);
+                            }
+                            str += "<tr style='background: #40541d;'><td></td><td></td><td></td><td></td><td></td><td class='text-white'>Total</td><td class='text-white'>" + totalpv + "</td></tr>";
+
+                            $("#businessdetails tbody").html(str);
+
+                        }
+
+                        $("#pre-loader").hide();
+                    }
+                    else {
+                        $("#pre-loader").hide();
+                        $("#businessdetailsOther tbody").html("");
+                        $("#businessdetailsOtherC tbody").html("");
+                        $("#businessdetailsTotal tbody").html("");
+                        $("#SelfDataOthers").text(response.selfBusiness);
+                        $("#SelfDataOthersC").text(response.selfBusiness);
+                        $("#SelfDataTotal").text(response.selfBusiness);
+
+                        $("#pbusinessOther").hide();
+                        $("#pbusinessOtherC").hide();
+                        $("#businessdetailsOther").show();
+                        $("#businessdetailsOtherC").show();
+                        $("#businessdetailsOtherSelf").show();
+                        $("#businessdetailsOtherSelfC").show();
+                        $("#pbusinessdetailsTotal").hide();
+                        $("#businessdetailsTotal").show();
+                        $("#businessdetailsTotalSelf").show();
+                        $("#businessdetailsTotalSelfC").show();
+                    }
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+
+                $("#pre-loader").hide();
+                $("#businessdetailsOther tbody").html("");
+                $("#businessdetailsTotal tbody").html("");
+            }
+        });
+    }
+    function getbusinessdetailsFirst(Type, Fk_MemId) {
+        // con.Session.SetString("BuinsessType", Type);
+        $('#hdfLevel').val("");
+        $('#hdfTLevel').val("");
+        if (Type == "Team") {
+            $("#pbusinessOther").show();
+            $("#businessdetailsOther").hide();
+            $("#businessdetailsOtherSelf").hide();
+        }
+        else if (Type == "TeamCurrent") {
+            $("#pbusinessOtherC").show();
+            $("#businessdetailsOtherC").hide();
+            $("#businessdetailsOtherSelfC").hide();
+        }
+        else {
+            $("#pbusinessdetailsTotal").show();
+            $("#businessdetailsTotal").hide();
+            $("#businessdetailsTotalSelf").hide();
+        }
+
+
+        $("#pre-loader").show();
+        var headingtext = Type + " Business Details";
+        $('#headingtext').text(headingtext);
+        $.ajax({
+            url: '/Associate/GetBusiness',
+            type: 'Post',
+            data: { Type: Type, Fk_MemId: Fk_MemId },
+            success: function (response) {
+                if (response != null) {
+                    if (Type == "Team" || Type == "TeamCurrent") {
+                        if ($('#hdfLevel').val() == "") {
+                            $('#hdfLevel').val(1);
+                        }
+                        else {
+                            var level = Number($('#hdfLevel').val()) + 1;
+                            $('#hdfLevel').val(level);
+                        }
+                    }
+                    else {
+                        if ($('#hdfTLevel').val() == "") {
+                            $('#hdfTLevel').val(1);
+                        }
+                        else {
+                            var level = Number($('#hdfTLevel').val()) + 1;
+                            $('#hdfTLevel').val(level);
+                        }
+                    }
+                    if (response.lstData.length > 0) {
+                        var totalpv = 0;
+                        var str = "";
+                        var srno = 1;
+                        var fk_memId = 0;
+                        if (Type == "Team" || Type == "TeamCurrent") {
+                            for (var i = 0; i < response.lstData.length; i++) {
+                                str += "<tr><td>" + srno + "</td><td>" + response.lstData[i].loginId + "</td><td>" + response.lstData[i].name + "</td><td><a href='#' onclick=getbusinessdetails('" + Type + "'," + response.lstData[i].fk_MemId + ")>" + response.lstData[i].totalPV + "</a></td></tr>";
+                                srno = srno + 1;
+                                totalpv = Number(totalpv) + Number(response.lstData[i].totalPV);
+                            }
+                            str += "<tr style='background: #40541d;'><td></td><td></td><td class='text-white'>Total</td><td class='text-white'>" + totalpv + "</td></tr>";
+                            if (Type == "Team") {
+                                $("#businessdetailsOther tbody").html(str);
+                                $("#pbusinessOther").hide();
+                                $("#businessdetailsOther").show();
+                                $("#businessdetailsOtherSelf").show();
+                                $("#SelfDataOthers").text(response.selfBusiness);
+                                if ($('#hdfLevel').val() < 1) { 
+                                    $('#hdfLevel').val('1');
+                                }
+                                if ($('#hdfLevel').val() <= 1) {
+                                    $('#btnBack').hide();
+                                }
+                                else {
+                                    $('#btnBack').show();
+                                }
+                            }
+                            else {
+                                $("#businessdetailsOtherC tbody").html(str);
+                                $("#pbusinessOtherC").hide();
+                                $("#businessdetailsOtherC").show();
+                                $("#businessdetailsOtherSelfC").show();
+                                $("#SelfDataOthersC").text(response.selfBusiness);
+                                if ($('#hdfLevel').val() < 1) {
+                                    $('#hdfLevel').val('1');
+                                }
+                                if ($('#hdfLevel').val() <= 1) {
+                                    $('#btnBackC').hide();
+                                }
+                                else {
+                                    $('#btnBackC').show();
+                                }
+                            }
+
+                        }
+
+                        else if (Type == "Total") {
+                            for (var i = 0; i < response.lstData.length; i++) {
+                                str += "<tr><td>" + srno + "</td><td>" + response.lstData[i].loginId + "</td><td>" + response.lstData[i].name + "</td><td><a href='#' onclick=getbusinessdetails('Total'," + response.lstData[i].fk_MemId + ")>" + response.lstData[i].totalPV + "</a></td></tr>";
+                                srno = srno + 1;
+                                totalpv = Number(totalpv) + Number(response.lstData[i].totalPV);
+                            }
+                            str += "<tr style='background: #40541d;'><td></td><td></td><td class='text-white'>Total</td><td class='text-white'>" + totalpv + "</td></tr>";
+
+                            $("#businessdetailsTotal tbody").html(str);
+                            $("#pbusinessdetailsTotal").hide();
+                            $("#businessdetailsTotal").show();
+                            $("#businessdetailsTotalSelf").show();
+                            $("#SelfDataTotal").text(response.selfBusiness);
+                            if ($('#hdfLevel').val() < 1) {
+                                $('#hdfLevel').val('1');
+                            }
+                            if ($('#hdfTLevel').val() <= 1) {
+                                $('#btnTBack').hide();
+
+                            }
+                            else {
+                                $('#btnTBack').show();
+
+                            }
+                        }
+                        else {
+                            for (var i = 0; i < response.lstData.length; i++) {
+
+                                str += "<tr><td>" + srno + "</td><td>" + response.lstData[i].loginId + "</td><td>" + response.lstData[i].name + "</td><td>" + response.lstData[i].orderDate + "</td><td>" + response.lstData[i].orderNo + "</td><td>" + response.lstData[i].orderAmount + "</td><td>" + response.lstData[i].totalPV + "</td></tr>";
+                                srno = srno + 1;
+                                totalpv = Number(totalpv) + Number(response.lstData[i].totalPV);
+                            }
+                            str += "<tr style='background: #40541d;'><td></td><td></td><td></td><td></td><td></td><td class='text-white'>Total</td><td class='text-white'>" + totalpv + "</td></tr>";
+
+                            $("#businessdetails tbody").html(str);
+
+                        }
+
+                        $("#pre-loader").hide();
+                    }
+                    else {
+                        $("#pre-loader").hide();
+                        $("#businessdetailsOther tbody").html("");
+                        $("#businessdetailsOtherC tbody").html("");
+                        $("#businessdetailsTotal tbody").html("");
+                        $("#SelfDataOthers").text(response.selfBusiness);
+                        $("#SelfDataOthersC").text(response.selfBusiness);
+                        $("#SelfDataTotal").text(response.selfBusiness);
+
+                        $("#pbusinessOther").hide();
+                        $("#pbusinessOtherC").hide();
+                        $("#businessdetailsOther").show();
+                        $("#businessdetailsOtherC").show();
+                        $("#businessdetailsOtherSelf").show();
+                        $("#businessdetailsOtherSelfC").show();
+
+                        $("#pbusinessdetailsTotal").hide();
+                        $("#businessdetailsTotal").show();
+                        $("#businessdetailsTotalSelf").show();
+                        $("#businessdetailsTotalSelfC").show();
+                    }
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+
+                $("#pre-loader").hide();
+                $("#businessdetailsOther tbody").html("");
+                $("#businessdetailsTotal tbody").html("");
+
+            }
+        });
+    }
+    function BecomeaBid(LoginId) {
+        debugger;
+        var status = confirm("Are you sur you want to become a BID");
+        if (status == true) {
+            var LoginId = LoginId;
+            $("#pre-loader").show();
+            $.ajax({
+                url: '/Associate/UpdateBID',
+                type: 'Post',
+                data: { LoginId: LoginId },
+                success: function (response) {
+                    debugger;
+                    if (response != null) {
+                        console.log(response);
+                        if (response.lstData.flag == 1) {
+                            alert(response.lstData.status);
+                            location.reload();
+                            $('.becomebid').hide();
+                        }
+                        else {
+                            alert(response.lstData.status);
+                        }
+
+                        $("#pre-loader").hide();
+
+                    }
+                    else {
+                        $("#pre-loader").hide();
+                    }
+                }, error: function () {
+
+                    $("#pre-loader").hide();
+
+                }
+            });
+        }
+
+    }
+
+
+</script>

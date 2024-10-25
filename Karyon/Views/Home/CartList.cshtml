@@ -1,0 +1,287 @@
+﻿@model Karyon.Models.CartResponse
+
+@{
+    ViewData["Title"] = "CartList";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+<link rel="stylesheet" href="~/websitecss/css/cart.min.css" />
+
+<style>
+    @@media(max-width:420px) {
+        .cart_main {
+            padding: 10px !important;
+        }
+
+        .cart {
+            padding: 10px 0 !important;
+        }
+         .orclass{
+            width: 75px !important;
+        }
+    }
+
+
+</style>
+
+    <div class="page_main container-fluid">
+        <div class="container">
+            <h1 class="page_header">Cart page</h1>
+
+        </div>
+    </div>
+    <div class="container">
+        <ul class="page_breadcrumbs d-flex flex-wrap">
+            <li class="page_breadcrumbs-item">
+                <a class="link" href="/Home/Index">Home</a>
+            </li>
+
+            <li class="page_breadcrumbs-item current">
+                <span>Cart page</span>
+            </li>
+        </ul>
+    </div>
+
+<!-- Cart content start -->
+<main>
+
+    @if (Model != null)
+    {
+        if (Model.Response != null)
+        {
+            if (Model.Response.CartList != null)
+            {
+                float? finalPrice = 0;
+                float? finalAmt = 0;
+                float? totalPV = 0;
+                float? singleBV = 0;
+                <section class="cart section">
+                   <div class="container">
+                        <div class="d-md-flex justify-content-between align-content-start">
+                            <div class="cart_main">
+                                <h3 class="cart_main-header d-flex align-items-center justify-content-between">
+                                    Products
+                                    <span>@Model.Response.CartList.Count Items</span>
+                                </h3>
+                                <ul class="cart_main-list">
+                                    @foreach (var item in Model.Response.CartList)
+                                    {
+                                        finalPrice = finalPrice + @item.FinalPrice;
+                                        finalAmt = finalPrice + 0;
+                                        totalPV = totalPV + @item.TotalBv;
+                                        singleBV = @item.TotalBv / @item.Quantity;
+                                        <li class="cart_main-list_item" style="@item.BorderCss">
+                                            <div class="wrapper d-flex flex-wrap flex-xl-nowrap align-items-center justify-content-between">
+                                                <div class="wrapper_item d-flex align-items-center">
+                                                    <div class="wrapper_item-media">
+                                                        <picture>
+                                                            <source data-srcset=" @item.Image" srcset="@item.Image" type="image/webp" />
+                                                            <img class="lazy" data-src="@item.Image" src="@item.Image" alt="media" style="max-width:100px;" />
+                                                        </picture>
+                                                    </div>
+                                                    <div class="wrapper_item-info">
+                                                        <h4 class="title">@item.ProductName</h4>
+
+                                                    </div>
+                                                </div>
+                                                <div class="price_wrapper d-flex flex-column">
+
+                                                    <span class="price price--new">Rs @item.MRP</span>
+                                                    <span class="price price--new">PV @singleBV</span>
+                                                </div>
+                                                <div class="price_wrapper price_wrapper--subtotal d-flex flex-column">
+                                                    <h5 class="title">Subtotal</h5>
+                                                    <span class="price price--total">Rs @item.FinalPrice</span>
+                                                    <span class="price price--total">PV @item.TotalBv</span>
+                                                </div>
+                                                <div class="qty d-flex align-items-center justify-content-between">
+                                                    <span class="qty_minus control d-flex align-items-center minus">
+                                                        <i class="icon-minus"></i>
+                                                    </span>
+                                                    @*@Html.TextBoxFor(m=>m.qty_amount,new{@class="form-control",@onchange="return AddToCart(this,@item.VarientId)"})*@
+                                                    <input id="qty_amount" type="number" style="max-width: 22px;text-align: center;font-weight: 700;line-height: 1" value="@item.Quantity" onchange="return AddToCart(this,@item.VarientId)" min="1">
+                                                    <span class="qty_plus control d-flex align-items-center plus">
+                                                        <i class="icon-plus"></i>
+                                                    </span>
+                                                </div>
+
+                                                <a class="close d-flex align-items-center align-items-sm-start" onclick="return confirm('Are you sure you want to delete this item?')" href="/Home/DeleteCartItem?Id=@Karyon.Models.Crypto.Encrypt(item.CartId.ToString())">
+                                                    <i class="icon-close"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    }
+
+                                </ul>
+                                <div class="cart_main-action d-flex flex-column flex-sm-row align-items-center justify-content-sm-between">
+                                    <a class="btn--underline" href="/Home/Shop">Keep Shopping</a>
+
+                                </div>
+                            </div>
+                            @{
+                                finalAmt += Model.Response.ShippingCharge;
+                            }
+                            <div style="display:flex;flex-direction:column;">
+
+
+                                <div class="cart_summary" style="max-width: 446px">
+                                    <h3 class="cart_summary-header">Order Summary</h3>
+
+                                    <div class="cart_summary-table">
+                                        <div class="cart_summary-table_row d-flex justify-content-between">
+                                            <span class="property">@Model.Response.CartList.Count Items</span>
+                                            <span class="value">₹ @finalPrice</span>
+                                        </div>
+                                        <div class="cart_summary-table_row d-flex justify-content-between">
+                                            <span class="property">Shipping</span>
+                                            <span class="value" id="ShippingCharges">₹ @Model.Response.ShippingCharge</span>
+                                        </div>
+                                        <div class="cart_summary-table_row cart_summary-table_row--total d-flex justify-content-between">
+                                            <span class="property">Total PV</span>
+                                            <span class="value"> <span id="totalpv">@totalPV </span> </span>
+                                        </div>
+                                        <div class="cart_summary-table_row cart_summary-table_row--total d-flex justify-content-between">
+                                            <span class="property">Total</span>
+                                            <span class="value">₹ <span id="finalamount">@finalAmt </span> </span>
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <a class="cart_summary-btn btn" href="#" onclick="return gotoAddress()">Continue To Address</a>
+
+                                </div>
+                                @*  <br />
+                    <div class="cart_summary" style="max-width: 446px;">
+                    <h3 class="cart_summary-header">Wallet Summary</h3>
+
+                    <div class="cart_summary-table">
+
+                    <div class="cart_summary-table_row d-flex justify-content-between">
+                    <span class="property"><input type="radio" name="rdbWallet" onchange="changeWalletType()" value="KaryonWallet" checked /> Karyon Wallet</span>
+                    <span class="value"> <input type="text" id="WalletBalance" value="@ViewBag.KaryonWallet" class="form-control" readonly /></span>
+                    </div>
+                    <div class="cart_summary-table_row d-flex justify-content-between">
+                    <span class="property"> <input type="radio" name="rdbWallet" onchange="changeWalletType()" value="FUPWallet" /> FUP Wallet</span>
+
+                    <span class="value"><input type="text" id="FUPBalance" value="@ViewBag.FUPWallet" class="form-control" readonly /></span>
+
+
+
+                    </div>
+                    <div class="cart_summary-table_row d-flex justify-content-between">
+                    <span class="property"> <input type="radio" name="rdbWallet" onchange="changeWalletType()" value="Paytm" /> Paytm</span>
+
+                    <span class="value"><input type="text" id="paytm" value="@finalPrice" class="form-control" readonly /></span>
+
+
+
+                    </div>
+
+                    </div>
+
+                    </div>*@
+                            </div>
+
+                        </div>
+                   </div>
+                </section>
+
+
+
+            }
+        }
+    }
+
+</main>
+
+
+
+
+<script src="~/assets/js/jquery-3.6.0.min.js"></script>
+<script>
+    function gotoAddress()
+    {
+        window.location.href = "/Home/AddressList?Id=123&Trans=202312545215452&UT=4552121511475&Text=123456&Value="+$('#finalamount').text()+"&Id=123&Trans=202312545215452&UT=4552121511475&Text=123456&Amount="+$('#finalamount').text();
+    }
+    function GetFranchiseList() {
+        $.ajax({
+            url: '/Home/GetPincodeFranchise',
+            type: 'Post',
+            data: { PinCode: $('#PinCode').val() },
+            success: function(result) {
+
+                var srno = 1;
+                var str = "";
+                $("#FranchiseList tbody").html('');
+                for (var i = 0; i < result.length; i++) {
+
+                    str += "<tr><td>" + srno + "</td><td  nowrap>" + result[i].firstName + "</td><td >" + result[i].mobileNo + "</td></tr>";
+                    srno = srno + 1;
+                }
+
+                //str += "<tr><th colspan='2'>Total</th><th>" + TotalReqQty + "</th><th>" + PointValue + "</th><th>" + TotalPV + "</th><th>" + TotalProdAmt + "</th><th>" + FinalAmt + "</th></tr>";
+
+                $("#FranchiseList tbody").html(str);
+                // $('#largeModal').modal('toggle');
+                // $('#largeModal').modal('show');
+                //$('#largeModal').show();
+
+            }, error: function() {
+                //alert('Some Thing wrong!');
+
+
+            }
+        });
+    }
+    function AddToCart(value, ProductId) {
+
+        $(".errortext").removeClass("errortext");
+
+        $.ajax({
+            url: '/Home/AddToCarts',
+            type: 'Post',
+            data: { ProductId: ProductId, Quantity: value.value },
+            success: function(response) {
+
+                window.location.href = "/Home/CartList";
+                // window.location.href = "/Home/CartList";
+
+
+            }, error: function() {
+                //alert('Some Thing wrong!');
+
+
+            }
+        });
+    }
+    function changeWalletType() {
+        var rdbWallet = $('input[name="rdbWallet"]:checked').val();
+        $('#WalletType').val(rdbWallet);
+
+    }
+    function ckeckProduct() {
+        var rdbWallet = $('input[name="rdbWallet"]:checked').val();
+        var finalamt = $('#finalamount').text();
+        if (rdbWallet == "FUPWallet") {
+            if (Number($('#FUPBalance').val()) < Number(finalamt)) {
+                window.location.href = "/Associate/CheckOut?Status=1";
+                return false;
+            }
+            $('#WalletType').val(rdbWallet);
+        }
+        else if (rdbWallet == "KaryonWallet") {
+            if (Number($('#WalletBalance').val()) < Number(finalamt)) {
+                window.location.href = "/Associate/CheckOut?Status=1";
+                return false;
+            }
+            $('#WalletType').val(rdbWallet);
+        }
+
+        window.location.href = "/Home/CartList?WalletType=" + $('#WalletType').val() + "&checkout=1";
+    }
+
+</script>
+
+
+

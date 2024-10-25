@@ -1,0 +1,328 @@
+﻿@model Karyon.Models.PayoutDetail
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang='en'>
+<body style='margin:1px 0;font-size:12px;font-family:Verdana;line-height: 25px;border:1px solid'>
+    <table style="width: 800px;margin: 0px auto;border: 1px solid #000;font-size: 14px;font-family: Verdana;padding:5px">
+        <tbody>
+            <tr>
+                <td style="width: 100%;vertical-align: top;text-align: center;">
+                    <img width="150" src='https://karyon.organic/WebsiteCss/img/Karyon-logo.png' />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;vertical-align: top;text-align: center;">
+                    <strong>Payout Statement</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    Payout No.- @Model.PayoutNo (@Model.dtDetails.Rows[0]["StartDate"].ToString() To @Model.dtDetails.Rows[0]["EndDate"].ToString())
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table style="width: 800px;margin: 0px auto;border: 1px solid #000;font-size: 14px;font-family: Verdana;padding:5px">
+        <tbody style="background:#40541d">
+            <tr>
+
+                <td style="color:#fff;padding:5px">
+                    Name : @Model.dtDetails.Rows[0]["ToName"].ToString() (@Model.LoginId)
+                </td>
+            </tr>
+            <tr>
+
+                <td style="color:#fff;padding:5px">
+                    Performance Level : @Model.dtSelfData.Rows[0]["PerformanceLevel"].ToString() (@Model.dtSelfData.Rows[0]["LevelPercentage"].ToString()%)
+                </td>
+            </tr>
+            <tr>
+                <td style="color:#fff;padding:5px">
+                    Mobile : @Model.dtDetails.Rows[0]["MobileNo"].ToString()
+                </td>
+
+            </tr>
+            <tr>
+                <td style="color:#fff;padding:5px">
+                    Pan : @Model.dtDetails.Rows[0]["PanCard"].ToString()
+                </td>
+
+            </tr>
+            <tr>
+                <td style="color:#fff;padding:5px">
+                    Address : @Model.dtDetails.Rows[0]["Address"].ToString()
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <table style="width: 800px;margin: 0px auto;border: 1px solid #000;font-size: 14px;font-family: Verdana;padding:5px">
+        <tbody style="background:#40541d">
+            <tr>
+                <td style="color:#fff;padding:5px">
+                    Self Business : @Model.dtDetails.Rows[0]["SelfBusiness"].ToString()
+                </td>
+                <td style="color:#fff;padding:5px">
+                    Team Business : @Model.dtDetails.Rows[0]["TeamBusiness"].ToString()
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table style="width: 800px;margin: 0px auto;border: 1px solid #000;font-size: 14px;font-family: Verdana;padding:5px">
+        <tbody style="background:#40541d">
+
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["DirectIncome"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Self Income</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["DirectIncome"].ToString()</td>
+                </tr>
+            }
+
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["TeamIncome"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Team Income</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["TeamIncome"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["Smart"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Smart Royality</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["Smart"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["Leadership"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Leadership Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["Leadership"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["SuperStartSale"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Super Star Sale Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["SuperStartSale"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["SuperStartClub"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Super Star Club Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["SuperStartClub"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["PremiumClub"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Premium Club Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["PremiumClub"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["SuperPremiumClub"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Super Premium Club Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["SuperPremiumClub"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["SeminarBonus"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Seminar Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["SeminarBonus"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["CarClubBonus"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Car Club Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["CarClubBonus"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["TravelClubBonus"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Travel Club Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["TravelClubBonus"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["ProvidentClubBonus"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Provident Club Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["ProvidentClubBonus"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["HouseClubBonus"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">House Club Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["HouseClubBonus"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["BlueDiamondClubBonus"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Blue Diamond Club Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["BlueDiamondClubBonus"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["CrownAmbassadorClubBonus"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">Crown Ambassador  Club Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["CrownAmbassadorClubBonus"].ToString()</td>
+                </tr>
+            }
+            @if (decimal.Parse(Model.dtSelfData.Rows[0]["PresidentClubBonus"].ToString()) > 0)
+            {
+                <tr>
+                    <td style="color:#fff;padding:5px">President  Club Bonus</td>
+                    <td style="color:#fff;padding:5px">@Model.dtSelfData.Rows[0]["PresidentClubBonus"].ToString()</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    @{
+        string cssclass = "";
+    }
+    <table cellspacing="0" cellpadding="0" style="width: 800px;margin: 0px auto;border: 1px solid #000;font-size: 12px;
+     font-family: Arial, Verdana, Tahoma;line-height: 16px;">
+        <tbody>
+            <tr>
+                <td style="border-top: 1px solid #000; vertical-align: top">
+                    <table style='margin:0px auto;border:1px solid #000;font-size:12px;font-family:Arial,Verdana,Tahoma;line-height: 16px;'>
+                        <thead style="background:#ffbf3c">
+                            <tr>
+                                <td style='color:#434343; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    <strong>#</strong>
+                                </td>
+                                <td style='color:#434343; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    <strong>Income Type</strong>
+                                </td>
+                                <td style='color:#434343; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    <strong>LoginId</strong>
+                                </td>
+                                <td style='color:#434343; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    <strong>Name</strong>
+                                </td>
+                                <td style='color:#434343; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    <strong>Buss. PV</strong>
+                                </td>
+                                <td style='color:#434343; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    <strong>Perc(%)</strong>
+                                </td>
+                                <td style='color:#434343; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    <strong>Amount</strong>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i <= Model.dtDetails.Rows.Count - 1; i++)
+                            {
+
+                                <tr>
+                                    <td style='border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 2px 5px;'>
+                                        @(i + 1)
+                                    </td>
+                                    <td style='border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 2px 5px;'>
+                                        @Model.dtDetails.Rows[i]["IncomeType"].ToString()
+                                    </td>
+                                    <td style='border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 2px 5px;'>
+                                        @Model.dtDetails.Rows[i]["FromLoginId"].ToString()
+                                    </td>
+                                    <td style='border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 2px 5px;'>
+                                        @Model.dtDetails.Rows[i]["FromName"].ToString()
+                                    </td>
+                                    <td style='border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 2px 5px;'>
+                                        @Model.dtDetails.Rows[i]["BusinessAmount"].ToString()
+                                    </td>
+                                    <td style='border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 2px 5px;'>
+                                        @Model.dtDetails.Rows[i]["CommissionPercentage"].ToString()
+                                    </td>
+                                    <td style='border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 2px 5px;'>
+                                        @Model.dtDetails.Rows[i]["Amount"].ToString()
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5"></td>
+                                <td style='background:#40541d;color:#fff; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;text-align:left'>
+                                    Gross Amount
+                                </td>
+                                <td style='background:#40541d;color:#fff; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    @Model.dtDetails.Rows[0]["Gross"].ToString()
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <td style='background:#40541d;color:#fff; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;text-align:left'>
+                                    TDS
+                                </td>
+                                <td style='background:#40541d;color:#fff; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    @Model.dtDetails.Rows[0]["TDS"].ToString()
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <td style='background:#40541d;color:#fff; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;text-align:left'>
+                                    Admin Charges
+                                </td>
+                                <td style='background:#40541d;color:#fff; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    @Model.dtDetails.Rows[0]["Processing"].ToString()
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <td style='background:#40541d;color:#fff; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;text-align:left'>
+                                    Net Amount
+                                </td>
+                                <td style='background:#40541d;color:#fff; border-right: 1px solid #000; border-bottom: 1px solid #000;
+                        padding: 5px 5px;'>
+                                    @Model.dtDetails.Rows[0]["NetAmount"].ToString()
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

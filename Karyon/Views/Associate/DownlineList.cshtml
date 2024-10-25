@@ -1,0 +1,193 @@
+﻿@model Karyon.Models.DownlineRequest
+
+@{
+    ViewData["Title"] = "DownlineList";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+
+ <form asp-action="DownlineList">
+   
+
+        <div class="page-body">
+            <div class="container-fluid">
+                <div class="page-title">
+                    <div class="row">
+                        <div class="col-sm-6 ps-0">
+                            <h3>Downline List</h3>
+                        </div>
+                        <div class="col-sm-6 pe-0">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">
+                                        <svg class="stroke-icon">
+                                            <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">My Team</li>
+                                <li class="breadcrumb-item active"> Downline List</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <!-- /breadcrumb -->
+
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+
+
+                                    <div class="row">
+                                        <div class="section-field mb-20 col-sm-3">
+                                             <label class="mb-10" for="name">Login Id </label>
+                                            <input type="text" asp-for="LoginId" class="web form-control" placeholder="LoginId" maxlength="50" />
+
+                                        </div>
+                                       
+                                      
+                                        <div class="section-field mb-20 col-sm-3">
+                                            <label class="mb-10" for="name">Status </label>
+                                            @Html.DropDownListFor(m => m.Status, new SelectList(ViewBag.ddlStatus, "Value", "Text"), new { @class = "web form-control" })
+
+                                        </div>
+                                        <div class="section-field mb-10 col-sm-3">
+                                          <br/>
+                                            <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <input type="hidden" asp-for="Page" />
+                                    <div class="table-responsive">
+                            <table class="table table-bordered radio-first-col-width" id="MyDirectList">
+                                <thead style="background: #40541d;">
+                                                <tr>
+                                                    <th class="text-white">S. No.</th>
+                                                    <th class="text-white">Login Id</th>
+                                                    <th class="text-white">Name</th>
+                                                    <th class="text-white">Zone</th>
+                                                    <th class="text-white">Place Under Id</th>
+                                                    <th class="text-white">Place Under Name</th>
+                                                   
+                                                    <th class="text-white">Joining Date</th>
+                                                    <th class="text-white">Activation Date</th>
+                                                   
+                                                    <th class="text-white">Active Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model != null)
+                                                {
+
+                                                    if (Model.dtDetails != null)
+                                                    {
+                                                        int i = 1;
+
+                                                        int page = Model.Pager.CurrentPage;
+                                                        page = (page - 1);
+                                                        i = ((page) * (Model.Pager.PageSize));
+                                                        for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                        {
+                                                            <tr>
+                                                                <td>@(i+1)</td>
+                                                                <td><span>@Model.dtDetails.Rows[j]["LoginId"]</span></td>
+                                                                <td>@Model.dtDetails.Rows[j]["FirstName"] @Model.dtDetails.Rows[j]["LastName"]</td>
+                                                                <td><span class="badge bg-info">@Model.dtDetails.Rows[j]["Leg"]</span></td>
+                                                                <td>@Model.dtDetails.Rows[j]["PlaceUnderLoginId"] </td>
+                                                                <td>@Model.dtDetails.Rows[j]["PlaceUnderName"] </td>
+                                                                <td>@Model.dtDetails.Rows[j]["JoiningDate"] </td>
+                                                                <td>@Model.dtDetails.Rows[j]["PermanentDate"] </td>
+
+                                                                <td>
+                                                                    @if (Model.dtDetails.Rows[j]["Status"] == "Active")
+                                                                    {
+                                                                        <span class="badge bg-success">@Model.dtDetails.Rows[j]["Status"]</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="badge bg-danger">@Model.dtDetails.Rows[j]["Status"]</span>
+                                                                    }
+
+
+                                                                </td>
+                                                            </tr>
+                                                            i++;
+                                                        }
+
+                                                    }
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+
+                                        <footer class="card-footer bg-white p-2">
+
+                                        <div class="d-md-flex align-items-center justify-content-between">
+                                            @if (Model != null)
+                                            {
+                                                if (Model.Pager != null)
+                                                {
+                                                    @if (Model.Pager.EndPage > 1)
+                                                    {
+                                                        <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                                        <div>
+                                                            <ul class="pagination mb-0">
+                                                                @if (Model.Pager.CurrentPage > 1)
+                                                                {
+                                                                    <li class="page-item">
+
+                                                                        <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                                    </li>
+
+
+
+                                                                    <li class="page-item">
+                                                                        <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                                    </li>
+                                                                }
+                                                                @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                                {
+                                                                    var P = @page;
+                                                                    <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                                        <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                                    </li>
+
+                                                                }
+                                                                @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                                {
+                                                                    <li class="page-item">
+
+                                                                        <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                                    </li>
+                                                                    <li class="page-item">
+
+                                                                        <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    }
+                                                }
+
+                                            }
+
+                                        </div>
+                                    </footer>
+                                    </div>
+
+                                    
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           
+</form>

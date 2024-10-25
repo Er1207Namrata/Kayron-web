@@ -1,0 +1,325 @@
+﻿@model Karyon.Models.CreateOrder
+
+@{
+    ViewData["Title"] = "CreateOrder";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+
+<form asp-action="CreateOrder">
+    @{
+        decimal TotalPV = 0;
+        int TotalQty = 0;
+        decimal FinalBV = 0;
+        decimal TotalPrice = 0;
+        decimal TotalMRP = 0;
+        int TotalBottles = 0;
+        decimal TotalGst = 0;
+        decimal Total = 0;
+        
+    }
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Create Order</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Manage Stock</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Create Order</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Order Through</label>
+                        @* <select id="WalletType" name="rdbWallet" class="form-control">
+                        <option   value="KaryonWallet">Karyon Wallet</option>
+                        <option  value="FUPWallet" > FUP Points</option>
+                        </select>*@
+                        <input type="radio" id="rdbWallet" name="rdbWallet" value="KaryonWallet" checked onclick="return ShowBalance()" /> <span>Karyon Wallet &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <input type="radio" id="rdbFUP" name="rdbWallet" value="FUPWallet" onclick="return ShowBalance()" /><span> FUP Points &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        @* <input type="radio" id="rdbPaytm" name="rdbWallet" value="Paytm" onclick="return ShowBalance()" /><span> UPI/Debit Card/Credit Card &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> *@
+                        @Html.HiddenFor(m=>m.WalletType)
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <label>Product</label>
+                        <br />
+                        @Html.DropDownListFor(m => m.Fk_ProductId, new SelectList(ViewBag.ddlProducts, "Value", "Text"), new { @class = "form-control" ,@onchange="fGetDetails()"})
+                    </div>
+                    <div class="col-md-2">
+                        <label>Quantity</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="Qty" placeholder="Quantity" min="1" maxlength="50" onchange="return GetSubtotal();" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Amount</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="Amount" disabled placeholder="Amount" min="1" maxlength="50" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>PV</label>
+                        <br />
+                        <input class="web form-control" type="number" asp-for="PV" disabled placeholder="PV" min="1" maxlength="50" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Sub Total</label>
+                        <br />
+                        <input class="web form-control" type="number" disabled asp-for="SubTotal" placeholder="Sub Total" min="1" maxlength="50" />
+                    </div>
+                    <div class="col-md-2">
+
+                        <br />
+                        <input type="submit" id="btnAdd" name="btnAdd" class="btn btn-success" value="Add" onclick="return FvalidateAdd();" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="MyDirectList">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Bottles</th>
+                                    <th>Total Price</th>
+                                    <th>GST Rate</th>
+                                    <th>GST</th>
+                                    <th>Total</th>
+
+                                    <th>Total PV</th>
+
+
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+
+                                    if (Model.dtDetails != null)
+                                    {
+
+                                        for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                        {
+                                            TotalPV = TotalPV + decimal.Parse(Model.dtDetails.Rows[j]["BV"].ToString());
+                                            TotalGst = TotalGst + decimal.Parse(Model.dtDetails.Rows[j]["GSTAmt"].ToString());
+                                            TotalQty = TotalQty + int.Parse(Model.dtDetails.Rows[j]["Qty"].ToString());
+                                            FinalBV = FinalBV + decimal.Parse(Model.dtDetails.Rows[j]["TotalBv"].ToString());
+                                            TotalPrice = TotalPrice + decimal.Parse(Model.dtDetails.Rows[j]["TotalPrice"].ToString());
+                                            TotalMRP = TotalMRP + decimal.Parse(Model.dtDetails.Rows[j]["MRP"].ToString());
+                                            TotalBottles = TotalBottles + int.Parse(Model.dtDetails.Rows[j]["Bottles"].ToString());
+                                            Total = Total + decimal.Parse(Model.dtDetails.Rows[j]["Total"].ToString());
+                                            <tr>
+                                                <td>@(j + 1)</td>
+                                                <td><span>@Model.dtDetails.Rows[j]["ProductName"]</span></td>
+                                                <td>@Model.dtDetails.Rows[j]["Price"]</td>
+                                                <td>@Model.dtDetails.Rows[j]["Qty"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["Bottles"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["TotalPrice"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["GSTPerc"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["GSTAmt"] </td>
+                                                <td>@Model.dtDetails.Rows[j]["Total"] </td>
+
+                                                <td>@Model.dtDetails.Rows[j]["TotalBv"] </td>
+
+                                                <td>
+                                                    <a href="/Franchisee/DeleteTempOrder?Id=@Model.dtDetails.Rows[j]["Pk_Id"]&&WalletType=@Model.WalletType" onclick="return confirm('are you sure to delete this record?')" style="color:red"><i class="fa fa-trash"></i></a>
+                                                </td>
+
+                                            </tr>
+
+                                        }
+
+                                    }
+                                }
+
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th>@TotalQty</th>
+                                    <th>@TotalBottles</th>
+                                    <th>@TotalPrice</th>
+                                    <th></th>
+                                    <th>@TotalGst</th>
+                                    <th>@Total</th>
+                                    <th>@FinalBV</th>
+
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                @if (Model != null)
+                {
+
+                    if (Model.dtDetails != null)
+                    {
+                        if (Model.dtDetails.Rows.Count > 0)
+                        {
+
+
+                            <div class="row">
+                                <div class="col-md-2" id="divWallet">
+                                    Wallet Balance
+                                    <br />
+                                    <input class="web form-control" type="number" disabled asp-for="WalletBalance" placeholder="Wallet Balance" style="color:blue" min="1" maxlength="50" />
+                                </div>
+                                <div class="col-md-2" id="divFUP" style="display:none">
+                                    FUP Points
+                                    <br />
+                                    <input class="web form-control" type="number" disabled asp-for="FUPPoints" placeholder="FUP Points" style="color:blue" min="1" maxlength="50" />
+                                </div>
+                                <div class="col-md-2">
+                                    Order Amount
+                                    <br />
+                                    <input class="web form-control" type="number" disabled asp-for="OrderAmount" placeholder="Order Amount" style="color:blue" min="1" maxlength="50" />
+                                </div>
+                                <div class="col-md-2">
+                                    Balance
+                                    <br />
+                                    <input class="web form-control" type="number" disabled asp-for="Balance" placeholder="Balance" style="color:blue" min="1" maxlength="50" />
+                                </div>
+                                <div class="col-md-6">
+                                    <br />
+                                    <input type="submit" id="btnSave" name="btnSave" class="btn btn-success" value="Save" onclick="return fcheckbalance()" />
+                                </div>
+
+
+                            </div>
+                        }
+                    }
+                }
+                <div class="row">
+                    <p style="color:red">@TempData["CreateOrder"]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/assets/js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('#WalletType').val() == "KaryonWallet") {
+                $("#rdbWallet").attr('checked', true);
+            }
+            else if ($('#WalletType').val() == "FUPWallet") {
+                $("#rdbFUP").attr('checked', true);
+            }
+            else if($('#WalletType').val() == "Paytm") {
+                $("#rdbPaytm").attr('checked', true);
+            }
+            else{
+                $('#WalletType').val("KaryonWallet");
+            }
+            
+          
+            ShowBalance();
+        });
+        function ShowBalance() {
+            var balance = 0;
+            var WalletType = $('input[name="rdbWallet"]:checked').val();
+            $('#WalletType').val(WalletType);
+          
+            if (WalletType == "KaryonWallet") {
+                $('#divFUP').hide();
+                $('#divWallet').show();
+                balance = $('#WalletBalance').val() - $('#OrderAmount').val();
+            }
+            else if (WalletType == "FUPWallet") {
+                $('#divFUP').show();
+                $('#divWallet').hide();
+                balance = $('#FUPPoints').val() - $('#OrderAmount').val();
+            }
+            else {
+                $('#divFUP').hide();
+                $('#divWallet').hide();
+                balance = "0";
+            }
+            $('#Balance').val(balance);
+            
+        }
+        function fGetDetails() {
+            $(".errortext").removeClass("errortext");
+            $("#pre-loader").show();
+            $.ajax({
+                url: '/Franchisee/GetProductDetails',
+                type: 'Post',
+                data: { ProductId: $('#Fk_ProductId').val() },
+                success: function (response) {
+                    if (response != null) {
+
+                      
+                        $('#Amount').val(response.response.singleProduct[0].boxPrice);
+                        $('#PV').val(response.response.singleProduct[0].pv);
+                        GetSubtotal();
+
+                        $("#pre-loader").hide();
+
+                    }
+                    else {
+                        $("#pre-loader").hide();
+
+                    }
+                }, error: function () {
+                    //alert('Some Thing wrong!');
+                    $("#pre-loader").hide();
+
+                }
+            });
+        }
+        function GetSubtotal() {
+            var subtotal = $('#Amount').val() * $('#Qty').val();
+            $('#SubTotal').val(subtotal);
+        }
+        function FvalidateAdd() {
+            if ($('#Fk_ProductId').val() == '0') {
+                $("#Fk_ProductId").addClass('errortext');
+                $("#Fk_ProductId").focus()
+                return false;
+            }
+            if ($('#Qty').val() == '') {
+                $("#Qty").addClass('errortext');
+                $("#Qty").focus();
+                return false;
+            }
+
+        }
+        function fpaymentdetails() {
+
+            if ($('#PaymentMode').val() != "Cash") {
+                $('#divTransactionNo').css({ "display": "" });
+                $('#divTransactionDate').css({ "display": "" });
+                $('#divPaymentSlip').css({ "display": "" });
+            }
+            else {
+                $('#divTransactionNo').css({ "display": "none" });
+                $('#divTransactionDate').css({ "display": "none" });
+                $('#divPaymentSlip').css({ "display": "none" });
+            }
+        }
+        function fcheckbalance() {
+
+            // if ($('#Balance').val() < 0) {
+            //     alert("Insuffient Balance!!");
+            //     return false;
+            // }
+        }
+    </script>
+</form>

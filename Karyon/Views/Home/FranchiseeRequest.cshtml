@@ -1,0 +1,148 @@
+﻿@model Karyon.Models.FranchiseRegistrationRequest
+@{
+    ViewData["Title"] = "FranchiseeRequest";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Registration</title>
+
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico" />
+
+    <!-- font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,500,500i,600,700,800,900|Poppins:200,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/plugins-css.css" />
+
+    <!-- Typography -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/typography.css" />
+
+    <!-- Shortcodes -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/shortcodes/shortcodes.css" />
+
+    <!-- Style -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css" />
+
+    <!-- Responsive -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/responsive.css" />
+    <style>
+        .errortext {
+            border: 1px solid red !important;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <!--=================================
+         preloader -->
+
+        <div id="pre-loader">
+            <img src="~/assets/images/pre-loader/loader-01.svg" alt="">
+        </div>
+
+        <!--=================================
+         preloader -->
+        <!--=================================
+         signup-->
+        <form asp-action="Registration" enctype="multipart/form-data">
+            <section class="gray-bg d-flex align-items-center page-section-ptb login">
+                <div class="container" style="max-width: 1544px;">
+                    <div class="row g-0 justify-content-center">
+                        <div class="col-lg-4 col-md-6 login-fancy-bg parallax" style="background: url(/ProductImages/login.png);">
+                            <div class="login-fancy pos-r">
+                                <h2 class="text-white mb-20">Hello</h2>
+                                <p class="mb-20 text-white"></p>
+                                <ul class="list-unstyled pos-bot pb-30">
+                                    <li class="list-inline-item"><a class="text-white" href="#"> Terms of Use</a> </li>
+                                    <li class="list-inline-item"><a class="text-white" href="#"> Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 white-bg">
+                            <div class="login-fancy pb-40 clearfix">
+                                <h6 class="mb-30">Signup</h6>
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-12">
+                                        @Html.DropDownListFor(m => m.FK_FranchiseTypeId, new SelectList(ViewBag.ddlFranchiseType, "Value", "Text"), new { @class = "web form-control"})
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-12">
+                                        <input type="text" asp-for="SponsorLoginId" class="web form-control" placeholder="Member Id" onchange="return GetSponsorName();" />
+
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-12">
+                                        <input class="web form-control" type="text" placeholder="Associate Name" id="SponsorName" readonly />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-6">
+                                        <input type="text" asp-for="ContactPerson" class="web form-control" placeholder="Contact Person" maxlength="50" />
+
+                                    </div>
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input class="web form-control" type="text" placeholder="Last name" asp-for="MobileNo" maxlength="50" />
+                                    </div>
+                                </div>
+                              
+                                <div class="section-field mb-20">
+                                    <input type="number" placeholder="Mobile No*" class="form-control" asp-for="EmailId" maxlength="10" min="1" />
+                                </div>
+                             
+                                <div class="section-field mb-20">
+                                    <input type="number" placeholder="Mobile No*" class="form-control" asp-for="PanCard" maxlength="10" min="1" />
+                                </div>
+                             
+                                <input type="submit" id="btnRegister" name="btnRegister" value="Register" class="button" onclick="return Fvalidate();" />
+
+                                <p style="color:red">@TempData["Registraion"]</p>
+
+                                <p class="mt-20 mb-0">Have an account? <a href="/Home/Login"> Login</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+        <!--=================================
+         signup-->
+
+
+    </div>
+
+    <div id="back-to-top"><a class="top arrow" href="#top"><i class="fa fa-angle-up"></i> <span>TOP</span></a></div>
+
+    <!--=================================
+     jquery -->
+    <!-- jquery -->
+    <script src="~/assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- plugins-jquery -->
+    <script src="~/assets/js/plugins-jquery.js"></script>
+
+    <!-- plugin_path -->
+    <script>var plugin_path = '~/assets/js/';</script>
+
+    <!-- custom -->
+    <script src="~/assets/js/custom.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,276 @@
+﻿@model Karyon.Models.EventListRequest;
+@{
+    ViewData["Title"] = "Event Details";
+    Layout = "~/Views/Shared/_AssociateLayout.cshtml";
+}
+<style>
+    .idcard {
+        width: 350px;
+        text-align: center;
+        margin: 0px auto;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        font-family: arial;
+        border: 1px solid #d8d8d8;
+    }
+
+        .idcard h1, h2, h3 {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .idcard p {
+            margin: 0px;
+            padding: 5px 0 20px;
+        }
+</style>
+<form asp-action="OrderList">
+
+    <div class="page-body">
+        <div class="container-fluid">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-sm-6 ps-0">
+                        <h3>Event</h3>
+                    </div>
+                    <div class="col-sm-6 pe-0">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">
+                                    <svg class="stroke-icon">
+                                        <use href="../../associatepanel/assets/svg/icon-sprite.svg#stroke-home"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">Event Details</li>
+
+                        </ol>
+                        <span style="color:red;">
+                            @TempData["CancelOrder"]
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="idcard">
+
+                            @if (Model != null)
+                            {
+                                if (Model.dtDetails != null)
+                                {
+                                    if (Model.dtDetails.Rows.Count > 0)
+                                    {
+                                        <h3>@Model.dtDetails.Rows[0]["EventName"].ToString()</h3>
+                                        <p class="title">@Model.dtDetails.Rows[0]["EventDescription"].ToString()</p>
+                                        <p>From : @Model.dtDetails.Rows[0]["FromDate"].ToString() to @Model.dtDetails.Rows[0]["ToDate"].ToString()</p>
+
+                                        @if (string.IsNullOrEmpty(Model.dtDetails.Rows[0]["AssociateImage"].ToString()) && string.IsNullOrEmpty(Model.dtDetails.Rows[0]["ProfilePic"].ToString()))
+                                        {
+                                            <p>Click to Upload Image</p>
+
+                                            <div class="col-md-12 d-flex justify-content-center"><a style="color:blue" href="#" data-bs-target="#UploadImageModel" class="btn btn-primary text-light" data-bs-toggle="modal">Upload Image</a></div>
+                                            @*<div id="my_camera"></div>
+                            <div id="result"></div>
+                            <input type="file" id="cap" name="personalPhoto" accept="image/*" capture="camera" id="camera" />
+                            <button onclick="take_snap()"> capture</button>*@
+                                        }
+                                        else if (!string.IsNullOrEmpty(Model.dtDetails.Rows[0]["ProfilePic"].ToString()))
+                                        {
+
+                                            <p><img src="https://karyon.organic/@Model.dtDetails.Rows[0]["ProfilePic"]" alt="UserImage" style="width:200px; height: 200px; border-radius: 50%; margin: 0px auto"></p>
+
+                                            //<div class="col-md-12 d-flex justify-content-center"><img src="https://karyon.organic/@Model.dtDetails.Rows[0]["ProfilePic"]" style="height:200px;width:200px;" /></div>
+                                        }
+                                        else
+                                        {
+
+                                            <p><img src="https://karyon.organic/@Model.dtDetails.Rows[0]["AssociateImage"]" alt="UserImage" style="width:200px; height: 200px; border-radius: 50%; margin: 0px auto"></p>
+                                            // <div class="col-md-12 d-flex justify-content-center"><img src="https://karyon.organic/@Model.dtDetails.Rows[0]["AssociateImage"]" style="height:200px;width:200px;" /></div>
+                                        }
+                                        <h4>@Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")</h4>
+                                        <h4>@Context.Session.GetString("LoginId") </h4>
+
+                                        <h4>@Model.dtDetails.Rows[0]["PanCard"].ToString() </h4>
+
+                                        <p><img src="@Model.dtDetails.Rows[0]["QrCode"]" style="height:200px;width:200px;" alt="QR Code" style="width:200px; height: 200px;"></p>
+
+
+
+                                        @* <div class="row">
+                            <div class="col-md-12 d-flex justify-content-center">
+                            <h6>@Model.dtDetails.Rows[0]["EventName"].ToString()</h6>
+
+                            </div>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center">
+                            <h6> @Model.dtDetails.Rows[0]["EventDescription"].ToString()</h6>
+                            </div>
+
+                            <div class="col-md-12  d-flex justify-content-center">
+                            <h6> @Model.dtDetails.Rows[0]["FromDate"].ToString()</h6>
+                            </div>
+                            <div class="col-md-12  d-flex justify-content-center">
+                            <h6> @Model.dtDetails.Rows[0]["ToDate"].ToString()</h6>
+                            </div>
+
+
+                            <div class="row">
+
+
+                            @if (@Model.dtDetails.Rows[0]["AssociateImage"].ToString() == "" || @Model.dtDetails.Rows[0]["AssociateImage"].ToString() == null)
+                            {
+
+                            <div class="col-md-12 d-flex justify-content-center"><a style="color:blue" href="#" data-bs-target="#UploadImageModel" class="btn btn-primary text-light" data-bs-toggle="modal">Upload Image</a></div>
+                            }
+                            else if (@Model.dtDetails.Rows[0]["ProfilePic"].ToString() != "" || @Model.dtDetails.Rows[0]["ProfilePic"].ToString() != null)
+                            {
+
+                            <div class="col-md-12 d-flex justify-content-center"><img src="https://karyon.organic/@Model.dtDetails.Rows[0]["ProfilePic"]" style="height:200px;width:200px;" /></div>
+                            }
+                            else
+                            {
+                            <div class="col-md-12 d-flex justify-content-center"><img src="https://karyon.organic/@Model.dtDetails.Rows[0]["AssociateImage"]" style="height:200px;width:200px;" /></div>
+                            }
+
+
+
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center ">
+                            <h6>@Context.Session.GetString("LoginId")</h6>
+                            </div>
+
+                            <div class="col-md-12 d-flex justify-content-center ">
+                            <h6>@Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")</h6>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center ">
+                            <img src="@Model.dtDetails.Rows[0]["QrCode"]" style="height:200px;width:200px;" />
+                            </div>*@
+                                    }
+                                }
+                            }
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+@*<div class="takePhoto">
+    <form id="take" action="" method="POST">
+        <input type="file" id="cap" name="personalPhoto" accept="image/*" capture="camera" id="camera"><p>
+    </form>
+</div>*@
+<div class="modal fade" id="UploadImageModel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Upload Image</h6><button aria-label="Close" onclick="return Closepopup();" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form asp-action="UploadAssociateImage" enctype="multipart/form-data">
+
+                <div class="modal-body">
+
+
+                    <div class="row">
+                        @*   <div class="main_rating">
+                        </div>
+                        *@
+                        <div class="col-md-12">
+                            <label class="contacts_form-form_label">Your Picture</label>
+                            <img src="" id="imagePreview" style="width: 100px;height: 100px;" />
+
+                            <input type="hidden" asp-for="Pk_EventBookingId" />
+                        </div>
+                        <br />
+                        <br />
+                        <div class="col-md-12">
+
+
+                            <input type="file" class=" form-control" onchange="ShowImagePreview(this)" asp-for="Imagefile" />
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" name="UploadImage" value="Upload Image" onclick="return fvalidate();" class="btn btn-sm btn-success" />
+                    <button class="btn btn-sm btn-secondary" onclick="return Closepopup();" data-bs-dismiss="modal" type="button">Close</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*<script src="~/assets/js/webcam.js"></script>
+*@
+<script>
+    function fvalidate() {
+
+        if ($('#Imagefile').val() == "" || $('#Imagefile').val() == null) {
+            alert("Please Select Image");
+            $('#Imagefile').focus();
+            return false;
+        }
+        $('#imagePreview').prop('src', '');
+    }
+    function Closepopup() {
+
+
+        $('#Imagefile').val("")
+        $('#imagePreview').prop('src', '');
+    }
+    //function ValidateEmail() {
+    //    var email = $('#Email').val();
+    //    var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    //    if (!expr.test(email)) {
+    //        alert("Invalid email address.");
+    //        return false;
+    //    }
+    //}
+    function ShowImagePreview(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreview').prop('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+                    //Webcam.set({
+                    //    width: 320,
+                    //    height: 240,
+                    //    image_format: 'jpeg',
+                    //    jpeg_quality: 100
+                    //});
+                    //Webcam.attach("#my_camera");
+
+                    //function take_snap() {
+                    //    debugger;
+
+                    //    Webcam.snap(function (data_url) {
+                    //        document.getElementById("result").innerHTML = '<img src=' + data_url + '/>'
+                    //        Webcam.upload(data_url, function (code, text) {
+                    //            alert("Upload Image ")
+
+                    //        })
+                    //    })
+                    //}
+
+</script>

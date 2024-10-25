@@ -1,0 +1,261 @@
+﻿@model Karyon.Models.FranchiseWallet
+
+@{
+    ViewData["Title"] = "Ledger";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+
+<form asp-action="Ledger">
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Ledger</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Wallet</a></li>
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Ledger</a></li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <div class="row" style="display:none">
+
+                            <div class="section-field mb-10 col-sm-3">
+                                <br />
+                                <input type="submit" class="btn btn-success" id="BtnSearch" style="" value="Search">
+                            </div>
+                        </div>
+                        <br />
+                        <input type="hidden" asp-for="Page" />
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S. No.</th>
+                                        <th>Order No.</th>
+                                       <th>Transaction Date</th>
+                                        <th>Narration</th>
+                                        <th>CrAmount</th>
+                                        <th>DrAmount</th>
+                                       
+                                        <th>Balance</th>
+                                        @*<th>Action</th>*@
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        if (Model.dtDetails != null)
+                                        {
+                                            if (Model.dtDetails.Rows.Count > 0)
+                                            {
+                                                int i = 1;
+
+                                                int page = Model.Pager.CurrentPage;
+                                                page = (page - 1);
+                                                i = ((page) * (Model.Pager.PageSize));
+                                                for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                {
+                                                    <tr>
+                                                        <td>@(i+1)</td>
+                                                        <td>
+                                                            <a href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="return GetOrderDetails(@Model.dtDetails.Rows[j]["OrderNo"].ToString());">
+                                                                <b>@Model.dtDetails.Rows[j]["OrderNo"]</b>
+                                                            </a>
+                                                        </td>
+                                                        <td>@Model.dtDetails.Rows[j]["TransactionDate"]</td>
+                                                        <td>@Model.dtDetails.Rows[j]["Narration"]</td>
+
+                                                        <td>@Model.dtDetails.Rows[j]["Cramount"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["Dramount"] </td>
+                                                        <td>@Model.dtDetails.Rows[j]["Balance"] </td>
+                                                        @*<td>
+                                                            <a href="#" data-bs-target="#largeModal" data-bs-toggle="modal" onclick="return GetOrderDetails(@Model.dtDetails.Rows[j]["OrderNo"].ToString());"><i class="fa fa-eye" style="color:blue"></i></a>
+                                                        </td>*@
+
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+
+                            <footer class="card-footer bg-white p-2">
+
+                                <div class="d-md-flex align-items-center justify-content-between">
+                                    @if (Model != null)
+                                    {
+                                        if (Model.Pager != null)
+                                        {
+                                            @if (Model.Pager.EndPage > 1)
+                                            {
+                                                <div> Showing @Model.dtDetails.Rows.Count   of @Model.Pager.TotalItems items </div>
+                                                <div>
+                                                    <ul class="pagination mb-0">
+                                                        @if (Model.Pager.CurrentPage > 1)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(1,0)" href="#">First</a>
+                                                            </li>
+
+
+
+                                                            <li class="page-item">
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage - 1),0)" href="#">Previous</a>
+                                                            </li>
+                                                        }
+                                                        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                                        {
+                                                            var P = @page;
+                                                            <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")">
+
+
+                                                                <span><a class="page-link" onclick="fCallPaging(@P,0)" href="#">@P</a></span>
+                                                            </li>
+
+                                                        }
+                                                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                                        {
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.CurrentPage + 1),0)" href="#">Next</a>
+
+                                                            </li>
+                                                            <li class="page-item">
+
+                                                                <a class="page-link" onclick="fCallPaging(@(Model.Pager.TotalPages),0)" href="#">Last</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
+
+                                    }
+
+                                </div>
+                            </footer>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="largeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Stock Details</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tblStockDetails">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Order No</th>
+                                    <th>Product Name</th>
+                                    <th>MRP</th>
+                                    <th>SGST</th>
+                                    <th>IGST</th>
+                                    <th>CGST</th>
+                                    
+                                   
+
+                                </tr>
+                            </thead>
+                            <tbody id="StockDetails">
+                            </tbody>
+                            <tfoot id="productTotal">
+                                
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function fCallPaging(val, IsExport) {
+       
+        if (val == undefined || val == NaN || val == null || val == "" || val == 0) {
+            val = 1;
+        }
+        $("#IsExport").val(IsExport);
+        $("#Page").val(val);
+        $('#BtnSearch').trigger('click');
+
+    }
+    function GetOrderDetails(OrderNo) {
+        debugger;
+         $.ajax({
+            url: '/Home/GetOrderDetails',
+            type: 'Post',
+            data: { OrderNo: OrderNo },
+            success: function(result) {
+                $('#tblStockDetails tbody').empty();
+                $('#tblStockDetails tfoot').empty();
+                if (result != null) {
+                    var srno = 1;
+                    var str = "";
+                    var str1 = "";
+                    var IsDispatch = "";
+                   
+                    $("#tblStockDetails tbody").html('');
+                    $("#tblStockDetails tfoot").html('');
+                    for (var i = 0; i < result.length; i++) {
+
+
+                        str += "<tr><td>" + srno + "</td><td>" + result[i].orderNo + "</td><td >" + result[i].productName + "</td><td >" + result[i].offeredPrice + "</td><td >" + result[i].sgst + "</td><td >" + result[i].igst + "</td><td>" + result[i].cgst
+                            str += "</td></tr > ";
+
+
+                            srno = srno + 1;
+                        
+                        
+                    }
+                    str1 += "<tr><td>"+''+"</td><td>"+''+ "</td><td>" + 'Total' + "</td><td>" + result[0].amount + "</td></tr>";
+                    
+                    $("#tblStockDetails tbody").html(str);
+                    $("#tblStockDetails tfoot").html(str1);
+
+                }
+                else {
+                    $('#tblStockDetails tbody').empty();
+                    $('#tblStockDetails tfoot').empty();
+                }
+            }, error: function() {
+                $('#tblStockDetails tbody').empty();
+                $('#tblStockDetails tfoot').empty();
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+</script>

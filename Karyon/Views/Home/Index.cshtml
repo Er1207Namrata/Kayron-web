@@ -1,0 +1,1359 @@
+﻿@model Karyon.Models.DashBoardResponse
+@{
+    ViewData["Title"] = "Karyon";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+<link rel="stylesheet" href="~/WebsiteCss/css/index2.min.css" />
+<style>
+    .Data {
+        position: absolute;
+        top: 125px;
+        left: 30%;
+        z-index: 999;
+    }
+
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10000;
+        display: none;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        outline: 0
+    }
+
+    .modal-dialog {
+        position: relative;
+        width: auto;
+        margin: .5rem;
+        pointer-events: none
+    }
+
+    .modal.fade .modal-dialog {
+        transition: transform .3s ease-out;
+        transform: translate(0,-50px)
+    }
+
+
+    @@media (prefers-reduced-motion:reduce) {
+        .modal.fade .modal-dialog {
+            transition: none
+        }
+    }
+
+    .modal.show .modal-dialog {
+        transform: none
+    }
+
+    .modal.modal-static .modal-dialog {
+        transform: scale(1.02)
+    }
+
+    .modal-dialog-scrollable {
+        height: calc(100% - 1rem)
+    }
+
+        .modal-dialog-scrollable .modal-content {
+            max-height: 100%;
+            overflow: hidden
+        }
+
+        .modal-dialog-scrollable .modal-body {
+            overflow-y: auto
+        }
+
+    .modal-dialog-centered {
+        display: flex;
+        align-items: center;
+        min-height: calc(100% - 1rem)
+    }
+
+    .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: .3rem;
+        outline: 0
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1050;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000
+    }
+
+        .modal-backdrop.fade {
+            opacity: 0
+        }
+
+        .modal-backdrop.show {
+            opacity: .5
+        }
+
+    .modal-header {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        padding-bottom: 0;
+    }
+
+        .modal-header .btn-close {
+            padding: .5rem .5rem;
+            margin: -.5rem -.5rem -.5rem auto;
+            font-size: 36px;
+            line-height: 1;
+            padding: 0;
+            font-weight: bold;
+            opacity: 0.6;
+        }
+
+    .modal-title {
+        margin-bottom: 0;
+        line-height: 1.5
+    }
+
+    .modal-body {
+        position: relative;
+        flex: 1 1 auto;
+        padding: 1rem
+    }
+
+    .modal-footer {
+        display: flex;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: flex-end;
+        padding: .75rem;
+        border-top: 1px solid #dee2e6;
+        border-bottom-right-radius: calc(.3rem - 1px);
+        border-bottom-left-radius: calc(.3rem - 1px)
+    }
+
+        .modal-footer > * {
+            margin: .25rem
+        }
+
+    @@media (min-width:576px) {
+        .modal .modal_popup--view .about_main-slider {
+            min-width: 430px;
+        }
+
+        .modal-dialog {
+            max-width: 500px;
+            margin: 1.75rem auto
+        }
+
+        .modal-dialog-scrollable {
+            height: calc(100% - 3.5rem)
+        }
+
+        .modal-dialog-centered {
+            min-height: calc(100% - 3.5rem)
+        }
+
+        .modal-sm {
+            max-width: 300px
+        }
+    }
+
+    @@media (min-width:992px) {
+        .modal-lg, .modal-xl {
+            max-width: 800px
+        }
+    }
+
+    @@media (min-width:1200px) {
+        .modal-xl {
+            max-width: 1140px
+        }
+    }
+
+    .modal-fullscreen {
+        width: 100vw;
+        max-width: none;
+        height: 100%;
+        margin: 0
+    }
+
+        .modal-fullscreen .modal-content {
+            height: 100%;
+            border: 0;
+            border-radius: 0
+        }
+
+        .modal-fullscreen .modal-header {
+            border-radius: 0
+        }
+
+        .modal-fullscreen .modal-body {
+            overflow-y: auto
+        }
+
+        .modal-fullscreen .modal-footer {
+            border-radius: 0
+        }
+
+    @@media (max-width:575.98px) {
+        .modal-fullscreen-sm-down {
+            width: 100vw;
+            max-width: none;
+            height: 100%;
+            margin: 0
+        }
+
+            .modal-fullscreen-sm-down .modal-content {
+                height: 100%;
+                border: 0;
+                border-radius: 0
+            }
+
+            .modal-fullscreen-sm-down .modal-header {
+                border-radius: 0
+            }
+
+            .modal-fullscreen-sm-down .modal-body {
+                overflow-y: auto
+            }
+
+            .modal-fullscreen-sm-down .modal-footer {
+                border-radius: 0
+            }
+    }
+
+    @@media (max-width:767.98px) {
+        .modal-fullscreen-md-down {
+            width: 100vw;
+            max-width: none;
+            height: 100%;
+            margin: 0
+        }
+
+            .modal-fullscreen-md-down .modal-content {
+                height: 100%;
+                border: 0;
+                border-radius: 0
+            }
+
+            .modal-fullscreen-md-down .modal-header {
+                border-radius: 0
+            }
+
+            .modal-fullscreen-md-down .modal-body {
+                overflow-y: auto
+            }
+
+            .modal-fullscreen-md-down .modal-footer {
+                border-radius: 0
+            }
+    }
+
+    @@media (max-width:991.98px) {
+        .modal-fullscreen-lg-down {
+            width: 100vw;
+            max-width: none;
+            height: 100%;
+            margin: 0
+        }
+
+            .modal-fullscreen-lg-down .modal-content {
+                height: 100%;
+                border: 0;
+                border-radius: 0
+            }
+
+            .modal-fullscreen-lg-down .modal-header {
+                border-radius: 0
+            }
+
+            .modal-fullscreen-lg-down .modal-body {
+                overflow-y: auto
+            }
+
+            .modal-fullscreen-lg-down .modal-footer {
+                border-radius: 0
+            }
+    }
+
+    @@media (max-width:1199.98px) {
+        .modal-fullscreen-xl-down {
+            width: 100vw;
+            max-width: none;
+            height: 100%;
+            margin: 0
+        }
+
+            .modal-fullscreen-xl-down .modal-content {
+                height: 100%;
+                border: 0;
+                border-radius: 0
+            }
+
+            .modal-fullscreen-xl-down .modal-header {
+                border-radius: 0
+            }
+
+            .modal-fullscreen-xl-down .modal-body {
+                overflow-y: auto
+            }
+
+            .modal-fullscreen-xl-down .modal-footer {
+                border-radius: 0
+            }
+    }
+
+    @@media (max-width:1399.98px) {
+        .modal-fullscreen-xxl-down {
+            width: 100vw;
+            max-width: none;
+            height: 100%;
+            margin: 0
+        }
+
+            .modal-fullscreen-xxl-down .modal-content {
+                height: 100%;
+                border: 0;
+                border-radius: 0
+            }
+
+            .modal-fullscreen-xxl-down .modal-header {
+                border-radius: 0
+            }
+
+            .modal-fullscreen-xxl-down .modal-body {
+                overflow-y: auto
+            }
+
+            .modal-fullscreen-xxl-down .modal-footer {
+                border-radius: 0
+            }
+    }
+
+    marquee{
+        color: #434343;
+        background: #ffbf3c;
+        font-size: 14px;
+        padding: 10px;
+        font-weight: 600;
+    }
+</style>
+<main>
+    <div class="hero_slider swiper">
+        <marquee  direction="left">
+            @if (Model.Response.BannerList != null)
+            {
+                if (Model.Response.BannerList.Count > 0)
+                {
+                    @Model.Response.BannerList[0].Message
+                }
+            }
+        </marquee>
+        <div class="swiper-wrapper" style="top: -7px !important;">
+
+            @if (Model.Response.BannerList != null)
+            {
+                if (Model.Response.BannerList.Count > 0)
+                {
+
+                    foreach (var item1 in Model.Response.BannerList)
+                    {
+                        <div class="swiper-slide">
+                            <img src="@item1.ImageUrl" />
+                        </div>
+                        @* <div class="swiper-slide">
+            <img src="~/websitecss/img/food-supplement.jpg" />
+
+            </div>
+            <div class="swiper-slide">
+            <img src="~/websitecss/img/personal-care.jpg" />
+            </div>
+            <div class="swiper-slide">
+            <img src="~/websitecss/img/Wellness-device.jpg" />
+            </div>*@
+                    }
+                }
+                else
+                {
+                    <div class="swiper-slide">
+                        <img src="~/websitecss/img/agriculture.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="~/websitecss/img/food-supplement.jpg" />
+
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="~/websitecss/img/personal-care.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="~/websitecss/img/Wellness-device.jpg" />
+                    </div>
+                }
+
+            }
+            else
+            {
+                <div class="swiper-slide">
+                    <img src="~/websitecss/img/agriculture.jpg" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="~/websitecss/img/food-supplement.jpg" />
+
+                </div>
+                <div class="swiper-slide">
+                    <img src="~/websitecss/img/personal-care.jpg" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="~/websitecss/img/Wellness-device.jpg" />
+                </div>
+            }
+
+
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</main>
+<div class="categories section--nopb">
+
+    <div class="container">
+        <div class="popular_header">
+            <h2 class="popular_header-title">Our Categories</h2>
+        </div>
+        <ul class="categories_list d-flex flex-wrap">
+            @if (Model != null)
+            {
+                if (Model.Response != null)
+                {
+                    if (Model.Response.CategoryList != null)
+                    {
+
+                        foreach (var item1 in Model.Response.CategoryList)
+                        {
+                            <li class="categories_list-item col-6 col-md-4 col-xl-2" data-order="2">
+                                <div class="categories_group">
+                                    <a class="categories_list-item_wrapper" href="/Home/Shop?Id=@Karyon.Models.Crypto.Encrypt(item1.CategoryId.ToString())">
+                                        <div class="media">
+
+                                            <picture>
+                                                <source data-srcset="@item1.ImageUrl" type="image/png" />
+                                                <img class="lazy" data-src="@item1.ImageUrl" src="@item1.ImageUrl"
+                                                     alt="media" />
+                                            </picture>
+                                        </div>
+                                        <h4 class="title">@item1.CategoryName  (<span class="overlay_content">@item1.CategoryCount</span>)</h4>
+                                    </a>
+                                </div>
+                            </li>
+                        }
+                    }
+                }
+            }
+
+
+
+
+        </ul>
+    </div>
+</div>
+
+@if (Model != null)
+{
+    if (Model.Response != null)
+    {
+        if (Model.Response.FeaturedList != null)
+        {
+            int i = 0;
+
+            foreach (var item1 in Model.Response.FeaturedList)
+            {
+
+                <section class="popular section allproduct">
+                    <div class="container">
+                        <div class="popular_header">
+                            <h2 class="popular_header-title">@item1.FeatureName</h2>
+
+                        </div>
+                        <div class="popular_slider swiper">
+                            <div class="swiper-wrapper">
+                                @if (Model != null)
+                                {
+                                    if (Model.Response != null)
+                                    {
+                                        if (Model.Response.FeaturedList[i].FeaturedProductList != null)
+                                        {
+                                            foreach (var item in Model.Response.FeaturedList[i].FeaturedProductList)
+                                            {
+                                                int k = 0;
+                                                int kk = 0;
+                                                int kkk = 0;
+                                                <div class="popular_slider-slide swiper-slide">
+                                                    <div class="wrapper d-flex flex-column">
+
+                                                        <div class="productgroup">
+                                                            <div class="media">
+                                                                <div class="overlay d-flex flex-column align-items-center justify-content-center">
+                                                                    <ul class="action d-flex align-items-center justify-content-center">
+
+
+                                                                        <li class="list-item">
+                                                                            <a class="action_link d-flex align-items-center justify-content-center" href="#" data-role="wishlist">
+                                                                                <i class="icon-heart"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                        @foreach (var cart in item.VarientList)
+                                                                        {
+
+
+                                                                            if (kk == 0)
+                                                                            {
+
+                                                                                <li class="list-item">
+                                                                                    <a class="action_link d-flex align-items-center justify-content-center" href="#" onclick="return getproductdetails('@cart.ProductId');" data-bs-target="#largeModal" data-bs-toggle="modal">
+                                                                                        <i class="icon-eye"></i>
+                                                                                    </a>
+                                                                                </li>
+                                                                            }
+                                                                            kk++;
+                                                                        }
+
+                                                                    </ul>
+                                                                </div>
+                                                                <picture>
+                                                                    <source data-srcset="@item.PrimaryImage" srcset="@item.PrimaryImage" type="image/png" />
+                                                                    <img class="lazy" style="height: 285px;width:100%;" data-src="@item.PrimaryImage" src="@item.PrimaryImage" alt="media" />
+                                                                </picture>
+                                                            </div>
+                                                            <div class="main d-flex flex-column">
+                                                                @if (@item.StarRating == "5")
+                                                                {
+                                                                    <div class="main_rating">
+                                                                        <ul class="main_rating-stars d-flex align-items-center accent">
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                }
+                                                                else if (@item.StarRating == "4")
+                                                                {
+                                                                    <div class="main_rating">
+                                                                        <ul class="main_rating-stars d-flex align-items-center accent">
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                }
+                                                                else if (@item.StarRating == "3")
+                                                                {
+                                                                    <div class="main_rating">
+                                                                        <ul class="main_rating-stars d-flex align-items-center accent">
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                }
+                                                                else if (@item.StarRating == "2")
+                                                                {
+                                                                    <div class="main_rating">
+                                                                        <ul class="main_rating-stars d-flex align-items-center accent">
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                }
+                                                                else if (@item.StarRating == "1")
+                                                                {
+                                                                    <div class="main_rating">
+                                                                        <ul class="main_rating-stars d-flex align-items-center accent">
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star_fill"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="main_rating">
+                                                                        <ul class="main_rating-stars d-flex align-items-center accent">
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                            <li class="main_rating-stars_star">
+                                                                                <i class="icon-star"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                }
+
+                                                                @foreach (var cart in item.VarientList)
+                                                                {
+
+
+                                                                    if (kkk == 0)
+                                                                    {
+                                                                        <a class="main_title" href="/Home/VarientDetail?Id=@cart.ProductId" rel="noopener norefferer">@item.ProductName</a>
+
+
+                                                                    }
+                                                                    kkk++;
+                                                                }
+
+                                                                <div class="main_price">
+
+                                                                    @foreach (var cart in item.VarientList)
+                                                                    {
+
+                                                                        if (k == 0)
+                                                                        {
+                                                                            if (Context.Session.GetString("CustomerId") != "0")
+                                                                            {
+                                                                                <del>₹ @cart.MRP</del> <span class="price">₹ @cart.OfferedPrice</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="price">₹ @cart.MRP</span>
+                                                                            }
+                                                                        }
+                                                                        k++;
+
+                                                                    }
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                            </div>
+                            <div class="swiper-pagination swiper-pagination--dots"></div>
+                        </div>
+                    </div>
+                </section>
+                i++;
+            }
+        }
+    }
+}
+
+<div class="hero_slider swiper">
+    <div class="swiper-wrapper">
+
+        @if (Model != null)
+        {
+            if (Model.Response != null)
+            {
+                if (Model.Response.OfferProducts != null)
+                {
+
+                    foreach (var item4 in Model.Response.OfferProducts)
+                    {
+                        <div class="swiper-slide">
+                            <div class="swiper-slide">
+                                <div class="promo">
+                                    <div style="margin-left:40px;" class="promo_fluid container d-lg-flex align-items-center align-items-xxl-end">
+                                        <div class="wrapper section--nopb col-lg-6 col-xxl-auto">
+                                            <div class="promo_header">
+
+                                                <a class="promo_header-title" href="#-" target="_blank" rel="noopener norefferer">@item4.ProductName</a>
+                                                <p class="promo_header-text">
+                                                    @item4.Description
+                                                </p>
+                                            </div>
+                                            <div class="promo_price">
+                                                <span class="price price--old">₹ @item4.MRP</span>
+                                                <span class="price price--new">₹ @item4.OfferPrice</span>
+                                            </div>
+                                            <div class="promo_timer timer d-flex justify-content-center justify-content-md-start">
+                                                <div class="timer_block d-flex flex-column justify-content-center">
+                                                    <span class="timer_block-number"></span>
+
+                                                    days
+                                                </div>
+                                                <div class="timer_block d-flex flex-column justify-content-center">
+                                                    <span class="timer_block-number"></span>
+
+                                                    hours
+                                                </div>
+                                                <div class="timer_block d-flex flex-column justify-content-center">
+                                                    <span class="timer_block-number"></span>
+
+                                                    mins
+                                                </div>
+                                                <div class="timer_block d-flex flex-column justify-content-center">
+                                                    <span class="timer_block-number"></span>
+                                                    secs
+                                                </div>
+                                            </div>
+
+                                            <a class="promo_btn btn" href="#" onclick="return AddToCart(this)">Shop Now</a>
+                                        </div>
+
+
+                                        <img src="@item4.ProductImage" style="width:100%; height:600px; margin-right:30px;" />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        }
+
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+@*<p id="days"></p>
+<p id="hours"></p>
+<p id="minutes"></p>
+<p id="seconds"></p>*@
+
+
+@*<div class="hero_slider swiper">
+
+    <div class="swiper-wrapper">
+        @if (Model != null)
+        {
+            if (Model.Response != null)
+            {
+                if (Model.Response.OfferProducts != null)
+                {
+
+                    foreach (var item4 in Model.Response.OfferProducts)
+                    {
+
+                        <div class="swiper-slide bg-overlay-50" style="background-image: url(@item4.ProductImage);width:100%; height:600px;background-repeat: no-repeat;background-size: 100% 100%;">
+                            <div style="margin-left:30px;" class="promo_fluid d-lg-flex align-items-center align-items-xxl-end">
+
+                                <div class="wrapper section--nopb col-lg-6 col-xxl-auto">
+                                    <div class="promo_header">
+
+                                        <a class="promo_header-title" href="#-" target="_blank" rel="noopener norefferer">@item4.ProductName</a>
+                                        <p class="promo_header-text">
+                                            @item4.Description
+                                        </p>
+                                    </div>
+
+                                    <div class="promo_price">
+                                        <span class="price price--old">₹ @item4.MRP</span>
+                                        <span class="price price--new">₹ @item4.OfferPrice</span>
+                                    </div>
+                                    <div class="promo_timer timer d-flex justify-content-center justify-content-md-start">
+                                        <div class="timer_block d-flex flex-column justify-content-center">
+                                            <span class="timer_block-number" id="days">25</span>
+                                            days
+                                        </div>
+                                        <div class="timer_block d-flex flex-column justify-content-center">
+                                            <span class="timer_block-number" id="hours">13</span>
+                                            hours
+                                        </div>
+                                        <div class="timer_block d-flex flex-column justify-content-center">
+                                            <span class="timer_block-number" id="minutes">18</span>
+                                            mins
+                                        </div>
+                                        <div class="timer_block d-flex flex-column justify-content-center">
+                                            <span class="timer_block-number" id="seconds">23</span>
+                                            secs
+                                        </div>
+                                    </div>
+                                    <a class="promo_btn btn" href="/Home/VarientDetail?Id=@item4.VarientId">Shop Now</a>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+
+                    }
+                }
+            }
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>*@
+
+<section class="contacts section">
+    <div class="container">
+        <ul class="contacts_cards d-md-flex flex-wrap">
+            <li class="contacts_cards-item col-md-6 col-xl-4 aos-init aos-animate" data-order="1" data-aos="fade-up">
+                <div class="contacts_cards-item_wrapper d-xl-flex flex-column justify-content-between">
+                    <h4 class="title">Healthy Farming</h4>
+                    <div class="info flex-grow-1 flex-xxl-grow-0 d-flex flex-column flex-sm-row align-items-center">
+
+                        <span>
+                            With mission “Marching Towards Healthy Farming“aiming to defeat conventional farming methods to Healthy Farming practices with education &amp; awareness.
+                        </span>
+                    </div>
+                </div>
+            </li>
+            <li class="contacts_cards-item col-md-6 col-xl-4 aos-init aos-animate" data-order="2" data-aos="fade-up">
+                <div class="contacts_cards-item_wrapper">
+                    <h4 class="title">
+                        Healthy Living
+                    </h4>
+                    <div class="info flex-grow-1 flex-xxl-grow-0 d-flex flex-column flex-sm-row align-items-center">
+
+                        <span>The company has entered into the field of human healthcare by introducing various nutritional food Additives &amp; Supplements to make life healthier than never before.</span>
+                    </div>
+                </div>
+            </li>
+            <li class="contacts_cards-item col-md-6 col-xl-4 aos-init aos-animate" data-order="3" data-aos="fade-up">
+                <div class="contacts_cards-item_wrapper d-xl-flex flex-column justify-content-between">
+                    <h4 class="title">
+                        Karyon Organic Opportunity
+                    </h4>
+                    <div class="info flex-grow-1 flex-xxl-grow-0 d-flex flex-column flex-sm-row align-items-center">
+                        Karyon Organic called as an opportunity of satisfied growth! You are stepping it to family where your experience will be different from others.
+
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+
+<section class="faq section--nopb">
+    <div class="container d-flex flex-column-reverse flex-xl-row">
+        <div class="faq_media">
+            <picture>
+                <source data-srcset="../../WebsiteCss/img/karyonfarm.png" srcset="../../WebsiteCss/img/karyonfarm.png" type="image/png" />
+                <img class="lazy" data-src="../../WebsiteCss/img/karyonfarm.png" src="../../WebsiteCss/img/karyonfarm.png" alt="media" />
+            </picture>
+        </div>
+        <div class="faq_main col-xl-6">
+            <div class="faq_main-header">
+                <h2 class="faq_main-header_title">Karyon Organization</h2>
+                <p class="faq_main-header_text">
+                    Successful Organization is a mirror of reliable hands combined in. <span style="color: rgb(36, 121, 36);font-weight: 700;">“Karyon Organic”</span> has come forward to your doorstep with an opportunity of spectacular plans to subside the present lifestyle stigma.
+                    Leap with us by establishing team relationship. To upgrade your economic & social strength join with us in mutual reliable relationship.
+                    Due to modern method of Agricultural Technology, the food derives from different crops and vegetables are lacking in essential nutrients and bio-molecules which provides internal Strength & Stamina. By conducting ground breaking research and developments from decades, we found various novel bio-molecules which showers the blessings of nature and provides best balanced nutrients to our health.
+
+                </p>
+            </div>
+            <div class="accordion">
+                <div class="accordion_component" id="accordionComponent">
+                    <!-- item 1 -->
+                    <div class="accordion_component-item">
+                        <h4 class="accordion_component-item_header d-flex justify-content-between align-items-center collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#item-1">
+                            Hidden Hunger
+                            <span class="wrapper">
+                                <i class="icon-caret_down icon"></i>
+                            </span>
+                        </h4>
+                        <div id="item-1" class="accordion-collapse collapse" data-bs-parent="#accordionComponent">
+                            <div class="accordion_component-item_body">
+                                It is widely known that inorganic farming is a significant causes to degrade the value of soil that rare all the types of crop, trees, plantation, livestock poultry on the stage to get their yield and nutrient deficient food. Human, plant, animal and livestock are all the present suffering from this without showing specific signs of nutrient deficiency noted otherwise at later stage. Farming community and their associates together with their amateur gardener are ignorant in the quality of crop and to realize the announcement of world health organisation.
+                                As the time goes by symptoms of poor soil start to deface the plant and yield; that effects the quality of crop and in turn farmer or the producer has to sell his crop at low price. The nutrient deficiency in crop or plantation become major reason for many diseases in human being, livestock&poultry, fishery as well as plants. The flowchart towards hidden hunger is as below.
+                                <li> Poor Farming Practices</li>
+                                <li> Poor Soil Fertility</li>
+                                <li> Nutrient Deficiency Disorder</li>
+                                <li> Hidden Hunger in Plants</li>
+                                <li> Nutrient deficient Food</li>
+                                <li> Hidden Hunger Syndrome</li>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item 2 -->
+                    <div class="accordion_component-item">
+                        <h4 class="accordion_component-item_header d-flex justify-content-between align-items-center collapse"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#item-2">
+                            Human Health & Nutritious Food
+                            <span class="wrapper">
+                                <i class="icon-caret_down transform icon"></i>
+                            </span>
+                        </h4>
+                        <div id="item-2" class="accordion-collapse collapse" data-bs-parent="#accordionComponent">
+                            <div class="accordion_component-item_body">
+                                How <span style="color: rgb(36, 121, 36);font-weight: 700;">"HIDDEN HUNGER"</span> depreciates the Plant Health, Human Health, as well as Livestock&Poultry
+                                Health ministries in all nations nowadays are struggling to bring only the healthy & nutritious products in the market for a common citizen. From the era of inorganic farming they have concluded that the crop yield and the products made to eat from have deficiency of nutrients.
+                                The developed countries are facing a challenging problem of “over nutrition” With higher affluence, urbanization and fast moving life of people to see their economic growth more, their diet choice tilted towards the fast food phenomenon which is higher in energy for a short duration, more with saturated fat & alcoholic content. Such diets do not provide range of micro nutrients, fibrous substance & proteins required to maintain the resistance power of the human body.The health risk factors & diseases associated with the above type of foods are:Obesity,hypertension, cardiovascular diseases, osteoporosis, mellifluous, anemia and other disorders, with a figure of money required by the government to care their citizens.
+                                For developing nations, the other side of this mirror is known
+                                as “under nutrition eatables’;
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item 3 -->
+                    <div class="accordion_component-item">
+                        <h4 class="accordion_component-item_header d-flex justify-content-between align-items-center collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#item-3">
+                            Under Nutrition
+                            <span class="wrapper">
+                                <i class="icon-caret_down icon"></i>
+                            </span>
+                        </h4>
+                        <div id="item-3" class="accordion-collapse collapse" data-bs-parent="#accordionComponent">
+                            <div class="accordion_component-item_body">
+                                <span style="color: rgb(36, 121, 36);font-weight: 700;">“Under nutrition’~</span> or malnutrition, is a common enemy of poor people who suffers the most its harsh effects at large scale. Statistics published related to malnutrition are eye-opening. 2000 million people in more than 100 developing countries suffer from micro nutrient deficiencies that become the cause of many common diseases, blindness, mental retardation, and even death. 780 million people – 20% of the developing world are acutely undernourished. 367 million children mainly from Asia and Africa are victim to eat with less content of protein-energy food in which 190 million children are under five years of age. The overrunning problem of malnutrition crop production and eatable derivatives takes away the life of 40,000 children every day.
+                                The severity of diseases varies from one country to another over a period of time. Some countries have recorded significant decrease in nutritious crop while others are on average line. The particular deficiency of “required vitamins and minerals in a crop” altogether called nutrient becomes the cause of unsatisfied hunger and the inorganic farming leave the minute residue of various pesticides and heavy metals in crop that is responsible for the above diseases.
+                                The nutritious content in any eatable cannot be seen by the naked eye. The recognition for the choice & consumption of under-nourished any eatable product by an ordinary person and health ailments associated with it as noted above was well known years back and this issue was addressed at large scale. The ignorance to this World Health Organization appeal and published statement by a common man gave birth to new other diseases.
+                                To create awareness and made public conscious about low yields, poor nutritional produce & to defeat conventional farming methods that degrade health sector, World Health Organization named the above problem <span style="color: rgb(36, 121, 36);font-weight: 700;">“HIDDEN HUNGER SYNDROME’</span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item 4 -->
+                    <div class="accordion_component-item">
+                        <h4 class="accordion_component-item_header d-flex justify-content-between align-items-center collapsed"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#item-4">
+                            Sustainable Environment
+                            <span class="wrapper">
+                                <i class="icon-caret_down icon"></i>
+                            </span>
+                        </h4>
+                        <div id="item-4" class="accordion-collapse collapse" data-bs-parent="#accordionComponent">
+                            <div class="accordion_component-item_body">
+                                The <span style="color: rgb(36, 121, 36);font-weight: 700;">"Environment"</span> is a unique emphasized word nowadays that stores two major definitions; one about the old mother nature and the other human health and “Sustainable” adds an additional meaning to protect and care it for the people and future generations. The information has been promulgated on broad scale worldwide about the damage occurring or noticed already to the environment by inorganic conventional methods of farming. The use of chemical fertilizers and pesticides have polluted the environment to a large extent and created a gap for an ordinary person to pick up the nutritious food.
+                                <strong>Environmentalists all over the world are promoting the culture of “organic farming”while all the governments are acclaiming this. It is the only solution in agricultural industry so far noticed that can revive the environment. Unhealthy environment created by inorganic farming is the sole reason towards health cost difficult to maintain with the sufferings from its contaminated elements in many forms are unfavorable for farmer as well as common human being with great impact on weather.</strong>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="reviews section--nopb mb-5">
+    <div class="container">
+        <div class="reviews_header">
+            <h2 class="reviews_header-title">Feedback And Rate About Us</h2>
+            <p class="reviews_header-text">
+
+            </p>
+        </div>
+        <div class="reviews_slider swiper">
+            <div class="swiper-wrapper" id="sectionReview">
+            </div>
+            <div class="swiper-pagination swiper-pagination--dots"></div>
+        </div>
+    </div>
+    <div class="reviews_underlay">
+        <span class="reviews_underlay-circle reviews_underlay-circle--green"></span>
+        <span class="reviews_underlay-circle reviews_underlay-circle--yellow"></span>
+    </div>
+</section>
+
+
+<div class="modal fade" id="largeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body modal_popup--view">
+                <div class="about_main d-lg-flex flex-nowrap">
+                    <span class="underlay">
+                        <span class="underlay_circle underlay_circle--accent"></span>
+                        <span class="underlay_circle underlay_circle--green"></span>
+                    </span>
+                    <div class="about_main-slider">
+                        <div class="about_main-slider--single swiper-fade swiper-initialized swiper-horizontal swiper-pointer-events" data-modal="true">
+                            <div class="swiper-wrapper" style="transition-duration: 0ms;">
+
+
+                                <picture>
+                                    <img class="lazy entered loaded" style="height: 285px;" id="productimage" alt="media" data-ll-status="loaded">
+
+                                </picture>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="about_main-info">
+                        <div class="about_main-info_product d-sm-flex align-items-center justify-content-between">
+                            <h2 class="title" id="txtproductName"></h2>
+                        </div>
+                        <div class="about_main-info_rating d-flex flex-column flex-sm-row align-items-sm-center">
+                            <ul class="stars d-flex align-items-center accent">
+                                <li class="stars_star">
+                                    <i class="icon-star_fill"></i>
+                                </li>
+                                <li class="stars_star">
+                                    <i class="icon-star_fill"></i>
+                                </li>
+                                <li class="stars_star">
+                                    <i class="icon-star_fill"></i>
+                                </li>
+                                <li class="stars_star">
+                                    <i class="icon-star_fill"></i>
+                                </li>
+                                <li class="stars_star">
+                                    <i class="icon-star_fill"></i>
+                                </li>
+                            </ul>
+                            <a class="reviews-amount" href="#">(2 customer reviews)</a>
+                        </div>
+                        <p class="about_main-info_description" id="txtproductdetails">
+
+                        </p>
+                        <div class="about_main-info_block d-flex flex-column flex-sm-row align-items-sm-center">
+
+                            <ul class="weight-list list d-flex flex-wrap" id="varientdetails">
+                            </ul>
+                        </div>
+                        <div class="about_main-info_block d-flex flex-column flex-sm-row align-items-sm-center">
+                            <h5 class="title">Quantity</h5>
+                            <div class="qty d-flex align-items-center justify-content-between">
+                                <span class="qty_minus control d-flex align-items-center minus">
+                                    <i class="icon-minus"></i>
+                                </span>
+                                <input style="max-width: 22px;text-align: center;font-weight: 700;line-height: 1" id="qty_amount" type="text" value="1" min="1" max="99" />
+                                <span class="qty_plus control d-flex align-items-center plus">
+                                    <i class="icon-plus"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="about_main-info_action d-flex flex-column flex-sm-row align-items-sm-center">
+                            <del id="mrpwithlogin" style="display:none"></del>  <span class="about_main-info_price" id="offeredPrice"></span>
+                            <span id="varientid" style="display:none"></span>
+                            <a class="btn" href="#" onclick="return AddToCart(this)">Add to Cart</a>
+                            <div class="action d-flex">
+                                <a class="action_link d-flex align-items-center justify-content-center" href="#" data-role="wishlist">
+                                    <i class="icon-heart"></i>
+                                </a>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="festivepopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body modal_popup--view" style="padding:0px; position:relative;">
+                <button type="button" class="btn-close popupClose" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                <img id="dvFestivalpopup" src="" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/assets/js/jquery-3.6.0.min.js"></script>
+<style type="text/css">
+    .popupClose {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        background: #ffb212;
+        padding: 5px;
+        font-size: 48px;
+        line-height: 26px;
+        color: #fff;
+    }
+</style>
+
+<script>
+    //var countDownDate = new Date("apr 13, 2024 6:37:25").getTime();
+    //var x = setInterval(function () {
+
+    //    // Get today's date and time
+    //    var now = new Date().getTime();
+
+    //    // Find the distance between now and the count down date
+    //    var distance = countDownDate - now;
+
+    //    // Time calculations for days, hours, minutes and seconds
+    //    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    //    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    //    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    //    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    //    document.getElementById("days").innerHTML = days;
+    //    document.getElementById("hours").innerHTML = hours;
+    //    document.getElementById("minutes").innerHTML = minutes;
+    //    document.getElementById("seconds").innerHTML = seconds;
+
+
+    //}, 1000);
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '/Home/Festivalpopup',
+            type: 'Post',
+            success: function (response) {
+
+                if ((response.customerId == 0) || (response.customerId == "0")) {
+                    if (response.festivalPopup != null) {
+                        $("#dvFestivalpopup").attr("src", "https://admin.karyon.organic/" + response.festivalPopup + "")
+                        $("#festivepopup").modal("show");
+                    }
+                }
+
+
+            }, error: function () {
+                //alert('Some Thing wrong!');
+
+
+            }
+        });
+        GetSiteFeeback();
+
+    });
+    function AddToCart(value) {
+       
+        $(".errortext").removeClass("errortext");
+
+        $.ajax({
+            url: '/Home/CheckLogin',
+            type: 'Post',
+            data: { ProductId: $('#varientid').text(), Quantity: $('#qty_amount').val() },
+            success: function (response) {
+
+                window.location.href = "/Home/Login?Status=" + response + "&&ProductId=" + $('#varientid').text() + "&&Quantity=" + $('#qty_amount').val();
+
+
+            }, error: function () {
+                //alert('Some Thing wrong!');
+
+
+            }
+        });
+    }
+    function getVarientDetails(mrp, offeredPrice, customerId, varientId) {
+        $('#qty_amount').val('1');
+        var mrp = "₹" + mrp;
+        var offeredPrice = "₹" + offeredPrice;
+        $('#varientid').text(varientId);
+        if (customerId != "0") {
+            $('#mrpwithlogin').show();
+
+            $('#mrpwithlogin').text(mrp);
+            $('#offeredPrice').text(offeredPrice);
+        }
+        else {
+            $('#mrpwithlogin').hide();
+            $('#offeredPrice').text(mrp);
+        }
+
+    }
+    function getproductdetails(ProductId) {
+        $('#qty_amount').val('1');
+        $.ajax({
+            url: '/Home/ProductDetails',
+            type: 'Post',
+            data: { Id: ProductId },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                    var str = "";
+                    var image = "";
+                    $('#txtproductName').text(response[0].productName);
+                    $('#txtproductdetails').text(response[0].productsDetails);
+                    $('#varientdetails').text('');
+                    for (var i = 0; i < response[0].varientList.length; i++) {
+
+                        if (i == 0) {
+                            var mrp = "₹" + response[0].varientList[i].mrp;
+                            var offeredPrice = "₹" + response[0].varientList[i].offeredPrice;
+                            if (response[0].varientList[i].customerId != "0") {
+                                $('#mrpwithlogin').show();
+
+                                $('#mrpwithlogin').text(mrp);
+                                $('#offeredPrice').text(offeredPrice);
+                            }
+                            else {
+                                $('#mrpwithlogin').hide();
+                                $('#offeredPrice').text(mrp);
+                            }
+                            $('#productimage').attr('src', response[0].varientList[i].imageList[0].imageUrl);
+
+
+
+                        }
+
+                        if (i == 0) {
+                            $('#varientid').text(response[0].varientList[i].varientId);
+                            str += "<li><input type='radio' onclick='return getVarientDetails(" + response[0].varientList[i].mrp + "," + response[0].varientList[i].offeredPrice + "," + response[0].varientList[i].customerId + "," + response[0].varientList[i].varientId + ")' checked id='modalWeight" + i + "' name='modalWeight'><label for='modalWeight" + i + "'>" + response[0].varientList[i].size + " " + response[0].varientList[i].unitName + "</label></li>";
+                        }
+                        else {
+                            str += "<li><input type='radio' onclick='return getVarientDetails(" + response[0].varientList[i].mrp + "," + response[0].varientList[i].offeredPrice + "," + response[0].varientList[i].customerId + "," + response[0].varientList[i].varientId + ")' id='modalWeight" + i + "' name='modalWeight'><label for='modalWeight" + i + "'>" + response[0].varientList[i].size + " " + response[0].varientList[i].unitName + "</label></li>";
+                        }
+
+
+                    }
+                    $('#varientdetails').append(str);
+
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function GetSiteFeeback() {
+
+        $.ajax({
+            url: '/Home/GetSiteFeedback',
+            type: 'Post',
+            success: function (result) {
+
+                if (result[0] != null) {
+
+                    var str = "";
+                    $("#sectionReview").html('');
+
+                    for (var i = 0; i < result.length; i++) {
+
+                        if (result[i].star == 5) {
+                            str += '<div class="reviews_slider-slide swiper-slide" ><div class="reviews_slider-slide_wrapper d-flex flex-column align-items-center"><picture><source data-srcset="../../WebsiteCss/img/men.png" srcset="https://karyon.organic/' + result[i].profilePic + '" type="image/png" /> <img class="lazy avatar"   data-src="../../WebsiteCss/img/men.png" src="https://karyon.organic/' + result[i].profilePic + '"alt="avatar" /></picture><ul class="rating d-flex align-items-center accent"><li class="rating_star"> <i class="icon-star_fill"></i></li> <li class="rating_star"> <i class="icon-star_fill"></i></li><li class="rating_star"> <i class="icon-star_fill"></i> </li> <li class="rating_star"> <i class="icon-star_fill"></i></li> <li class="rating_star"> <i class="icon-star_fill"></i> </li></ul><p class="text">' + result[i].message + '</p><h5 class="name">' + result[i].name + '</h5></div></div>';
+                        }
+                        else if (result[i].star == 4) {
+                            str += '<div class="reviews_slider-slide swiper-slide" ><div class="reviews_slider-slide_wrapper d-flex flex-column align-items-center"><picture><source data-srcset="../../WebsiteCss/img/men.png" srcset="https://karyon.organic/' + result[i].profilePic + '" type="image/png" /> <img class="lazy avatar"   data-src="../../WebsiteCss/img/men.png" src="https://karyon.organic/' + result[i].profilePic + '"alt="avatar" /></picture><ul class="rating d-flex align-items-center accent"><li class="rating_star"> <i class="icon-star_fill"></i></li> <li class="rating_star"> <i class="icon-star_fill"></i></li><li class="rating_star"> <i class="icon-star_fill"></i> </li> <li class="rating_star"> <i class="icon-star_fill"></i></li> <li class="rating_star"> <i class="icon-star"></i> </li></ul><p class="text">' + result[i].message + '</p><h5 class="name">' + result[i].name + '</h5></div></div>';
+                        }
+                        else if (result[i].star == 3) {
+                            str += '<div class="reviews_slider-slide swiper-slide" ><div class="reviews_slider-slide_wrapper d-flex flex-column align-items-center"><picture><source data-srcset="../../WebsiteCss/img/men.png" srcset="https://karyon.organic/' + result[i].profilePic + '" type="image/png" /> <img class="lazy avatar"   data-src="../../WebsiteCss/img/men.png" src="https://karyon.organic/' + result[i].profilePic + '"alt="avatar" /></picture><ul class="rating d-flex align-items-center accent"><li class="rating_star"> <i class="icon-star_fill"></i></li> <li class="rating_star"> <i class="icon-star_fill"></i></li><li class="rating_star"> <i class="icon-star_fill"></i> </li> <li class="rating_star"> <i class="icon-star"></i></li> <li class="rating_star"> <i class="icon-star"></i> </li></ul><p class="text">' + result[i].message + '</p><h5 class="name">' + result[i].name + '</h5></div></div>';
+                        }
+                        else if (result[i].star == 2) {
+                            str += '<div class="reviews_slider-slide swiper-slide" ><div class="reviews_slider-slide_wrapper d-flex flex-column align-items-center"><picture><source data-srcset="../../WebsiteCss/img/men.png" srcset="https://karyon.organic/' + result[i].profilePic + '" type="image/png" /> <img class="lazy avatar"   data-src="../../WebsiteCss/img/men.png" src="https://karyon.organic/' + result[i].profilePic + '"alt="avatar" /></picture><ul class="rating d-flex align-items-center accent"><li class="rating_star"> <i class="icon-star_fill"></i></li> <li class="rating_star"> <i class="icon-star_fill"></i></li><li class="rating_star"> <i class="icon-star"></i> </li> <li class="rating_star"> <i class="icon-star"></i></li> <li class="rating_star"> <i class="icon-star"></i> </li></ul><p class="text">' + result[i].message + '</p><h5 class="name">' + result[i].name + '</h5></div></div>';
+                        }
+                        else if (result[i].star == 1) {
+                            str += '<div class="reviews_slider-slide swiper-slide" ><div class="reviews_slider-slide_wrapper d-flex flex-column align-items-center"><picture><source data-srcset="../../WebsiteCss/img/men.png" srcset="https://karyon.organic/' + result[i].profilePic + '" type="image/png" /> <img class="lazy avatar"   data-src="../../WebsiteCss/img/men.png" src="https://karyon.organic/' + result[i].profilePic + '"alt="avatar" /></picture><ul class="rating d-flex align-items-center accent"><li class="rating_star"> <i class="icon-star_fill"></i></li> <li class="rating_star"> <i class="icon-star"></i></li><li class="rating_star"> <i class="icon-star"></i> </li> <li class="rating_star"> <i class="icon-star"></i></li> <li class="rating_star"> <i class="icon-star"></i> </li></ul><p class="text">' + result[i].message + '</p><h5 class="name">' + result[i].name + '</h5></div></div>';
+                        }
+                        else {
+                            str += '<div class="reviews_slider-slide swiper-slide" ><div class="reviews_slider-slide_wrapper d-flex flex-column align-items-center"><picture><source data-srcset="../../WebsiteCss/img/men.png" srcset="https://karyon.organic/' + result[i].profilePic + '" type="image/png" /> <img class="lazy avatar"   data-src="../../WebsiteCss/img/men.png" src="https://karyon.organic/' + result[i].profilePic + '"alt="avatar" /></picture><ul class="rating d-flex align-items-center accent"><li class="rating_star"> <i class="icon-star"></i></li> <li class="rating_star"> <i class="icon-star"></i></li><li class="rating_star"> <i class="icon-star"></i> </li> <li class="rating_star"> <i class="icon-star"></i></li> <li class="rating_star"> <i class="icon-star"></i> </li></ul><p class="text">' + result[i].message + '</p><h5 class="name">' + result[i].name + '</h5></div></div>';
+                        }
+
+
+                    }
+
+                    //str += "<tr><th colspan='2'>Total</th><th>" + TotalReqQty + "</th><th>" + PointValue + "</th><th>" + TotalPV + "</th><th>" + TotalProdAmt + "</th><th>" + FinalAmt + "</th></tr>";
+
+                    $("#sectionReview").html(str);
+
+                    //GetProductId(null, result[0].fk_OrderId)
+                }
+
+                else {
+
+                }
+            }, error: function () {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+</script>

@@ -1,0 +1,22 @@
+﻿@model Karyon.Models.CreateOrder
+
+@{
+    ViewData["Title"] = "GenerateQRCODE";
+    Layout = "~/Views/Shared/_WebsiteLayout.cshtml";
+}
+
+<h1>GenerateQRCODE</h1>
+
+<h4>CreateOrder</h4>
+<hr />
+<div class="row">
+    @{
+        string qrcode = ViewBag.QRCODEIMG;
+    } 
+  <img src=@ViewBag.QRCODEIMG style="width:150px;height:150px" />
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

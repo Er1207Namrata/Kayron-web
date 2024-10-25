@@ -1,0 +1,222 @@
+﻿@model Karyon.Models.ChangePassword
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Login</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico" />
+
+    <!-- font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,500,500i,600,700,800,900|Poppins:200,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/plugins-css.css" />
+
+    <!-- Typography -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/typography.css" />
+
+    <!-- Shortcodes -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/shortcodes/shortcodes.css" />
+
+    <!-- Style -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css" />
+
+    <!-- Responsive -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/responsive.css" />
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <!--=================================
+         preloader -->
+
+        <div id="pre-loader">
+            <img src="~/assets/images/pre-loader/loader-01.svg" alt="">
+        </div>
+
+        <!--=================================
+         preloader -->
+        <!--=================================
+         login-->
+        <form asp-action="ForgotId">
+            <section class="gray-bg height-100vh d-flex align-items-center page-section-ptb login" style="max-width: 1525px;">
+                <div class="container">
+                    <div class="row g-0 justify-content-center">
+                        <div class="col-lg-4 col-md-6 login-fancy-bg" style="background: url(/ProductImages/login.png);">
+                            <div class="login-fancy pos-r">
+                                @*<h2 class="text-white mb-20">Hello</h2>
+                                <p class="mb-20 text-white">Manage your Karyon Id</p>*@
+                                <ul class="list-unstyled  pos-bot pb-30">
+                                    <li class="list-inline-item"><a class="text-white" href="#"> Terms of Use</a> </li>
+                                    <li class="list-inline-item"><a class="text-white" href="#"> Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 white-bg">
+                            <div class="login-fancy pb-40 clearfix">
+
+                                @if (Model.Status == "0")
+                                {
+                                    <h3 class="mb-30">Forgot Id</h3>
+                                    <div class="section-field mb-20">
+                                        <input type="radio" value="Associate" name="IdType" checked />&nbsp; Associate Id &nbsp;
+                                        <input type="radio" value="Franchisee" name="IdType"  />&nbsp; Franchisee Id
+                                        <input type="hidden" asp-for="IdType" />
+                                    </div>
+                                    <div class="section-field mb-20">
+                                        <label class="mb-10" for="name">Mobile No. * </label>
+                                        <input type="text" asp-for="MobileNo" class="web form-control" placeholder="Mobile No." />
+
+                                    </div>
+
+                                    <div class="section-field">
+                                        <div class="remember-checkbox mb-30">
+
+
+                                            @* <a href="/Home/ForgotPassword" class="float-end">Forgot Password?</a>*@
+                                        </div>
+                                    </div>
+
+                                    <input type="submit" id="btnSendOtp" name="btnSendOtp" value="Send OTP" class="button" onclick="return FcheckMobileNo();" />
+                                    <br />
+                                }
+                                else if (Model.Status == "1")
+                                {
+                                    <h3 class="mb-30">Verify OTP</h3>
+                                    <div class="section-field mb-20">
+                                        <label class="mb-10" for="name">Mobile No. * </label>
+                                        <input type="text" asp-for="MobileNo" class="web form-control" placeholder="Mobile No" readonly />
+
+                                    </div>
+                                    <div class="section-field mb-20">
+                                        <label class="mb-10" for="name">OTP </label>
+                                        <input type="text" asp-for="OTP" class="web form-control" placeholder="Enter OTP" />
+                                        <input type="hidden" asp-for="IdType" />
+                                    </div>
+                                    <input type="submit" id="btnVerify" name="btnVerify" value="Verify OTP" class="button" onclick="return fveriftOTP()" />
+                                    <br />
+
+                                }
+                                else
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>S. No.</th>
+                                                    <th>New Login Id</th>
+                                                    <th>Old Login Id</th>
+                                                    <th>Name</th>
+                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model != null)
+                                                {
+
+                                                    if (Model.dtDetails != null)
+                                                    {
+                                                       
+                                                        for (int j = 0; j <= Model.dtDetails.Rows.Count - 1; j++)
+                                                        {
+                                                            <tr>
+                                                                <td>@(j + 1)</td>
+                                                               
+                                                                <td>@Model.dtDetails.Rows[j]["LoginId"]</td>
+                                                                <td>@Model.dtDetails.Rows[j]["Old_LoginId"]</td>
+                                                                <td>@Model.dtDetails.Rows[j]["ContactPerson"]</td>
+                                                               
+                                                            </tr>
+                                                           
+                                                        }
+
+                                                    }
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+
+                                <p style="color:red">@TempData["ForgotId"]</p>
+                                <p class="mt-20 mb-0"><a href="/Home/Login"> Go to Login Page</a></p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+        <!--=================================
+         login-->
+
+
+    </div>
+
+    <div id="back-to-top"><a class="top arrow" href="#top"><i class="fa fa-angle-up"></i> <span>TOP</span></a></div>
+
+    <!--=================================
+     jquery -->
+    <!-- jquery -->
+    <script src="~/assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- plugins-jquery -->
+    <script src="~/assets/js/plugins-jquery.js"></script>
+
+    <!-- plugin_path -->
+
+    <script>var plugin_path = '/assets/js/';</script>
+
+    <!-- custom -->
+    <script src="~/assets/js/custom.js"></script>
+
+    <script>
+        function FcheckMobileNo() {
+            var Idtype = $('input[name="Idtype"]:checked').val();
+            $('#Idtype').val(Idtype);
+            if ($('#MobileNo').val() == "") {
+                $("#MobileNo").addClass('errortext');
+                $('#MobileNo').focus();
+                return false;
+            }
+        }
+        function fveriftOTP() {
+            if ($('#OTP').val() == "") {
+                $("#OTP").addClass('errortext');
+                $('#OTP').focus();
+                return false;
+            }
+        }
+        function fchangePassword() {
+            if ($('#NewPassword').val() == "") {
+                $("#NewPassword").addClass('errortext');
+                $('#NewPassword').focus();
+                return false;
+            }
+            if ($('#ConfirmPassword').val() == "") {
+                $("#ConfirmPassword").addClass('errortext');
+                $('#ConfirmPassword').focus();
+                return false;
+            }
+            if ($('#NewPassword').val() != $('#ConfirmPassword').val()) {
+                alert('New Password and Confirm password not matched');
+                return false;
+            }
+        }
+    </script>
+
+</body>
+</html>

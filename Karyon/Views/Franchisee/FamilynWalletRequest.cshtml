@@ -1,0 +1,218 @@
+﻿@model Karyon.Models.FamilynFranchiseeWalletRequest
+@{
+    ViewData["Title"] = "FamilynWalletRequest";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+
+<form asp-action="FamilynWalletRequest" enctype="multipart/form-data">
+
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Familyn Wallet Request</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Familyn Wallet</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Familyn Wallet Request</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <p style="color:red">
+                                        How we can transfer funds to wallet?
+                                        <br />
+                                        It is very simple, you can use google pay ,Phone Pay, or any UPI Application or NEFT, RTGS, IMPS facility or Physical Bank transfer also you can do.
+                                        Example: suppose if you are using google pay then select bank transfer> add account no of company which are given you on this Page (account Number)>
+                                        Re-enter account no (ID)>Enter IFSC Code > Enter Company Name (Karyon Organic Private Limited)>Click on Confirm> Enter Order Amount >click on Next Arrow >
+                                        Enter your UPI Pin and done Your order will be generated successfully.(Limit applicable as per daily transaction limit)
+                                        For NEFT RTGS IMPS
+                                        You need to add beneficiary in your banking application or on bank website.
+                                        (NO limit)
+                                        Physical Bank transfer:
+                                        You can visit your bank or any bank to make NEFT RTGS or IMPS transaction.
+                                        (NO Limit)
+                                    </p>
+
+                                </div>
+
+                            </div>
+                            <br />
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="MyDirectList">
+                                    <tbody>
+                                        <tr>
+                                            <th>Account Name</th>
+                                            <th>Karyon Organic Private Limited</th>
+
+                                        </tr>
+                                        <tr>
+                                            <th>Account No.</th>
+                                            <th>@Model.LoginId</th>
+
+                                        </tr>
+                                        <tr>
+                                            <th>IFSC Code</th>
+                                            <th>ICIC0000104</th>
+
+                                        </tr>
+                                        <tr>
+                                            <th>Branch</th>
+                                            <th>ICICI BANK LTD, CMS</th>
+
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Amount</label>
+                                    <input type="text" asp-for="Amount" class="form-control" placeholder="Amount" onkeypress="return isNumberKey(event)" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Payment Mode</label>
+                                    @Html.DropDownListFor(m => m.PaymentMode, new SelectList(ViewBag.ddlPaymentMode, "Value", "Text"), new { @class = "form-control" ,@onchange="fpaymentdetails()"})
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" id="divTransactionNo" style="display:none">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label">Transaction No.</label>
+                                    <input type="text" asp-for="TransactionNo" class="form-control" maxlength="50" />
+                                </div>
+                            </div>
+                            <div class="col-md-5"></div>
+                            <div class="col-md-1"></div>
+                        </div>
+                        <div class="row" id="divTransactionDate" style="display:none">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label">Transaction Date</label>
+                                    <input type="date" asp-for="TransactionDate" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-5"></div>
+                            <div class="col-md-1"></div>
+                        </div>
+                        <div class="row" id="divPaymentSlip" style="display:none">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="control-label">Payment Slip</label>
+                                    <input type="file" asp-for="ImageFile" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-5"></div>
+                            <div class="col-md-1"></div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-5">
+                                <div class="text-right">
+
+                                    <button type="submit" value="Request" class="btn btn-success" onclick="return validate();" name="Request">Request Amount</button>
+                                    <p style="color:red">@TempData["FamilynWalletRequest"]</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<script>
+    function validate() {
+        $(".errortext").removeClass("errortext");
+        if ($('#Amount').val() == '') {
+            $("#Amount").addClass('errortext');
+            $("#Amount").focus()
+            return false;
+        }
+        if ($('#PaymentMode').val() == '0') {
+            $("#PaymentMode").addClass('errortext');
+            $("#PaymentMode").focus()
+            return false;
+        }
+        if ($('#PaymentMode').val() != "Cash") {
+            if ($('#PaymentMode').val() == "GPay" || $('#PaymentMode').val() == "UPI" || $('#PaymentMode').val() == "PhonePe") {
+                if ($('#PaymentSlipImg').val() == '') {
+                    alert('Please upload slip');
+                    return false;
+                }
+            }
+            else {
+                if ($('#TransactionNo').val() == '') {
+                    $("#TransactionNo").addClass('errortext');
+                    $("#TransactionNo").focus()
+                    return false;
+                }
+                if ($('#TransactionDate').val() == '') {
+                    $("#TransactionDate").addClass('errortext');
+                    $("#TransactionDate").focus()
+                    return false;
+                }
+                if ($('#PaymentSlipImg').val() == '') {
+                    alert('Please upload slip');
+                    return false;
+                }
+            }
+
+        }
+
+
+    }
+    function fpaymentdetails() {
+
+        if ($('#PaymentMode').val() != "Cash") {
+            if ($('#PaymentMode').val() == "GPay" || $('#PaymentMode').val() == "UPI" || $('#PaymentMode').val() == "PhonePe") {
+                $('#divTransactionNo').css({ "display": "none" });
+                $('#divTransactionDate').css({ "display": "none" });
+                $('#divPaymentSlip').css({ "display": "" });
+            }
+            else {
+                $('#divTransactionNo').css({ "display": "" });
+                $('#divTransactionDate').css({ "display": "" });
+                $('#divPaymentSlip').css({ "display": "" });
+            }
+        }
+
+        else {
+            $('#divTransactionNo').css({ "display": "none" });
+            $('#divTransactionDate').css({ "display": "none" });
+            $('#divPaymentSlip').css({ "display": "none" });
+        }
+    }
+
+</script>

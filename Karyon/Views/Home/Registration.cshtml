@@ -1,0 +1,1351 @@
+﻿@model Karyon.Models.Registration
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Registration</title>
+
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico" />
+
+    <!-- font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,500,500i,600,700,800,900|Poppins:200,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/plugins-css.css" />
+
+    <!-- Typography -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/typography.css" />
+
+    <!-- Shortcodes -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/shortcodes/shortcodes.css" />
+
+    <!-- Style -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css" />
+
+    <!-- Responsive -->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/responsive.css" />
+    <style>
+        .errortext {
+            border: 1px solid red !important;
+        }
+    </style>
+    <style>
+        .terms {
+            color: #214842;
+            font-size: 14px;
+            line-height: 21px;
+        }
+
+            .terms h1 {
+                font-size: 22px;
+                margin: 20px 0 10px 0;
+                font-family: NunitoSans, sans-serif;
+            }
+
+            .terms h2 {
+                font-size: 18px;
+                margin: 10px 0 10px 0
+            }
+
+            .terms p {
+                font-size: 14px;
+                margin: 0px 0 5px 0;
+                text-align: justify
+            }
+
+            .terms ul {
+                margin: 0px 0px 20px 0px;
+                padding: 0 0 0 20px;
+            }
+
+                .terms ul li {
+                    list-style: disc;
+                    text-align: justify;
+                }
+
+            .terms ol li {
+                list-style: decimal;
+                text-align: justify;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <!--=================================
+         preloader -->
+
+        <div id="pre-loader">
+            <img src="~/assets/images/pre-loader/loader-01.svg" alt="">
+        </div>
+
+        <!--=================================
+         preloader -->
+        <!--=================================
+         signup-->
+        <form asp-action="Registration" enctype="multipart/form-data">
+            <section class="gray-bg d-flex align-items-center page-section-ptb login">
+                <div class="container" style="max-width: 1544px;">
+                    <div class="row g-0 justify-content-center">
+                        <div class="col-lg-4 col-md-6 login-fancy-bg parallax" style="background: url(/ProductImages/login.png);">
+                            <div class="login-fancy pos-r">
+                                <h2 class="text-white mb-20">Hello</h2>
+                                <p class="mb-20 text-white"></p>
+                                <ul class="list-unstyled pos-bot pb-30">
+                                    <li class="list-inline-item"><a class="text-white" href="#"> Terms of Use</a> </li>
+                                    <li class="list-inline-item"><a class="text-white" href="#"> Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 white-bg">
+                            <div class="login-fancy pb-40 clearfix">
+                                <h6 class="mb-30">Signup</h6>
+                                
+                               @* <div class="row">
+                                    <div class="section-field mb-20 col-sm-12">
+                                        @if(Model!=null)
+                                        {
+                                            if(Model.Leg=="L")
+                                            {
+                                                <input type="radio" id="rdbLegL" name="rdbLeg" value="L" checked /> <span>&nbsp;&nbsp;Zone 1</span>
+                                                <input type="radio" id="rdbLegR" name="rdbLeg" value="R" /> <span>&nbsp;&nbsp;Zone 2</span>
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" id="rdbLegL" name="rdbLeg" value="L"  /> <span>&nbsp;&nbsp;Zone 1</span>
+                                                <input type="radio" id="rdbLegR" name="rdbLeg" value="R" checked /> <span>&nbsp;&nbsp;Zone 2</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <input type="radio" id="rdbLegL" name="rdbLeg" value="L" checked /> <span>&nbsp;&nbsp;Zone A</span>
+                                            <input type="radio" id="rdbLegR" name="rdbLeg" value="R" /> <span>&nbsp;&nbsp;Zone B</span>
+                                        }
+                                        
+                                        <input type="hidden" asp-for="Leg" />
+                                    </div>
+                                </div>*@
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input type="text" asp-for="FirstName" class="web form-control" placeholder="First Name" maxlength="50" />
+
+                                    </div>
+                                    <div class="section-field mb-20 col-sm-6">
+
+                                        <input class="web form-control" type="text" placeholder="Last name" asp-for="LastName" maxlength="50" />
+                                    </div>
+                                </div>
+                               @* <div class="section-field mb-20">
+
+                                    <input type="email" placeholder="Email*" class="form-control" asp-for="Email" maxlength="50" />
+                                </div>*@
+                                <div class="section-field mb-20">
+                                    <input type="number" placeholder="Mobile No*" class="form-control" asp-for="MobileNo" maxlength="10" min="1" />
+                                </div>
+                                <div class="section-field mb-20">
+                                    <input type="password" placeholder="Password*" class="form-control" asp-for="Password" />
+
+                                </div>
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-12">
+                                        <input type="text" asp-for="SponsorLoginId" class="web form-control" placeholder="Referal Id" onchange="return GetSponsorName();" />
+
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="section-field mb-20 col-sm-12">
+
+                                        <input class="web form-control" type="text" placeholder="Referal Name" id="SponsorName" disabled />
+                                    </div>
+                                </div>
+                              @*  <div class="section-field mb-20">
+                                    <input type="text" placeholder="Pancard" class="form-control" asp-for="PanCard" maxlength="10" />
+
+                                </div>
+                                <div class="section-field mb-20">
+                                    <label class="form-label">Upload Pancard</label>
+                                    <input type="file" asp-for="ImageFile" class="form-control" />
+                                </div>*@
+                                <div class="section-field mb-20">
+                                    <input type="checkbox" data-bs-target="#tremandconditionModal" data-bs-toggle="modal" name="termconId" id="termconId" />&nbsp;
+                                    <label>Terms & Conditions</label>
+                                    
+                                </div>
+                                <input type="submit" id="btnRegister" name="btnRegister" value="Register" class="button" onclick="return Fvalidate();" />
+
+                                <p style="color:red">@TempData["Registraion"]</p>
+
+                                <p class="mt-20 mb-0">Have an account? <a href="/Home/Login"> Login</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+        <!--=================================
+         signup-->
+
+
+    </div>
+
+    <div id="back-to-top"><a class="top arrow" href="#top"><i class="fa fa-angle-up"></i> <span>TOP</span></a></div>
+
+    <!--Modal Start-->
+    <div class="modal fade" id="tremandconditionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body modal_popup--view" style="overflow-x: hidden; overflow-y: scroll;  height: 500px;">
+                    <div class="about_main d-lg-flex flex-nowrap">
+                      	<div class="terms">
+	<p>KHFLLP/KOPL RULES OF CONDUCT</p>
+<p>Content:</p>
+<p>SECTION 1: INTRODUCTION SECTION 2: GLOSSARY OF TERMS</p>
+<p>SECTION 3: BECOMING KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER</p>
+<p>SECTION 4: GENERAL RESPONSIBILITIES OF KHFLLP/KOPL ASSOCIATES /KHFLLP/KOPL CUSTOMERS SECTION 5: ADDITIONAL RESPONSIBILITIES ANDOBLIGATIONS FOR SPONSORS SECTION 6: PRESERVATION OF THE LINES OF SPONSORSHIP</p>
+<p>SECTION 7: BUSINESS SUPPORT MATERIAL (KHFLLP/KOPLSM)</p>
+<p>SECTION 8: PRESENTATION OF THE KHFLLP/KOPL BUSINESS OPPORTUNITY AND THE KHFLLP/KOPL SALES &amp; MARKETING PLAN</p>
+<p>SECTION 9: USE OF THE KHFLLP/KOPL&rsquo;S INTELLECTUAL PROPERTY</p>
+<p>SECTION 10: DEATH OF KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER AND INHERITANCE OF THE KHFLLP/KOPL ASSOCIATE NUMBER</p>
+<p>SECTION 11: BREACH OF CONTRACT; PROCEDURES, SANCTIONS SECTION 12: COMPLIANCE</p>
+<p>SECTION 13: DISPOSITION OF TERMINATED OR NON-RENEWED KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMERCONTRACT</p>
+<p>SECTION 14: NATIONAL REVIEW PANEL</p>
+<h1>KHFLLP/KOPL RULES OF CONDUCT SECTION 1: INTRODUCTION</h1>
+<p>KHFLLP/KOPL and its KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs have a binding contractual relationship.</p>
+<ul>
+<li><strong>Contract: </strong>The KHFLLP/KOPL Rules of Conduct contain terms and conditions of an KHFLLP/KOPL Business and define the rights, duties and responsibilities of each KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER. They are designed to preserve the benefits available to all KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs and KHFLLP/KOPL. Together with additional KHFLLP/KOPL Policies, they form an integral part of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract and are expressly incorporated as part of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract by reference in the document that applicants sign and submit to KHFLLP/KOPL when applying to become KHFLLP/KOPL Business Owner(&ldquo;KHFLLP/KOPL ASSOCIATE&rdquo;)/KHFLLP/KOPL CUSTOMER.</li>
+</ul>
+<ul>
+<li>All KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER are charged with the duty of good faith and fair dealing under the terms of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract.</li>
+</ul>
+<ul>
+<li><strong>Subject terms of KHFLLP/KOPL ASSOCIATE Contract: </strong>Based on the KHFLLP/KOPL ASSOCIATE contract, the KHFLLP/KOPL ASSOCIATE has the right to purchase and resell KHFLLP/KOPL products and services the opportunity to sponsor others as KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER. For the term of the contract, they own their position in the Line of Sponsorship and they have the right to benefit from the development of the Line of Sponsorship and the opportunity to earn bonuses and other compensation under the KHFLLP/KOPL Sales and Marketing Plan and eligibility for and recognition of qualification, promotions and rewards are all</li>
+</ul>
+<p>contingent upon compliance with the terms of the KHFLLP/KOPL ASSOCIATE Contract, including the KHFLLP/KOPL Rules of Conduct and KHFLLP/KOPL Policies.</p>
+<h2>1.2.2 Subject terms of a KHFLLP/KOPL CUSTOMER Contract:</h2>
+<p>The KHFLLP/KOPL CUSTOMER has the opportunity to sponsor others as KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs and purchase products for personal use. He may participate in a Discount Program. A KHFLLP/KOPL CUSTOMER shall not resell KHFLLP/KOPL products and services.</p>
+<ul>
+<li><strong>Modifications: </strong>KHFLLP/KOPL may modify the KHFLLP/KOPL Rules</li>
+</ul>
+<p>and Policies and other provisions of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract, in whole or in part, from time to time. Changes to the KHFLLP/KOPL Rules of Conduct, the KHFLLP/KOPL Policies and the KHFLLP/KOPL Sales and Marketing Plan will be submitted to Indian Government Agencies of Direct selling for and evaluation before the new Rules of Conduct or Policies are published in the official KHFLLP/KOPL literature, on official KHFLLP/KOPL web sites or other mechanism permitted by applicable law. All modifications shall be effective from the date of publication or as expressed in the notification.</p>
+<ul>
+<li><strong>Sever ability: </strong>Should a current rule or rule subset be declared invalid by court or other authority then this shall not affect the validity of the remaining KHFLLP/KOPL Rules of Conduct and Policies.</li>
+<li>Nothing herein shall prejudice the rights of KHFLLP/KOPL Associate/KHFLLP/KOPL Customer to those protections under law that may not be waived by the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</li>
+</ul>
+<p>Please note: The CLOS region is considered being one KHFLLP/KOPL market with regard to below listed KHFLLP/KOPL Rules of Conduct:</p>
+<p>Rule 3.2 (Husband and Wife Rule)</p>
+<p>Rule 3.3 (Requirements to become KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL Customer) Rule 6.4 (Re-application under a new Sponsor)</p>
+<p>Rule 6.6 (Sale of an KHFLLP/KOPL Business)</p>
+<p>Rule 6.7 (Mergers and Combinations of a business&rsquo;s) Rule 6.8 (One KHFLLP/KOPL Business Rule)</p>
+<h1>SECTION 2: GLOSSARY OF TERMS</h1>
+<p><strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract: </strong>Refers to the KHFLLP/KOPL ASSOCIATE/</p>
+<p>KHFLLP/KOPL CUSTOMER Applications along with the incorporated documents that form the terms of the contractual agreement between KHFLLP/KOPL Associate/KHFLLP/KOPL Customer and KHFLLP/KOPL.</p>
+<p><strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER in Good Standing: </strong>For the purposes of interpreting and enforcing the Rules of Conduct only, the term &ldquo;good standing&rdquo; shall refer to an KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER who is</p>
+<ul>
+<li>currently authorized by KHFLLP/KOPL to hold himself out as KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER; and whose conduct complies with the letter and spirit of the Rules of Conduct and KHFLLP/KOPL Policies for each market in which KHFLLP/KOPL Associate/KHFLLP/KOPL Customer has a presence; and</li>
+<li>is not engaged in conduct that negatively effects the reputation of KHFLLP/KOPL, its affiliates, and its KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs ; and</li>
+</ul>
+<ul>
+<li>is not engaged in conduct that supports or defends the activity of other KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMERs which jeopardizes the ongoing nature of an KHFLLP/KOPL affiliate or otherwise is inconsistent with the other criteria set forth herein; and</li>
+<li>is not engaged in conduct that does not comply with all applicable laws and regulations in each country and whose conduct does not demonstrate cultural sensitivity given market</li>
+</ul>
+<p>The interpretation of all applicable laws and regulations is the sole responsibility of the KHFLLP/KOPL affiliates. KHFLLP/KOPL Associate/KHFLLP/KOPL Customer shall adhere to the</p>
+<p>KHFLLP/KOPL affiliates interpretations.</p>
+<p><strong>KHFLLP/KOPL ASSOCIATE Application: </strong>A form that is signed by the potential KHFLLP/KOPL Business Owner and submitted to KHFLLP/KOPL as an application to conclude a Business Owner Contract. The KHFLLP/KOPL ASSOCIATE Contract is concluded upon acceptance of the application by KHFLLP/KOPL.</p>
+<p><strong>KHFLLP/KOPL ASSOCIATE: </strong>An KHFLLP/KOPL Business Owner. A person/legal entity who&rsquo;s KHFLLP/KOPL ASSOCIATE Application has been accepted by KHFLLP/KOPL. An KHFLLP/KOPL ASSOCIATE is an independent contractor, not a commercial representative, agent or broker. He buys and sells KHFLLP/KOPL products and services in his own name and on his own account. Certain KHFLLP/KOPL ASSOCIATE may be referred to by other designations, such as Silver, Silver, Diamond &amp; above, etc., in accordance with qualification promotioned by KHFLLP/KOPL pursuant to conditions set forth in the KHFLLP/KOPL Sales and Marketing Plan and other official KHFLLP/KOPL literature.</p>
+<p><strong>KHFLLP/KOPL: </strong>KARYON KHFLLP/KOPL FOREVER LLP ., 307, behind phoenix market city, Nagar road, viman nagar, Pune, Maharashtra, INDIA. or any parent, sister or subsidiary, depending in the context.</p>
+<p><strong>KHFLLP/KOPL Business (&ldquo;KHFLLP/KOPL ASSOCIATE NUMBER&rdquo;): </strong>A business, as identified by the KHFLLP/KOPL ASSOCIATE number and the KHFLLP/KOPL ASSOCIATE Contract.</p>
+<p><strong>KHFLLP/KOPL Business Opportunity: </strong>The products, marketing, support and payment system offered by KHFLLP/KOPL pursuant to the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract.</p>
+<p><strong>KHFLLP/KOPL Business Policies: </strong>Rules and policies set forth in official KHFLLP/KOPL literature, including the Rules of Conduct, and other KHFLLP/KOPL policies that may be maintained by KHFLLP/KOPL from time to time which are incorporated by reference into the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract.</p>
+<p><strong>KHFLLP/KOPL Products: </strong>All goods provided by KHFLLP/KOPL to KHFLLP/KOPL ASSOCIATEs for sales and marketing purposes.</p>
+<p><strong>KHFLLP/KOPL Sales and Marketing Plan: </strong>The system used to calculate the Bonus, Fee or Commission and recognition for KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER based on product sales as described in the official KHFLLP/KOPL literature.</p>
+<p><strong>KHFLLP/KOPL Services: </strong>All services provided by KHFLLP/KOPL to KHFLLP/KOPL ASSOCIATEs for sales, sponsoring, and advertising purposes.</p>
+<p><strong>KHFLLP/KOPL: </strong>KHFLLP/KOPL branch of that country in which the business owner builds his KHFLLP/KOPL Business [insert local affiliate name and address] or all or some of the global KHFLLP/KOPL branches, depending on the context of the text.</p>
+<p><strong>Approved Provider: </strong>means any supplier authorized by KHFLLP/KOPL to provide KHFLLP/KOPLSMs to KHFLLP/KOPL ASSOCIATEs or to use KHFLLP/KOPLSMs with Prospects, pursuant to the ACCREDITATION TM Program (&ldquo;Program&rdquo;). The Ability to use, sale, promote and distribute KHFLLP/KOPLSMs is governed by an agreement between KHFLLP/KOPL and Approved Provider.</p>
+<p><strong>Bonus, Fee or Commission: </strong>Payments from KHFLLP/KOPL to an KHFLLP/KOPL ASSOCIATE &ndash; in accordance with the KHFLLP/KOPL Sales and Marketing Plan &ndash; on the basis of the sale of KHFLLP/KOPL products by the business owner and his group.</p>
+<p><strong>Branch/market: </strong>The KHFLLP/KOPL Company that offers the KHFLLP/KOPL Business Opportunity in a particular country.</p>
+<p><strong>Business-Group: </strong>All downline KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER of an KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</p>
+<p><strong>Calendar Month: </strong>Unless otherwise stipulated &lsquo;Month&rsquo; shall be defined as &lsquo;calendar Month&rsquo; in the sense</p>
+<p>of all days of the Month, including Saturday, Sunday as well as bank and public holidays.</p>
+<p><strong>Downline: </strong>All KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs personally sponsored by KHFLLP/KOPL Associate/KHFLLP/KOPL Customer as well as all the KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs sponsored in turn by these KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs , etc.</p>
+<p><strong>Karyon Healthyco Forever LLP Support Material (KHFLLP/KOPLSM): </strong>The definition for KHFLLP/KOPLSM is intended to be interpreted broadly and includes, by way of example, the following: printed materials, audio-video and multimedia productions, internet-based products and services, non- KHFLLP/KOPL recognition and promotion systems, meetings and other events, and other materials or equipment used to provide information or support the sale of KHFLLP/KOPL products or services, as well as coupons, vouchers, tickets or standing order/subscription programs relating to any of the previously mentioned.</p>
+<p><strong>Performance Month: </strong>KHFLLP/KOPL&rsquo;s performance month runs from 1st to 28 or 29 or 30 or 31st of the Promotion achivement month.</p>
+<p><strong>Advisor Leader: </strong>KHFLLP/KOPL ASSOCIATE who has either qualified at the 16% level. <strong>Supervisor Leader: </strong>KHFLLP/KOPL ASSOCIATE who has either qualified at the 20% level. <strong>Organizer Leader: </strong>KHFLLP/KOPL ASSOCIATE who has either qualified at the 24% level. <strong>Rising Star Leader: </strong>KHFLLP/KOPL ASSOCIATE who has either qualified at the 28% level. <strong>Super Star Leader: </strong>KHFLLP/KOPL ASSOCIATE who has either qualified at the 32% level.</p>
+<p><strong>Husband and Wife: </strong>considered equivalent to a registered partnership couple (or similar term acceptable by local law), while 'married person' and 'spouse' is considered equivalent to a registered partner (similar term acceptable by local law).</p>
+<p><strong>Leg: </strong>All personally sponsored KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER as well as all downline KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs from that KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</p>
+<p><strong>Line of Sponsorship: </strong>All KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMERs in an ascending order starting with any KHFLLP/KOPL ASSOCIATE &ndash; that is the Sponsor of the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER, the Sponsor&rsquo;s Sponsor and so forth up to and including KHFLLP/KOPL.</p>
+<p><strong>LOS Information: </strong>includes all information that discloses or relates to all or part of the Line of Sponsorship, including but not limited to KHFLLP/KOPL ASSOCIATE numbers and other KHFLLP/KOPL ASSOCIATE business identification data, KHFLLP/KOPL ASSOCIATE personal contact information, KHFLLP/KOPL ASSOCIATE business performance information, and all information generated or derived therefrom, in its past, present or future forms&rdquo;.</p>
+<p><strong>KHFLLP/KOPL ASSOCIATE: </strong>A KHFLLP/KOPL ASSOCIATE can sponsor both KHFLLP/KOPL Business Owners and other KHFLLP/KOPL CUSTOMERs : He/she may purchase products for own use only at the same price as KHFLLP/KOPL ASSOCIATEs.</p>
+<p><strong>KHFLLP/KOPL Customer: </strong>Former KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER, who has been KHFLLP/KOPL ASSOCIATE or KHFLLP/KOPL CUSTOMER for a period of at least 6 months, who has signed a KHFLLP/KOPL CUSTOMER Contract that has been accepted by KHFLLP/KOPL. Unlike KHFLLP/KOPL ASSOCIATEs, KHFLLP/KOPL CUSTOMERs may obtain KHFLLP/KOPL products only for their personal use and are not allowed to act as sponsors.</p>
+<p><strong>Official KHFLLP/KOPL Literature: </strong>Informational magazines, brochures, product information flyers, product labeling, audio and video cassettes, CD-ROMs, and other printed or audio-visual materials that are produced by KHFLLP/KOPL or for KHFLLP/KOPL, and that KHFLLP/KOPL ASSOCIATEs may obtain from KHFLLP/KOPL.</p>
+<p><strong>Official KHFLLP/KOPL Web site: </strong>Any web site hosted and administered by KHFLLP/KOPL, or where KHFLLP/KOPL is the owner of the site content, informing on KHFLLP/KOPL, the KHFLLP/KOPL Business Opportunity or on KHFLLP/KOPL Products and services, e.g. <a href="http://www.KHFLLP.com/">www.KHFLLP/KOPL.com,</a><a href="http://www.healthycoforever.com/">www.healthycoforever.com,</a><a href="http://www/">www.</a> healthycoadmin.com, <a href="http://www.healthyco.co.in/">www.healthyco.co.in.</a></p>
+<p><strong>Performance Bonus, Fee or Commission: </strong>A monthly bonus earned by KHFLLP/KOPL ASSOCIATE who has reached a group PV level as determined by the Performance Bonus schedule.</p>
+<p><strong>Personally Sponsored KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER: </strong>KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER</p>
+<p>who has been personally sponsored into the KHFLLP/KOPL Business by another KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER (first line).</p>
+<p><strong>Silver: </strong>KHFLLP/KOPL ASSOCIATE who has achieved the Promotion level of Silver in accordance with the KHFLLP/KOPL Sales and Marketing Plan.</p>
+<p><strong>Gold: </strong>KHFLLP/KOPL ASSOCIATE who has achieved the Promotion level of Gold in accordance with the KHFLLP/KOPL Sales and Marketing Plan.</p>
+<p><strong>Silver: </strong>KHFLLP/KOPL ASSOCIATE who has achieved the Promotion level of Silver in accordance with the KHFLLP/KOPL Sales and Marketing Plan.</p>
+<p><strong>Ruby: </strong>KHFLLP/KOPL ASSOCIATE who has achieved the Promotion level of Ruby in accordance with the KHFLLP/KOPL Sales and Marketing Plan.</p>
+<p><strong>Silver: </strong>KHFLLP/KOPL ASSOCIATE who has achieved the Promotion level of Silver in accordance with the KHFLLP/KOPL Sales and Marketing Plan.</p>
+<p><strong>Diamond &amp; above KHFLLP/KOPL ASSOCIATE: </strong>KHFLLP/KOPL ASSOCIATE who has achieved the Promotion level of Diamond &amp; above in accordance with the KHFLLP/KOPL Sales and Marketing Plan.</p>
+<p><strong>Blue Diamond &amp; above: </strong>KHFLLP/KOPL ASSOCIATE who has achieved the Promotion level of Blue Diamond &amp; above in accordance with the KHFLLP/KOPL Sales and Marketing Plan.</p>
+<p><strong>Crown Ambassador: </strong>KHFLLP/KOPL ASSOCIATE who has achieved the Promotion level of Crown Ambassador in accordance with the KHFLLP/KOPL Sales and Marketing Plan.</p>
+<p><strong>President: </strong>KHFLLP/KOPL ASSOCIATE who has achieved the Promotion level of President in accordance with the KHFLLP/KOPL Sales and Marketing Plan.</p>
+<p><strong>Prospect: </strong>A potential KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</p>
+<p><strong>Qualification, qualified, or to qualify: </strong>Achieving certain criteria in order to obtain bonuses and performance commissions as well as promotions in accordance with the KHFLLP/KOPL Sales and Marketing Plan.</p>
+<p><strong>Qualified Leg: </strong>A leg where at least one KHFLLP/KOPL ASSOCIATE or one KHFLLP/KOPL CUSTOMER downline has achieved the Performance Bonus level.</p>
+<p><strong>Promotion Volume: </strong>The sum of all volumes of business owners in the group.</p>
+<p><strong>Retail Client/ Customer: </strong>A person to whom KHFLLP/KOPL ASSOCIATE sells KHFLLP/KOPL products; this shall not include any KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER or the spouse of KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</p>
+<p><strong>Sponsor: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER introduces a person to the KHFLLP/KOPL ASSOCIATE NUMBER whose KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER Application is accepted by KHFLLP/KOPL. The new KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER will receive support from the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER who has sponsored him or her.</p>
+<h2>There can be one relationship:</h2>
+<p><strong>Personal Sponsor: </strong>KHFLLP/KOPL Associate/KHFLLP/KOPL Customer who introduces a Prospect into the KHFLLP/KOPL Business Opportunity;</p>
+<p><strong>Volume: </strong>Point Value (PV) and/or Business Volume (BV), depending on the context; A numerical value assigned to each product to determine Bonus, Fee or Commission and promotion levels.</p>
+<h1>SECTION 3: BECOMING KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER</h1>
+<ul>
+<li><strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract: </strong>To become a duly authorized KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER an applicant must complete and sign the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL</li>
+</ul>
+<p>CUSTOMER Application and pay a fixed annual fee required by KHFLLP/KOPL as a lump sum reimbursement for administrative and web services rendered by KHFLLP/KOPL as well as for any KHFLLP/KOPL literature updates. The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Application must be sent to, and be accepted by KHFLLP/KOPL for authorization in accordance with the provisions of Rule 3.4. The application may be performed in writing or using the official KHFLLP/KOPL websites.</p>
+<ul>
+<li><strong>Husband and Wife KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER: </strong>If husband and wife want to build an KHFLLP/KOPL Business together, they must be sponsored together on a single KHFLLP/KOPL ASSOCIATE If one spouse is already KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER, the other spouse, upon electing to become KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER together with his/her spouse, must join his or her spouse&rsquo;s contract with KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li>A husband and wife are deemed to operate their KHFLLP/KOPL ASSOCIATE NUMBER together if both are parties of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER contract and the application is signed by both spouses. Therefore, each is held accountable for the actions of the other in so far as the Rules of Conduct are concerned.</li>
+</ul>
+<ul>
+<li>A married person signing KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER application acknowledges that as allowed by binding law, assumes the responsibility for any action of the non-signatory spouse undertaken in connection with the KHFLLP/KOPL ASSOCIATE NUMBER of the signatory spouse shall be deemed to have occurred at the request and with the authorization of the signing spouse. The signing spouse shall be responsible under the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER contract for any activity of the non-signatory spouse that violates or is contrary to the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER contract including the Rules of Conduct</li>
+</ul>
+<p>and KHFLLP/KOPL Policies.</p>
+<ul>
+<li>If two KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMERS become married to each other, each spouse can keep the business or decide to surrender the business and join the other spouse&rsquo;s KHFLLP/KOPL ASSOCIATE</li>
+</ul>
+<ul>
+<li><strong>Requirements to become KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER: </strong>Without limiting KHFLLP/KOPL&rsquo;s discretion to accept KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER Application with any person, a person entering into KHFLLP/KOPL Associate/KHFLLP/KOPL Customer Contract with KHFLLP/KOPL must:</li>
+</ul>
+<ul>
+<li>Be contractually capable, that is at least 18 years of age and legally and mentally competent to conduct a business and enter into binding contractual obligations; be duly authorized to engage in professional activities as required by applicable law;</li>
+</ul>
+<ul>
+<li>Comply with Section 4 of these Rules of Conduct if the applicant previously operated under KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract that was terminated or not renewed;</li>
+</ul>
+<ul>
+<li>Not have been terminated under a previous KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract with any KHFLLP/KOPL affiliate.</li>
+</ul>
+<ul>
+<li>Not own another KHFLLP/KOPL Business in the same market excluding the cases mentioned in Rule 8.</li>
+</ul>
+<ul>
+<li>Not be married to KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER/KHFLLP/KOPL CUSTOMER excluding in cases mentioned in Rule 3.2.</li>
+</ul>
+<ul>
+<li><strong>Acceptance and rejection of KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Application: </strong>KHFLLP/KOPL reserves the right to accept or reject any KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Application.</li>
+</ul>
+<ul>
+<li><strong>Acceptance and Commencement: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER application shall be considered accepted by KHFLLP/KOPL when it receives a completed and signed KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER Application and its contents are verified with KHFLLP/KOPL&rsquo;s KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER records database unless a notification to the contrary has been sent within 6 In case the Application is rejected by KHFLLP/KOPL, and the KHFLLP/KOPL Business was set up, KHFLLP/KOPL and the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER consider the Contract properly concluded on the day when KHFLLP/KOPL received the Application and terminated on the day when the applicant receives the refusal from KHFLLP/KOPL. In case the registration has been completed on the official KHFLLP/KOPL website and the information about KHFLLP/KOPL acceptance of the registration has been delivered to the applicant as set forth in Rules of Conduct the KHFLLP/KOPL ASSOCIATE/</li>
+</ul>
+<p>KHFLLP/KOPL CUSTOMER is authorized to conduct KHFLLP/KOPL Business according to Rules of Conduct and KHFLLP/KOPL Policies.</p>
+<p>The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER has the obligation to submit a signed version of the application form no later than 30 calendar days after the registration, either:</p>
+<ol>
+<li>By delivering a signed hard copy either in person, by post or hand delivery; or</li>
+<li>By sending the hard copy via e-mail to KHFLLP/KOPL; or</li>
+<li>By using the e-signature tool on <a href="http://www.healthycoforever.com/">healthycoforever.com.</a></li>
+</ol>
+<h2>3.6 Sponsoring Practices:</h2>
+<ul>
+<li>The KHFLLP/KOPL Business Opportunity shall be presented as an equal opportunity available to anyone regardless of ethnic background, gender, nationality or religious or political beliefs.</li>
+</ul>
+<ul>
+<li>A prospect as a condition to becoming a KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER, or a KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER as a condition to receiving assistance in the development of the KHFLLP/KOPL ASSOCIATE NUMBER, shall not be required to</li>
+</ul>
+<ol>
+<li>Purchase any specified amount of products or</li>
+<li>Maintain a specified minimum</li>
+<li>Purchase any Business Support</li>
+</ol>
+<ul>
+<li><strong>Term and Expiration: </strong>Unless the term is renewed in accordance with Rule 3.9 of the Rules of Conduct, an KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract expires in accordance with its terms. Unless earlier terminated by KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER or KHFLLP/KOPL, the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract shall automatically expire on December 31 of a year. If an application is signed and accepted on or after July 1st of a calendar year it will expire on December 31 of the next calendar year.</li>
+</ul>
+<ul>
+<li><strong>Termination of the Contract: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER may terminate the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER Contract at any time with immediate effect in text form. KHFLLP/KOPL may terminate the contract for intentional, severe breaches of the KHFLLP/KOPL Rules of Conduct and Policies only after having followed the procedures as set forth in section 11 of the Rules of Conduct and if all reasonable efforts to gain a mutual consent failed. Upon termination by KHFLLP/KOPL &amp; KHFLLP/KOPL ASSOCIATE may not only take legal action but also will be eligible before the national Review Panel (section 16 of the Rules of Conduct).</li>
+</ul>
+<ul>
+<li><strong>Buy-Back Rule: </strong>Upon expiration or the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER&rsquo;s voluntary termination of the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER Contract, KHFLLP/KOPL Associate/KHFLLP/KOPL Customer may apply to KHFLLP/KOPL to return any unsold inventory of KHFLLP/KOPL products and services that he may possess, provided that such products are in new, unused and original condition as well as before at least 6 month of expiry date . KHFLLP/KOPL will repurchase these products at the cost for which they were purchased from KHFLLP/KOPL, less an administrative handling and restocking charge, less any bonus amounts that have been paid on the respective purchases and any nonrecoverable taxes. Any amounts that are due and owing to KHFLLP/KOPL will be charged up. In the event that KHFLLP/KOPL Associate/KHFLLP/KOPL Customer Contract is terminated for KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER&rsquo;s breach, KHFLLP/KOPL shall have discretion as to repurchase of products and services under this Rule.</li>
+</ul>
+<ul>
+<li><strong>Renewal: </strong>KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs have the right to renew their contractual relationship with KHFLLP/KOPL annually. KHFLLP/KOPL may reject the renewal of the application of the contract for intentional, severe breaches of the KHFLLP/KOPL Rules of Conduct and Policies only after having followed the procedures as set forth in section 11 of the Rules of Conduct if all reasonable efforts to gain to a mutual consent failed.</li>
+</ul>
+<ul>
+<li>Any renewal of the term of KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract that is accepted by KHFLLP/KOPL shall be effective from the date of renewal through the end of the calendar year for which the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract was The terms of such renewal shall be the terms and conditions of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract in effect at the time of renewal. A renewal is considered accepted if not rejected by KHFLLP/KOPL in writing within 30 days after application.</li>
+</ul>
+<ul>
+<li>Upon non-renewal by KHFLLP/KOPL &amp; KHFLLP/KOPL ASSOCIATE may not only take legal action but also will be eligible before the national Review Panel (section 16 of the Rules of Conduct).</li>
+</ul>
+<ul>
+<li><strong>KHFLLP/KOPL Businesses Operated through a Legal Entity: </strong>A party to KHFLLP/KOPL ASSOCIATE Contract may be a limited liability company, provided it complies with certain requirements and conditions. Other KHFLLP/KOPL authorized options for legal entities may be available. Contact KHFLLP/KOPL for current information. The person signing the KHFLLP/KOPL ASSOCIATE Application on behalf of a legal entity must be an authorized representative of that legal entity, must personally meet the qualifications set forth in Section 3 of the Rules of Conduct and must be the majority owner of the legal entity. This also applies to a person following the original person as successor in the legal entity. A legal entity may be required to submit, in addition to other documents, proof of existence and qualification to conduct the activities anticipated in the KHFLLP/KOPL ASSOCIATE Contract, proof of compliance with applicable registration requirements, a document containing various information KHFLLP/KOPL About and agreements of both the legal entity and the</li>
+</ul>
+<p>founders and management of the legal entity, or such other similar information and documentation as KHFLLP/KOPL may request.</p>
+<ul>
+<li><strong>Invitations to KHFLLP/KOPL Events Limited to One or Two Persons: </strong>Invitations for business seminars, leadership seminars, incentive trips and other events organized by KHFLLP/KOPL will only be extended to one or two individuals per KHFLLP/KOPL ASSOCIATE NUMBER. These individuals shall be the ones listed on KHFLLP/KOPL&rsquo;s records as the owners of the KHFLLP/KOPL ASSOCIATE NUMBER.</li>
+</ul>
+<ul>
+<li><strong>Conspiracy &ndash; Inducement to Breach: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall not conspire with any other person to breach or induce a breach of KHFLLP/KOPL Associate/KHFLLP/KOPL Customer Contract.</li>
+</ul>
+<ul>
+<li><strong>Representations and Warranties: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall not make any false representation or statement to KHFLLP/KOPL, nor induce KHFLLP/KOPL to accept an KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER application under false pretences, nor breach any representation or warranties, including but not limited to those made by the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER in section 3 of the Rules of conduct.</li>
+</ul>
+<ul>
+<li><strong>(1) Activity Outside The Region or Activity Outside The Market Where The KHFLLP/KOPL ASSOCIATE Is Registered: </strong>KHFLLP/KOPL ASSOCIATEs who engage, directly or indirectly, in any activity related to the KHFLLP/KOPL business in a jurisdiction outside of the Region must do so in a manner that complies with the letter and spirit of the applicable laws, regulations, rules, policies and procedures of the KHFLLP/KOPL affiliate in that jurisdiction, regardless of whether they are registered KHFLLP/KOPL ASSOCIATEs in that jurisdiction. For the purpose of complying with this provision, KHFLLP/KOPL ASSOCIATEs must inform themselves with laws, regulations, rules, policies and procedures of the KHFLLP/KOPL affiliate in the respective Failure to do so shall be a breach of the KHFLLP/KOPL ASSOCIATE Contract in all jurisdictions in which the KHFLLP/KOPL ASSOCIATE holds a contract with KHFLLP/KOPL. In such case KHFLLP/KOPL may take action and sanctions as described in Section 11 of Rules of Conduct.</li>
+</ul>
+<p><strong>(2) </strong>No KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall conduct KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER</p>
+<p>activities in markets KHFLLP/KOPL has not opened (also refer to Global Zero Tolerance Policy on Unopened Markets, available on www.healthycoforever.com). KHFLLP/KOPL defines KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER activity&rdquo; as any activity which is designated to promote or build the KHFLLP/KOPL Business as defined in the rule 6.4.2 of the Rules of Conduct.</p>
+<h1>SECTION 4: GENERAL RESPONSIBILITIES OF KHFLLP/KOPL ASSOCIATES/KHFLLP/KOPL CUSTOMERS</h1>
+<p>KHFLLP/KOPL Associate/KHFLLP/KOPL Customer shall at all times conduct himself in a professional, courteous and considerate manner and operate the KHFLLP/KOPL ASSOCIATE NUMBER in a financial responsible and businesslike manner (see also Rule 4.4 of the RoC). The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall at no time engage in any high pressure selling, deceptive or misleading sales or marketing practices.</p>
+<ul>
+<li><strong>Contractual Implications: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMERs shall comply with the responsibilities and requirements set forth in the Rules of Conduct and the KHFLLP/KOPL Policies.</li>
+</ul>
+<ul>
+<li><strong>Report Violations: </strong>KHFLLP/KOPL Associate/KHFLLP/KOPL Customer shall promptly inform KHFLLP/KOPL of any information relating to another KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER&rsquo;s actual, potential or threatened</li>
+</ul>
+<p>violation of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract, including the KHFLLP/KOPL Rules and Policies, or any applicable laws or regulations.</p>
+<ul>
+<li><strong>Cooperation with Investigations: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMERs shall cooperate in any investigation undertaken by KHFLLP/KOPL according to the Process as described in Section 11.</li>
+</ul>
+<h2>4.2 Purchase of KHFLLP/KOPL Products</h2>
+<ul>
+<li>KHFLLP/KOPL Associate/KHFLLP/KOPL Customer must only purchase KHFLLP/KOPL products and services and official KHFLLP/KOPL literature directly from KHFLLP/KOPL in order to be eligible for the promotions and rewards under the KHFLLP/KOPL Sales and Marketing plan.</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATE must not sell KHFLLP/KOPL products and services to other KHFLLP/KOPL ASSOCIATEs and KHFLLP/KOPL CUSTOMERs.</li>
+</ul>
+<h2>4.3 Import/Export/Retail Locations/Mass Marketing:</h2>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs shall not export or import, or knowingly sell for import or export, KHFLLP/KOPL products from any country in which KHFLLP/KOPL has established operations, into any other country;</li>
+</ul>
+<ul>
+<li>In any case, KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER are solely responsible to comply with local regulations and legal/ regulatory requirements of the specific market, if they sell KHFLLP/KOPL products, which are not registered by KHFLLP/KOPL for the specific market.</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATEs /KHFLLP/KOPL CUSTOMERs shall not display or sell or permit KHFLLP/KOPL products and services, official KHFLLP/KOPL literature or KHFLLP/KOPLSM to be displayed, sold, marketed, promoted or displayed in or</li>
+</ul>
+<ul>
+<li><strong>Advertising: </strong>KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs may advertise only with the express approval of KHFLLP/KOPL in writing. (pls. also refer to Rule 9.7) When using any "social media" KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs have to comply with the KHFLLP/KOPL Rules of Conduct and KHFLLP/KOPL Policies as well as with the terms and conditions of the respective social media site. KHFLLP/KOPL ASSOCIATE may have a website to promote the KHFLLP/KOPL Business and the KHFLLP/KOPL products and services if authorized by KHFLLP/KOPL in accordance with the KHFLLP/KOPL Website Policy (available on www.Healthycoforever.com).</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATEs /KHFLLP/KOPL CUSTOMERs shall not take advantage of any KHFLLP/KOPL promoted event or media to sell, promote or profit from the sale or promotion of non-KHFLLP/KOPL products or services. This is also applicable to any event or media targeted at or for the benefit of KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER or Prospects.</li>
+</ul>
+<ul>
+<li><strong>Misrepresentations: </strong>KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER shall not conduct any activity, make any statement or fail to make any statement in furtherance of or in connection with an KHFLLP/KOPL Business and the KHFLLP/KOPL Business Opportunity which, given the context and the circumstances, is not truthful, accurate and appropriate. Statements on KHFLLP/KOPL products may only be taken verbatim from official</li>
+</ul>
+<p>KHFLLP/KOPL literature and official KHFLLP/KOPL Websites intended and approved for use in the respective market. Therefore the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall not engage in following practice:</p>
+<ul>
+<li>Making any exaggerated or non-guaranteed claims/and or statements KHFLLP/KOPL About any KHFLLP/KOPL products and services, other than ones printed in official KHFLLP/KOPL literature, this includes but may not necessarily be limited to: medical and/ or health claims/statements/or yield claim/or disease control claim as well as statements on KHFLLP/KOPL products made by physicians and/or other third person or entity;</li>
+</ul>
+<ul>
+<li>Represent KHFLLP/KOPL products and services or products distributed by KHFLLP/KOPL incorrectly with regards to prices, quality, standards, grades, contents, style or model, place of origin or availability;</li>
+</ul>
+<ul>
+<li>State that KHFLLP/KOPL products and services or products distributed by KHFLLP/KOPL back, approve, or present any features as regards to yield, accessories, uses or benefits that they do not have;</li>
+</ul>
+<ul>
+<li>In any way act or present KHFLLP/KOPL, or the products KHFLLP/KOPL distributes in a fraudulent manner, or promote products that KHFLLP/KOPL does not distribute as if they did;</li>
+</ul>
+<ul>
+<li><strong>Repacking: </strong>KHFLLP/KOPL ASSOCIATEs may not repackage, otherwise change or alter any of the packaging labels of KHFLLP/KOPL products or services or official KHFLLP/KOPL literature.</li>
+</ul>
+<ul>
+<li><strong>Written Sales Receipt: </strong>KHFLLP/KOPL ASSOCIATE shall deliver to the customer at the time of sale of an KHFLLP/KOPL product or service a written and dated order or receipt which shall:</li>
+</ul>
+<ul>
+<li>describe the product(s) sold;</li>
+<li>state the price charged (incl. VAT);</li>
+<li>give the name, address, and telephone number of the selling KHFLLP/KOPL ASSOCIATE;</li>
+<li>include KHFLLP/KOPL Satisfaction Guarantee and</li>
+<li>give additional information as required by local</li>
+</ul>
+<ul>
+<li><strong>KHFLLP/KOPL Satisfaction Guarantee: </strong>KHFLLP/KOPL ASSOCIATEs shall administer the KHFLLP/KOPL Satisfaction Guarantee in accordance with this section and the information supplied in the official KHFLLP/KOPL literature relating thereto. In particular, and without limiting the forgoing:</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATEs shall advise KHFLLP/KOPL of any customer complaint and provide relevant information;</li>
+</ul>
+<ul>
+<li>Whenever a customer requests KHFLLP/KOPL Satisfaction Guarantee service within the stated guarantee period, the KHFLLP/KOPL ASSOCIATE shall immediately offer the customer the choice of (a) full refund, (b) exchange for a like product, or (c) full credit for exchange with another item;</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATEs shall not make any type of offer or compromise or render KHFLLP/KOPL liable for any complaint or product return.</li>
+</ul>
+<ul>
+<li><strong>Compliance with Applicable Laws, Regulations and Codes: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall comply with all applicable laws, regulations and codes that apply to the operation of their KHFLLP/KOPL</li>
+</ul>
+<p>Business and they must not conduct any activity that could jeopardize the reputation of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER and/or KHFLLP/KOPL.</p>
+<ul>
+<li><strong>Deceptive or Unlawful Trade Practices: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall not engage in any deceptive or unlawful trade practices.</li>
+</ul>
+<ul>
+<li><strong>Unlawful Business Enterprises or Activities: </strong>KHFLLP/KOPL Associate/KHFLLP/KOPL Customer shall not operate any illegal or unlawful business enterprise, engage or participate in any illegal or unlawful business</li>
+</ul>
+<ul>
+<li><strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Relationship: </strong>KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER may</li>
+</ul>
+<p>not represent, imply or act in a manner that suggests that the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER is an employee or something other than an independent contracting party operating pursuant to a contract with KHFLLP/KOPL;</p>
+<ul>
+<li><strong>Franchises and Territories: </strong>There are no exclusive franchises or territories available under the KHFLLP/KOPL Sales and Marketing Plan.</li>
+</ul>
+<ul>
+<li><strong>Non KHFLLP/KOPL Selling-Activities: </strong>If KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs nonetheless engage in other than the business activities as described Above, related to non-KHFLLP/KOPL products and services or non-KHFLLP/KOPL authorized KHFLLP/KOPLSM they have to comply with the following:</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATE who personally sells products other than KHFLLP/KOPL products or who sells services (e.g., tax services, insurance, investments, etcetera) shall not induce another KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER whom he does not personally sponsor to sell such products or services, or shall he offer to sell such products or services to any KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER except those personally sponsored by him or In this context induce means: persuade/ attempt to persuade another KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER to sell any product or service whether or not this is done to obtain revenues or for any other reason. This rule also applies to KHFLLP/KOPL CUSTOMER who are not authorized to sell KHFLLP/KOPL products or services, but who may have appropriate authorizations to conduct business activity and to sell other products or services or who may actually engage in such activity.</li>
+</ul>
+<ul>
+<li>No KHFLLP/KOPL ASSOCIATE may sell, promote or profit from the sale or promotion of KHFLLP/KOPLSM except in accordance with any policies or procedures established by KHFLLP/KOPL as set forth in Section 7 of the Rules of Conduct and other KHFLLP/KOPL Policies.</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER shall not take advantage of their knowledge of our association with other KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMER whom they did not personally sponsor, including their knowledge resulting from or relating to their individual Lines of Sponsorship, in order to promote and expand such other business ventures. KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER regularly engaged in a professional service dealing with customers (e. g. a repair garage, retail establishment, barber or beauty shop, law, medicine, dentistry, or accounting) may serve clients or customers who are KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER and have sought them out; KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL</li>
+</ul>
+<p>CUSTOMER may not actively solicit the patronage of personally sponsored KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMER.</p>
+<ul>
+<li>Neither the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER nor the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL</li>
+</ul>
+<p>CUSTOMER&rsquo;s spouse or any other person on the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract shall takes advantage of his or her knowledge of, or association with, other KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMERS to promote the non-KHFLLP/KOPL Business.</p>
+<ul>
+<li><strong>Interference in another KHFLLP/KOPL ASSOCIATE NUMBER: </strong>No KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER</li>
+</ul>
+<p>shall interfere in another KHFLLP/KOPL ASSOCIATE&rsquo;s/KHFLLP/KOPL CUSTOMER business. Interference in another KHFLLP/KOPL ASSOCIATE&rsquo;s/KHFLLP/KOPL CUSTOMER business would be in particular (the below listing only shows examples)</p>
+<ul>
+<li>Induce or attempt to induce another KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER to change his Line of Sponsorship, to transfer or KHFLLP/KOPL ASSOCIATE NUMBER and on his KHFLLP/KOPL ASSOCIATE NUMBER, or to Sponsor or not Sponsor a particular Prospect;</li>
+</ul>
+<ul>
+<li>Induce or attempt to induce another KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER to deny training, motivation or other support to a Downline KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER;</li>
+</ul>
+<ul>
+<li>Induce or attempt to induce another KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER to breach KHFLLP/KOPL Associate/KHFLLP/KOPL Customer Contract, including the Rules of Conduct and other KHFLLP/KOPL Policies;</li>
+</ul>
+<ul>
+<li>Induce or attempt to induce another KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER to engage in non- KHFLLP/KOPL selling activities not complying with section 4.14.</li>
+</ul>
+<h2>4.15 Insolvency:</h2>
+<ul>
+<li>The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER&rsquo; shall notify KHFLLP/KOPL immediately upon commencement of any insolvency proceedings involving the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER&rsquo;, or if a receiver or a trustee is appointed to manage the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER&rsquo;s assets, or if any assets are seized by the court or regulatory order or taken in execution of an unsatisfied judgment or a debt.</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL may negotiate with the trustee in insolvency or responsible official concerning arrangements for the disposal of any products belonging to KHFLLP/KOPL which are in the possession of the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER.</li>
+</ul>
+<ul>
+<li>If, as a result of any insolvency, or similar proceeding, an attempt is made to sell, assign or otherwise transfer the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER&rsquo;s interest in the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract, such sale, assignment or other transfer must be conducted in accordance with applicable law and Section 6.6 of the Rules of Conduct.</li>
+</ul>
+<p><strong>4.16. Sales to end consumers: </strong>KHFLLP/KOPL pays Bonuses based on sales of KHFLLP/KOPL products and services to end customers.</p>
+<ul>
+<li><strong>Spamming: </strong>"Spamming" is when somebody sends out unsolicited messages via electronically means (e. g. fax, e-mail or SMS messages) to individuals or groups. KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs shall not send, transmit, or otherwise communicate via electronically means to persons without their prior explicit written This includes, but is not limited to, sending messages on Social media or via e-mails through newsgroups, purchased mailing lists, &ldquo;safe lists&rdquo;, or other lists of Individuals or entities.</li>
+</ul>
+<ul>
+<li><strong>Employment Postings: </strong>If responding to an employment posting for someone seeking an employment opportunity, the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall clearly state within the first paragraph of the response that the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER is offering a business opportunity and not an employment opportunity.</li>
+</ul>
+<ul>
+<li><strong>Fundraising: </strong>KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs may use KHFLLP/KOPL products in conjunction with fundraising activities based on written authorization by KHFLLP/KOPL. This includes but is not limited to solicitation for the purchase of KHFLLP/KOPL products or services based on the representation that all or a portion of the gains, proceeds, or profits generated by such sale will benefit a particular charitable group, organization, or cause.</li>
+</ul>
+<ul>
+<li><strong>KHFLLP/KOPL Sales and Marketing plan Manipulation: </strong>No KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall manipulate the KHFLLP/KOPL Sales and Marketing Plan or promotion volume in any way which results in the payment of bonuses or other promotions and recognition that have not been earned in accordance with the terms as set forth in the KHFLLP/KOPL Sales and Marketing Plan or other official KHFLLP/KOPL literature. This rule would also refer to inappropriate business structuring, as defined in the Stacking Policy (available on www.Healthycoforever.com).</li>
+</ul>
+<ul>
+<li><strong>Personal/Business Information Update: </strong>All KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMERS are responsible for communicating any updates or changes to their personal information (e.g., name, address, and telephone numbers, ) or business information (e.g., addition/deletion of partner, change of business status, etc.) to KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li><strong>Privacy and Confidentiality: </strong>All KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER are required to Abide to the KHFLLP/KOPL Privacy Policy (available on Healthycoforever.com) and applicable data protection laws and regulations. KHFLLP/KOPL is the holder of confidential and proprietary information and trade secrets relating to its products, business and the LOS as defined in this KHFLLP/KOPL Rules of Conduct (&ldquo;Confidential Information&rdquo;). The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER acknowledges and agrees that all such Confidential Information shall at all times remain the property of KHFLLP/KOPL, and that, to the extent that the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER is granted access to the use of Confidential Information in the course of performance of the Contract, the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall only use such Confidential Information to the extent and for the purposes authorized in the Contract. The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall not transfer or disclose Confidential Information to any third party, including another KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER, except in accordance with express terms of the Contract, without the prior written authorization of KHFLLP/KOPL. Upon termination or nonrenewal of the Contract, the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall return to KHFLLP/KOPL all Confidential Information in his/her possession. The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER acknowledges and agrees that any</li>
+</ul>
+<p>breach of this provision shall cause irreparable damage to KHFLLP/KOPL, entitling KHFLLP/KOPL to immediate injunctive or similar relief to prevent further breach of the Contract or disclosure of the Confidential Information. Any confidentiality obligations under this provision shall survive the termination of the Contract.</p>
+<ul>
+<li><strong>Risk to Reputation: </strong>KHFLLP/KOPL Associate/KHFLLP/KOPL Customer shall not engage in any activity which might negatively affect the reputation of KHFLLP/KOPL, the KHFLLP/KOPL Business and the KHFLLP/KOPL Products and services and other KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER.</li>
+</ul>
+<ul>
+<li><strong>Sales of Products by KHFLLP/KOPL ASSOCIATEs: </strong>KHFLLP/KOPL products may only be demonstrated and/or sold by KHFLLP/KOPL ASSOCIATEs.</li>
+</ul>
+<ul>
+<li><strong>Presentation of the Business Opportunity by KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs: </strong>The KHFLLP/KOPL Business Opportunity may only be presented to a prospective KHFLLP/KOPL ASSOCIATE by KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER. Only KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs may sponsor a new KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</li>
+</ul>
+<h1>SECTION 5: ADDITIONAL RESPONSIBILITIES AND OBLIGATIONS FOR SPONSORS</h1>
+<h2>5.1. General Duties and Responsibilities of Sponsors:</h2>
+<ul>
+<li>Provide to the sponsored KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER with the complete official KHFLLP/KOPL literature intended for the use with newly sponsored KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs .</li>
+</ul>
+<h2>5.1.2 Reserved</h2>
+<ul>
+<li>Ensure training and motivation of the sponsored KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER in accordance with KHFLLP/KOPL Rules of Conduct and KHFLLP/KOPL Policies, or cooperate with the Upline KHFLLP/KOPL ASSOCIATE to ensure that this training and motivation occurs;</li>
+</ul>
+<ul>
+<li><strong>: </strong>KHFLLP/KOPL ASSOCIATE does not require stock keeping or purchases of inventory. Bonuses under the KHFLLP/KOPL Sales and Marketing Plan are paid based on sales to end consumers. Therefore, for KHFLLP/KOPL ASSOCIATE to be entitled to compensation under the KHFLLP/KOPL Sales and Marketing Plan, products must be sold to end consumers in amounts proportionate to the KHFLLP/KOPL ASSOCIATE&rsquo;s purchases. KHFLLP/KOPL reserves the right to withhold all qualifications, promotions and rewards if it is determined that purchases are not proportionate to sales to end KHFLLP/KOPL ASSOCIATE shall at KHFLLP/KOPL&rsquo;s request provide KHFLLP/KOPL corresponding evidence regarding adherence to this rule KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMERS sponsored by him or her.</li>
+</ul>
+<ul>
+<li>Use the best efforts to ensure that personally sponsored KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERS fully comply with the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract, including the Rules of Conduct, the KHFLLP/KOPL Policies, and all applicable laws and regulations.</li>
+</ul>
+<ul>
+<li>Use the best efforts to encourage personally sponsored KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMERs to attend official KHFLLP/KOPL meetings/events.</li>
+</ul>
+<ul>
+<li>Explain the responsibilities and obligations of an KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER under the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract, including the KHFLLP/KOPL Rules of Conduct and KHFLLP/KOPL Policies and instruct the sponsored KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER on how to operate an KHFLLP/KOPL Business in accordance with the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract, Rules of Conduct, other KHFLLP/KOPL Policies and other official KHFLLP/KOPL literature.</li>
+</ul>
+<h2>5.2 Responsibilities of KHFLLP/KOPL ASSOCIATE at any promotional (silver to president) Level:</h2>
+<p>To attain and retain the title and privileges of KHFLLP/KOPL ASSOCIATE at the any promotional (silver to president) Level or Above, KHFLLP/KOPL ASSOCIATE must initially qualify. The requirements of qualification and requalification are specified in the official KHFLLP/KOPL literature or on official KHFLLP/KOPL Websites. Included are the duties to:</p>
+<ul>
+<li>Support and comply with the Rules of Conduct and KHFLLP/KOPL Policies and instruct and encourage other KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMERs in the Business Group to do the same.</li>
+</ul>
+<ul>
+<li>Train KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER in the Business</li>
+</ul>
+<ul>
+<li>Encourage properly completed KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Applications;</li>
+</ul>
+<ul>
+<li>Train KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMERS in the Business Group in the operation of the KHFLLP/KOPL Business and the KHFLLP/KOPL Products, including the KHFLLP/KOPL Satisfaction Guarantee.</li>
+</ul>
+<p><strong>5.2.5. </strong>In addition to the provisions as set forth in rule 4.14, once KHFLLP/KOPL ASSOCIATE is, or ever has been, qualified at the any promotional(silver to president) Level, he/she shall inform KHFLLP/KOPL, prior to engaging in or carrying on any business or service, either directly or indirectly, which may be considered to be in competition with, or similar to the businesses of KHFLLP/KOPL, whether for his/her own account, or for the account of any other person using or exploiting any confidential information belonging to KHFLLP/KOPL, its Customers or KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL Customer/KHFLLP/KOPL CUSTOMERs.</p>
+<h1>SECTION 6: PRESERVATION OF THE LINES OF SPONSORSHIP</h1>
+<ul>
+<li><strong>Protection of the Line of Sponsorship: </strong>Changes in Line of Sponsorship, the sale of an ownership interest in an KHFLLP/KOPL ASSOCIATE NUMBER, transferring an KHFLLP/KOPL ASSOCIATE NUMBER, merging KHFLLP/KOPL ASSOCIATE NUMBERs or separating KHFLLP/KOPL ASSOCIATE NUMBERs are all activities that involve amendments to the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract and, as such, must be agreed to by both the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER and KHFLLP/KOPL in writing. Accordingly, the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER acknowledges and agrees that:</li>
+</ul>
+<ul>
+<li>The express written consent of KHFLLP/KOPL is required for any sale, change in Line of Sponsorship, transfer, merger of an interest in an KHFLLP/KOPL ASSOCIATE NUMBER, cooperation between or merger of two KHFLLP/KOPL ASSOCIATE NUMBERs, or separating or dividing an KHFLLP/KOPL ASSOCIATE NUMBER.</li>
+</ul>
+<ul>
+<li>The Line of Sponsorship shall not be strategically restructured with the sale, transfer or merger of an KHFLLP/KOPL Business.</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL may deny, in its sole discretion, any application to sell, transfer, or change in the Line of Sponsorship of an KHFLLP/KOPL ASSOCIATE NUMBER, or the merger of KHFLLP/KOPL ASSOCIATE NUMBERs, or the separation or division of an KHFLLP/KOPL ASSOCIATE NUMBER, not withstanding any KHFLLP/KOPL Rules of Conduct and KHFLLP/KOPL Policies or other terms of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract that describe procedures that KHFLLP/KOPL Associate/KHFLLP/KOPL Customer must follow when undertaking such action.</li>
+</ul>
+<ul>
+<li><strong>Individual Sponsorship Changes: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER may request to change the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER whom KHFLLP/KOPL registered as the Sponsor of the</li>
+</ul>
+<p>requesting KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER, in accordance with the following procedures:</p>
+<ul>
+<li>The requesting KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER must submit a written request to KHFLLP/KOPL accompanied by:</li>
+</ul>
+<ul>
+<li>a written consent and release signed by all KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMERs in his Upline up to and including the first qualified any promotional associate (silver to president) KHFLLP/KOPL ASSOCIATE and</li>
+<li>a written acceptance from the new Sponsor and new Upline Silver KHFLLP/KOPL</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL may contact any National Sponsors and National Leadership Bonus recipients and will allow 30 days for comment.</li>
+</ul>
+<ul>
+<li>If the request is granted by KHFLLP/KOPL, the national or foster Sponsor of the requesting KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall be changed and the Sponsor/Upline from which the</li>
+</ul>
+<p>requesting KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER has asked to be moved shall cease to be registered as Sponsor. The national Sponsor will remain.</p>
+<ul>
+<li><strong>Sponsorship Changes with Group: </strong>Any KHFLLP/KOPL ASSOCIATE who has not attained the qualification of any promotional associate (silver to president) is recognized by KHFLLP/KOPL as a Group Leader may in accordance with the following procedures request KHFLLP/KOPL to change the Sponsor, and further that some or all Downline KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMERs remain in the requesting KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER&rsquo;s Downline</li>
+</ul>
+<p>(including only KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs not qualified as any promotional associate (silver to president)) follow the change in sponsorship.</p>
+<ul>
+<li>The requesting KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER must submit a written request to KHFLLP/KOPL accompanied by:</li>
+</ul>
+<ul>
+<li>a written consent and release signed by all KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMERs in his Downline who wish to remain in the Downline of the requesting KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER once the sponsor has been changed; and</li>
+</ul>
+<ul>
+<li>a written consent from all KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs in the Upline up to and including the first KHFLLP/KOPL ASSOCIATE who is qualified at the any promotional associate (silver to president) level or Above together with all Upline KHFLLP/KOPL ASSOCIATEs who are qualified at the silver level or Above up to and including the first KHFLLP/KOPL ASSOCIATE who is qualified at the Silver level or Above and</li>
+</ul>
+<ul>
+<li>a written and signed acceptance from the Sponsor and Upline sliver in the new Line of</li>
+</ul>
+<ul>
+<li>If the first Upline KHFLLP/KOPL ASSOCIATE qualified as silver or Above is also a qualified Silver or Above, written consent must be received from the next Upline KHFLLP/KOPL ASSOCIATE who is qualified as silver or Above and who is upline from that Silver.</li>
+<li>KHFLLP/KOPL may notify the first qualified Upline Diamond &amp; above KHFLLP/KOPL ASSOCIATE and allow 30 days for comment.</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL may contact any National Sponsors and National Leadership Bonus recipients and will allow 30 days for comment.</li>
+</ul>
+<ul>
+<li>If the request is granted by KHFLLP/KOPL, the national or foster Sponsor of the requesting KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall be changed and the Sponsor/Upline from which the requesting KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER has asked to be moved shall cease to be registered as The national Sponsor will remain.</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATE currently recognized by KHFLLP/KOPL as a Group Leader cannot be transferred with his/her group under this rule. A former Group Leader may make such a request if more than 2 years have elapsed since the end of the last month in which the requesting KHFLLP/KOPL ASSOCIATE was recognized as a Group Leader.</li>
+</ul>
+<ul>
+<li><strong>Re-Application Under New Sponsor: </strong>The application of a former KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER will only be accepted by KHFLLP/KOPL under the following conditions:</li>
+</ul>
+<ul>
+<li>After termination or non renewal of the KHFLLP/KOPL ASSOCIATE NUMBER under the present Sponsor KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER* may,</li>
+</ul>
+<ul>
+<li>Following an inactivity period of at least 6 month, be sponsored as a new KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER under a new Sponsor. The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER may not be sponsored in a different Line of Sponsorship by any KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER who has also changed the Line of Sponsorship and was previously Above him/her in the original Line of Sponsorship up to and including the first KHFLLP/KOPL ASSOCIATE qualified at Silver or Above level, or below him/her in the former Business Group down to and including the first KHFLLP/KOPL ASSOCIATE qualified at the Silver or</li>
+</ul>
+<p>Above level;</p>
+<ul>
+<li>Following an inactivity period of at least 2 years an KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER may be sponsored by any sponsor, including his/her former Sponsor who may have since been transferred to or sponsored by a different Sponsor. The inactivity period starts with the date on which KHFLLP/KOPL receives the letter of resignation. In case of non-renewal of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract the inactivity period starts from that date the KHFLLP/KOPL ASSOCIATE NUMBER expired according to the Rules of Former KHFLLP/KOPL ASSOCIATEs may be added to an existing KHFLLP/KOPL ASSOCIATE NUMBER not earlier than after a period of 24 months following the termination or expiration of their KHFLLP/KOPL ASSOCIATE contract and only upon the explicit authorization by KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li>A former KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER has to remain inactive and may not conduct any KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER activity, especially by way of example:</li>
+</ul>
+<ul>
+<li>Purchase of any KHFLLP/KOPL products and services directly from KHFLLP/KOPL as KHFLLP/KOPL ASSOCIATE / KHFLLP/KOPL CUSTOMER for business use (products may be purchased for personal use only); or</li>
+</ul>
+<ul>
+<li>Sale or participation in any phase of the sale of any KHFLLP/KOPL products and services, including, by way of example, taking an order, making a delivery, or accepting payment; except pursuant to KHFLLP/KOPL &ldquo;Buy-Back Rule&rdquo;, 3.8.1; or</li>
+</ul>
+<ul>
+<li>Presentation of the KHFLLP/KOPL Sales and Marketing Plan to any Prospect; or</li>
+</ul>
+<ul>
+<li>Renewal or attempted renewal of the term of an KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract, including the submission of any related form to KHFLLP/KOPL; or</li>
+</ul>
+<ul>
+<li>Attending any meeting/event conducted, promoted or organized by any KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER or promoted to KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs or Prospects, no matter in which country such activity occurs; or</li>
+</ul>
+<ul>
+<li>Attending any KHFLLP/KOPL meetings including those produced by KHFLLP/KOPL ASSOCIATEs; or</li>
+</ul>
+<ul>
+<li>Participating in any activity for or on behalf of another KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER, whether in his own name or in the name of another person; or</li>
+</ul>
+<ul>
+<li>Promoting, selling or profiting from any KHFLLP/KOPLSM.</li>
+</ul>
+<ul>
+<li>For purposes of Section 4 of the Rules of Conduct, the following shall not constitute KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER activity:</li>
+</ul>
+<ul>
+
+<li>Procuring and/or submitting a written request for transfer; or</li>
+</ul>
+<ul>
+<li>Filing a request for the review of a case before a Panel; or</li>
+</ul>
+<ul>
+<li>Directing an inquiry to KHFLLP/KOPL as to the status of his/her former KHFLLP/KOPL Business; or</li>
+</ul>
+<ul>
+<li>Activity as KHFLLP/KOPL Associate/KHFLLP/KOPL Customer in any other KHFLLP/KOPL Business in another country in which KHFLLP/KOPL conducts business.</li>
+</ul>
+<ul>
+<li>Accept payments pursuant to the KHFLLP/KOPL &ldquo;Buy Back Rule&rdquo; (3.8.1).</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL Associate/KHFLLP/KOPL Customer who transfers to, or who, following at least six months of inactivity, is sponsored under a Sponsor in a different Line of Sponsorship, shall not sponsor in the new Business Group any KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER who was previously:</li>
+</ul>
+<ul>
+<li>Above him/her in the original Line of Sponsorship up to and including the first KHFLLP/KOPL ASSOCIATE qualified at the Silver or Above level, or</li>
+<li>Below him/her in the former Business Group down to and including the first KHFLLP/KOPL ASSOCIATE qualified at the Silver or Above level.</li>
+</ul>
+<ul>
+<li>A formerly foster sponsored KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER may be sponsored again subject to section 6.4 and the following conditions:</li>
+</ul>
+<ul>
+<li>At the time of application, the former KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER must specify whether or not he wishes to be nationally and foster sponsored again, and</li>
+</ul>
+<ul>
+<li>A former KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER may not be personally sponsored by a Sponsor who was previously Above him or her in his or her original line of foster sponsorship up to an including the first KHFLLP/KOPL ASSOCIATE qualified at the Silver or Above level, or below him or her in his or her original business group down to and including the first KHFLLP/KOPL ASSOCIATE qualified at the Silver or Above level unless at least two years have elapsed since the termination of the KHFLLP/KOPL ASSOCIATE</li>
+</ul>
+<ul>
+<li><strong>Corrective Action: </strong>To the extent that KHFLLP/KOPL inadvertently accepts KHFLLP/KOPL Associate/KHFLLP/KOPL Customer Contract from a former KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER who is subsequently found to have engaged in any KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER activity as described in rule 6.4.2, or from such KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER&rsquo;s spouse, such KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall</li>
+</ul>
+<p>be in breach of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract. KHFLLP/KOPL may take corrective action which may include, but are not limited to the of the violating KHFLLP/KOPL ASSOCIATE&rsquo;s/KHFLLP/KOPL CUSTOMER &rsquo; business and transfer of the former business group and/or business volume generated during the period of violation to the appropriate Line of Sponsorship.</p>
+<ul>
+<li>The right of KHFLLP/KOPL Associate/KHFLLP/KOPL Customer to contest the sponsorship of a former KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER who is now sponsored under a different sponsor ceases when 2 years have elapsed since the date on which KHFLLP/KOPL accepted the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER application under the new sponsor.</li>
+</ul>
+<ul>
+<li><strong>Sale of an KHFLLP/KOPL Business: </strong>The sale of an KHFLLP/KOPL Business is subject to KHFLLP/KOPL&rsquo;s express written consent. KHFLLP/KOPL ASSOCIATE selling his KHFLLP/KOPL Business shall state the minimum acceptable conditions of sale, including price, in writing, and shall offer the KHFLLP/KOPL Business for sale at the same conditions to KHFLLP/KOPL ASSOCIATEs in the order of priority set forth in Sections 6.6.1 &ndash; 6.6.5 of the Rules of Conduct. All eligible KHFLLP/KOPL ASSOCIATEs in a given priority shall be given the opportunity to submit proposals to the selling KHFLLP/KOPL ASSOCIATE to purchase the KHFLLP/KOPL Business once the time period for higher priority KHFLLP/KOPL ASSOCIATE to submit proposals has passed and a proposal has not been accepted by the selling KHFLLP/KOPL ASSOCIATE. A KHFLLP/KOPL CUSTOMER business may not be sold or assigned to any other person or
+<ul>
+<li><strong>First Priority: </strong>The selling KHFLLP/KOPL ASSOCIATEs national sponsor (if any);</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Second Priority: </strong>The selling KHFLLP/KOPL ASSOCIATEs sponsor (if any) or personal sponsor;</li>
+<li><strong>Third Priority: </strong>The selling KHFLLP/KOPL ASSOCIATEs personally sponsored KHFLLP/KOPL ASSOCIATE (if any);</li>
+<li><strong>Fourth Priority: </strong>Upline Silver KHFLLP/KOPL ASSOCIATEs up to the next qualified Diamond &amp; above &amp; above KHFLLP/KOPL ASSOCIATE and Downline Silver KHFLLP/KOPL ASSOCIATEs down to the next qualified Diamond &amp; above KHFLLP/KOPL ASSOCIATE (if any);</li>
+<li><strong>Fifth Priority: </strong>Any KHFLLP/KOPL ASSOCIATE in good</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATE is eligible to purchase an KHFLLP/KOPL Business only if he is in Good Standing and not in violation of the KHFLLP/KOPL ASSOCIATE Contract to which he is a party and has the financial means to conclude the purchase of the KHFLLP/KOPL Business and if in KHFLLP/KOPL&rsquo;s sole determination:</li>
+</ul>
+<ol>
+<li>Possesses sufficient expertise in the business so as to demonstrate a complete and accurate understanding of the KHFLLP/KOPL Business and the KHFLLP/KOPL Sales and Marketing Plan; and</li>
+</ol>
+<ol>
+<li>Possesses a complete and accurate understanding of the KHFLLP/KOPL Rules of Conduct and KHFLLP/KOPL Policies and demonstrate a willingness to Abide by all terms and conditions of the KHFLLP/KOPL ASSOCIATE Contract; and</li>
+</ol>
+<ol>
+<li>Possesses adequate resources to operate the seller&rsquo;s KHFLLP/KOPL ASSOCIATE NUMBER and to provide necessary training and support; and</li>
+</ol>
+<ol>
+<li>Possesses an understanding of any relevant market factors that may impact the operation of the selling KHFLLP/KOPL ASSOCIATEs Business; and</li>
+</ol>
+<ol>
+<li>Is not currently engaged in any dispute or possess any conflict which may impact their Ability to operate the seller&rsquo;s KHFLLP/KOPL ASSOCIATE NUMBER; and</li>
+</ol>
+<ol start="3">
+<li>Qualifies to enter into KHFLLP/KOPL ASSOCIATE Contract with KHFLLP/KOPL in accordance with Section 3 of the Rules of Conduct.</li>
+</ol>
+<ul>
+<li>Proposal to Purchase: KHFLLP/KOPL ASSOCIATE who has the opportunity to purchase the KHFLLP/KOPL Business must submit a written proposal based on the offer for sale to the selling KHFLLP/KOPL ASSOCIATE.</li>
+</ul>
+<ul>
+<li>Seller&rsquo;s Acceptance of Proposal: The selling KHFLLP/KOPL ASSOCIATE shall either accept or reject the proposal in writing, in his sole discretion, within an appropriate timeframe of receipt of the</li>
+</ul>
+<ul>
+<li>If accepting the proposal, the selling KHFLLP/KOPL ASSOCIATE shall submit the proposal and the seller&rsquo;s</li>
+</ul>
+<p>written acceptance to KHFLLP/KOPL for review and consent.</p>
+<ul>
+<li>If the selling KHFLLP/KOPL ASSOCIATE rejects the proposal, or if the sale is not completed and the seller wishes to continue selling the KHFLLP/KOPL ASSOCIATE NUMBER, it shall continue to be offered to KHFLLP/KOPL ASSOCIATE in the order of priority set forth in section 6.1 through section 6.6.5, recommencing at the same level of priority as that of the KHFLLP/KOPL ASSOCIATE whose proposal was rejected by the selling KHFLLP/KOPL ASSOCIATE or denied by KHFLLP/KOPL. If the selling KHFLLP/KOPL ASSOCIATE wishes to offer his KHFLLP/KOPL ASSOCIATE NUMBER for sale under terms and conditions different from those of the original offer, the Revised offer of sale must be resubmitted to KHFLLP/KOPL ASSOCIATEs in the original order of priority set forth in Section 6.6.1 through Section 6.6.5.</li>
+</ul>
+<ul>
+<li>In the event that more than one eligible KHFLLP/KOPL ASSOCIATE in a given priority level submits a proposal to purchase the KHFLLP/KOPL ASSOCIATE NUMBER, the selling KHFLLP/KOPL ASSOCIATE may accept or reject either proposal, in its sole discretion.</li>
+</ul>
+<ul>
+<li><strong>KHFLLP/KOPL&rsquo;s Consent: </strong>KHFLLP/KOPL shall either consent to or deny a proposed sale in</li>
+</ul>
+<ul>
+<li><strong>Accruing Bonuses: </strong>Any Bonuses accruing under the KHFLLP/KOPL ASSOCIATE NUMBER that is being assigned shall be paid as specified in the contract of sale between the selling KHFLLP/KOPL ASSOCIATE and the purchasing KHFLLP/KOPL ASSOCIATE provided KHFLLP/KOPL has consented in writing to such handling. Promotions previously granted to the selling KHFLLP/KOPL ASSOCIATE will not automatically be transferred to the purchasing KHFLLP/KOPL ASSOCIATE.</li>
+</ul>
+<ul>
+<li><strong>Mergers and Combinations of KHFLLP/KOPL ASSOCIATE NUMBERs: </strong>No merger or combination of two or more existing KHFLLP/KOPL ASSOCIATE NUMBERs by reason of intentional affirmative act on the part of the owners shall be permitted which results in the merging KHFLLP/KOPL ASSOCIATE NUMBERs obtaining any level of achievement.</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall not combine their KHFLLP/KOPL Businesses nor cooperate in a partnership or other venture that would have the practical effect of merging their KHFLLP/KOPL Businesses without the prior written consent of KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li>Only those mergers or combinations resulting from failure to apply for renewal, termination, resignation, death (with no designation of succession by heirs), or some involuntary event or cause beyond the control of any of the owners, shall be permitted, provided, however, that the merging business has fewer than two qualified legs. A permissible merger and combination must not be implemented until same has been reviewed and approved by KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li>One KHFLLP/KOPL Business Rule: KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER may own, have an interest in, be a signatory on or be listed as a designee on only one Contract in only one KHFLLP/KOPL ASSOCIATE NUMBER except as provided in Rules 6.8.1 &ndash; 6.8.4 of the Rules of Conduct. Only under the following circumstances may KHFLLP/KOPL ASSOCIATE have interest ownership in more than one KHFLLP/KOPL ASSOCIATE NUMBER:</li>
+</ul>
+<ul>
+<li>Where two KHFLLP/KOPL ASSOCIATEs marry (Rule 2);</li>
+</ul>
+<ul>
+<li>Where an existing KHFLLP/KOPL ASSOCIATE NUMBER purchases another KHFLLP/KOPL ASSOCIATE NUMBER pursuant to Rule 6.6;</li>
+</ul>
+<ul>
+<li>Where KHFLLP/KOPL ASSOCIATE (transferor), in order to facilitate the transfer of his or her KHFLLP/KOPL ASSOCIATE NUMBER in the event of his or her death, requests the name of another existing KHFLLP/KOPL ASSOCIATE to be added to his or her KHFLLP/KOPL ASSOCIATE NUMBER as "silent partner". The name of the transferor(s) must continue to be on the KHFLLP/KOPL ASSOCIATE NUMBER until his/her death and supporting estate-planning documentation must be provided to KHFLLP/KOPL;</li>
+</ul>
+<ul>
+<li>Where an existing KHFLLP/KOPL ASSOCIATE inherits all or a portion of an KHFLLP/KOPL ASSOCIATE</li>
+<li>In the event KHFLLP/KOPL ASSOCIATE owns or has an ownership interest in more KHFLLP/KOPL ASSOCIATE NUMBERs pursuant to this Rule, such KHFLLP/KOPL ASSOCIATE NUMBERs may be operated jointly under a single legal KHFLLP/KOPL will continue to deal with such KHFLLP/KOPL ASSOCIATE NUMBERs as separate KHFLLP/KOPL ASSOCIATE NUMBERs and will recognize them as separate, individual KHFLLP/KOPL ASSOCIATE NUMBERs for promotion and bonus purposes.</li>
+</ul>
+<ul>
+<li><strong>Integration: </strong>KHFLLP/KOPL ASSOCIATE may integrate his or her KHFLLP/KOPL ASSOCIATE NUMBER with</li>
+</ul>
+<p>his/her child&rsquo;s (children&rsquo;s) KHFLLP/KOPL ASSOCIATE NUMBER upon following conditions. A KHFLLP/KOPL CUSTOMER business may not be integrated based on this rule.</p>
+<ul>
+<li>The child(ren) must be personally sponsored by the parents; or the parents must be personally sponsored by the child(ren).</li>
+</ul>
+<ul>
+<li>The child&rsquo;s (children&rsquo;s) KHFLLP/KOPL ASSOCIATE NUMBER must have operated as a separate KHFLLP/KOPL ASSOCIATE NUMBER for not less than 2 years by date of integration;</li>
+</ul>
+<ul>
+<li>The child(ren) shall have achieved the level of at least Silver as of the integration date;</li>
+</ul>
+<ul>
+<li>In the event that the parent(s) are deceased or are not mentally or physically capable of running the KHFLLP/KOPL ASSOCIATE NUMBER before conditions 6.9.2. and 6.9.3. have occurred, the children inheriting the KHFLLP/KOPL ASSOCIATE NUMBER of their parent(s) shall have the right to integrate the separate KHFLLP/KOPL ASSOCIATE NUMBERs in accordance with this Rule;</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL shall evaluate the request in light of such recommendation and the goals, objectives, and benefits of the KHFLLP/KOPL Sales and Marketing plan; and</li>
+</ul>
+<ul>
+<li>upon the granting of the request, implementation of the integration shall be as follows:</li>
+</ul>
+<ul>
+<li>the implementation date shall be the next month 1</li>
+</ul>
+<ul>
+<li>at the implementation date, the child(ren) and parent(s) are eligible for all promotions and recognition to the separate KHFLLP/KOPL ASSOCIATE NUMBERs earned during the previous qualification month; and</li>
+</ul>
+<ul>
+<li>all promotions and recognition, based on the combined KHFLLP/KOPL ASSOCIATE NUMBERs, shall begin accruing as of the implementation Thus, any higher promotions based on the combined KHFLLP/KOPL ASSOCIATE NUMBERs will be promotion upon completion of qualification after the implementation date.</li>
+</ul>
+<ul>
+<li><strong>Divorce, Separation or other Dissolution of a non-spousal partnership or legal entity: </strong>Whenever an KHFLLP/KOPL ASSOCIATE NUMBER in ordered to be separated or divided as the result of a legal marital separation, divorce, dissolution of a nonspousal partnership or corporation (where applicable), the separation or division must be accomplished in such a way as not to adversely affect the interests and income of the KHFLLP/KOPL ASSOCIATE NUMBER in the Line of Sponsorship.</li>
+</ul>
+<ul>
+<li><strong>Divorce and Legal Separation: </strong>Upon legal separation of a married couple one of whom is a signatory to KHFLLP/KOPL ASSOCIATE Contract, KHFLLP/KOPL shall continue to recognize the signatory to the KHFLLP/KOPL ASSOCIATE contract as the KHFLLP/KOPL ASSOCIATE and shall pay bonuses and grant promotions and rewards to this KHFLLP/KOPL ASSOCIATE only.</li>
+</ul>
+<ul>
+<li><strong>: </strong>If in the married couple both partners signed the Contract, the legally separated couple may continue to operate the KHFLLP/KOPL ASSOCIATE NUMBER together.</li>
+</ul>
+<ul>
+<li><strong>: </strong>In case of a legal separation, prior to the final decree of divorce, or the dissolution of a non- spousal partnership, one applicant may leave the original business and may apply for an KHFLLP/KOPL business of his/ her own. Such business shall be sponsored by the original business. In case of a legal separation, a copy of the legal documents which grant separation to the former couple must be submitted to KHFLLP/KOPL with the new Application Non-Group Leaders may be transferred to the new business from the original business in compliance with Rules 6.2 and 6.3 of the Rules of Conduct. As far as suitable, this rule also applies to KHFLLP/KOPL CUSTOMERs.</li>
+</ul>
+<ul>
+<li><strong>Dissolution of a legal entity operating an KHFLLP/KOPL ASSOCIATE NUMBER: </strong>Absent the express written agreement to KHFLLP/KOPL to the contrary, prior to dissolution of a legal entity operating an KHFLLP/KOPL ASSOCIATE NUMBER, the KHFLLP/KOPL ASSOCIATE NUMBER may be assigned to the authorized representative of the legal entity who signed the KHFLLP/KOPL ASSOCIATE Application originally on behalf of the entity, or the KHFLLP/KOPL ASSOCIATE NUMBER may be sold in accordance with Rule 6.6 of the Rules of Conduct. Otherwise the KHFLLP/KOPL ASSOCIATE NUMBER shall be decided upon in accordance with section 15 of the Rules of Conduct.</li>
+</ul>
+<h1>SECTION 7: BUSINESS SUPPORT MATERIAL (KHFLLP/KOPLSM)</h1>
+<p>An Approved Provider is a supplier authorized by KHFLLP/KOPL to provide KHFLLP/KOPLSMs to KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMERs or to use KHFLLP/KOPLSMs with Prospects, pursuant to the ACCREDITATION &trade;Program and Quality Assurance Standards. Additionally, KHFLLP/KOPL ASSOCIATEs are also authorized to provide KHFLLP/KOPLSMs to their downline KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMER or to use KHFLLP/KOPLSMs with Prospects in accordance with the relevant provisions of the BMS Policy and the Quality Assurance Standards. While KHFLLP/KOPL does not require anybody to purchase KHFLLP/KOPLSM, KHFLLP/KOPL ASSOCIATEs may decide that they can play a useful role in building a profitable business or achieving goals. KHFLLP/KOPLSM are entirely optional and KHFLLP/KOPL ASSOCIATEs who choose to promote, use, sell or distribute KHFLLP/KOPLSM must emphasize that the purchase is strictly voluntary. The purchase of any KHFLLP/KOPLSM may not be framed as a requirement for becoming an KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER or to receiving support as KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER. According to the KHFLLP/KOPLSM Policy (available on www.healthycoforever.com), all KHFLLP/KOPLSM must be authorized by KHFLLP/KOPL prior to promotion, use, sale or distribution by KHFLLP/KOPL ASSOCIATE. Meetings and events are also to be conducted within the frame of the KHFLLP/KOPLSM Policy.</p>
+<h1>SECTION 8: PRESENTATION OF THE KHFLLP/KOPL</h1>
+<p>BUSINESS OPPORTUNITY AND THE KHFLLP/KOPL SALES &amp; MARKETING PLAN</p>
+<ul>
+<li><strong>Invitations and Presentations: </strong>When inviting a prospect to a presentation of the KHFLLP/KOPL Sales and Marketing Plan the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER may not give any false impression or otherwise misrepresent the KHFLLP/KOPL Business Opportunity or the nature of the invitation and presentation and, therefore, the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER shall in particular not:</li>
+</ul>
+<ul>
+<li>Give the impression that the presentation or the KHFLLP/KOPL Business Opportunity relates to an employment opportunity;</li>
+</ul>
+<ul>
+<li>Imply that the invitation is to a social event;</li>
+</ul>
+<ul>
+<li>Disguise the invitation as a "market survey";</li>
+</ul>
+<ul>
+<li>Promote the event as a "tax seminar";</li>
+</ul>
+<ul>
+<li>Promote the KHFLLP/KOPL Business Opportunity as a business relationship with a person, company, or organization other than KHFLLP/KOPL;</li>
+</ul>
+<ul>
+<li>Indicate that KHFLLP/KOPL products and services are merely one line of products or services distributed through or as a part of a brokerage, consignment or intermediary business operated by a person, company or organization other than KHFLLP/KOPL;</li>
+</ul>
+<ul>
+<li>Indicate that the KHFLLP/KOPL Business Opportunity, KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs, KHFLLP/KOPL products and services are part of any other business opportunity;</li>
+</ul>
+<ul>
+<li>Fail to affirmatively indicate in connection with such invitation that the presentation is KHFLLP/KOPL About the KHFLLP/KOPL Sales and Marketing Plan and the KHFLLP/KOPL Business Opportunity;</li>
+</ul>
+<ul>
+<li>Engage in any misrepresentation of the KHFLLP/KOPL Business Opportunity and the KHFLLP/KOPL ASSOCIATE&rsquo;s/ KHFLLP/KOPL CUSTOMER&rsquo;s relationship to KHFLLP/KOPL and the nature of the KHFLLP/KOPL Business, or omit any information that is needed to properly evaluate the KHFLLP/KOPL Business Opportunity, KHFLLP/KOPL products and services;</li>
+</ul>
+<ul>
+<li>Represent the KHFLLP/KOPL Business Opportunity as passive investment opportunity, franchise opportunity or the offering of an annuity, fixed income opportunity, or equity investment of any type;</li>
+</ul>
+<ul>
+<li>Represent that benefits under the KHFLLP/KOPL Sales and Marketing Plan may be derived from another source than from the purchase and sale of KHFLLP/KOPL products and services and/or from sponsoring others who do the same.</li>
+</ul>
+<ul>
+<li><strong>First Contact with Prospects and Prospective Customers: </strong>At the first contact with prospective KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMERS or customers of KHFLLP/KOPL products and services, KHFLLP/KOPL Associate/KHFLLP/KOPL Customer shall:</li>
+</ul>
+<ul>
+<li>Introduce himself by name;</li>
+</ul>
+<ul>
+<li>Make himself known as KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER;</li>
+</ul>
+<ul>
+<li>Appropriately identify KHFLLP/KOPL and the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER&rsquo;s relationship to</li>
+</ul>
+<p>KHFLLP/KOPL; and</p>
+<ul>
+<li>Indicate the purpose of contact, namely the sale of KHFLLP/KOPL products and services and/or the introduction of the Prospect to the KHFLLP/KOPL Business Opportunity;</li>
+</ul>
+<ul>
+<li>Truthfully and honestly respond with full transparency and candor to any questions that the Prospect has concerning the KHFLLP/KOPL Business Opportunity, KHFLLP/KOPL products and services, the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER or KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li><strong>Sponsorship Guidelines: </strong>No KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall conduct any activity, make any statement or shall fail to make any statement in furtherance of or in connection with an KHFLLP/KOPL Business or the KHFLLP/KOPL Business Opportunity, which, given the context and the circumstances, is not truthful and accurate. The KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER (by way of example and not limitation):</li>
+</ul>
+<ul>
+<li>Must disclose only current average profits, earnings and sales figures and percentages as published by KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li>Must use only official KHFLLP/KOPL literature or KHFLLP/KOPL authorize KHFLLP/KOPLSM.</li>
+</ul>
+<ul>
+<li>May use only earnings and/or bonus representations based on their own personal experiences, provided that they at the same time disclose the current average profits, earnings, and sales figures and percentages as published by KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li>May cite personal lifestyle examples and contributions to charitable causes, provided such benefits were actually accrued from building his/her KHFLLP/KOPL ASSOCIATE NUMBER and the profits there from.</li>
+</ul>
+<ul>
+<li>Must not say that a successful KHFLLP/KOPL ASSOCIATE NUMBER can be built in the form of a</li>
+</ul>
+<p>&ldquo;wholesale buying club&rdquo;, where the products may be bought for personal use only.</p>
+<ul>
+<li>Must emphasize that KHFLLP/KOPL pays bonuses based on the sale of KHFLLP/KOPL products and</li>
+</ul>
+<ul>
+<li>Must not promote tax benefits as the best or principal reason for becoming KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</li>
+</ul>
+<ul>
+<li>Must not say that the business is a &ldquo;get-rich quick&rdquo; opportunity in which it is easy to achieve success with little or no expenditure of effort or time.</li>
+<li>Must not misrepresent the relationship between KHFLLP/KOPL and the other companies affiliated with KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li><strong>No Exclusive Territories: </strong>No KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall represent that there are exclusive territories available as part of the KHFLLP/KOPL Business Opportunity.</li>
+</ul>
+<ul>
+<li><strong>No Obligation to Purchase: </strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall not require a prospect to purchase products and/or services except for the official KHFLLP/KOPL literature intended for the use with newly sponsored KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs.</li>
+</ul>
+<h1>SECTION 9: USE OF THE KHFLLP/KOPL&rsquo;S INTELLECTUAL PROPERTY</h1>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs shall only use KHFLLP/KOPL&rsquo;s trademarks or other intellectual property or proprietary information belonging to or licensed to KHFLLP/KOPL in accordance with the applicable terms, conditions and procedures set forth in the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract, including the KHFLLP/KOPL Rules of Conduct and the KHFLLP/KOPL Policies.</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL is the licensee of certain trademarks including, e.g., logos, service marks and other intellectual property and industrial property, including the name KHFLLP/KOPL, and trademarks, trade names and service marks used in connection with KHFLLP/KOPL products and services, and the various designs of</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs may only use the intellectual property belonging or licensed to KHFLLP/KOPL with the prior written authorization by KHFLLP/KOPL and subject to any conditions attached to such use except as otherwise provided herein.</li>
+</ul>
+<ul>
+<li><strong>Business Cards: </strong>KHFLLP/KOPL Associate/KHFLLP/KOPL Customer who is in full compliance with the Rules of Conduct and all other provisions of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract &ndash; unless otherwise directed by KHFLLP/KOPL &ndash; ay use the KHFLLP/KOPL name (but not the KHFLLP/KOPL TM logo or any other trademarks, trade names or service marks belonging to or licensed to KHFLLP/KOPL) on his/her business cards provided that name is used in one of the following ways with no deviation: (common name) KHFLLP/KOPL Business Owner or (common name) Business Owner of KHFLLP/KOPL Products and Services</li>
+</ul>
+<ul>
+<li><strong>Promotional Literature, Stationery, Premiums, : </strong>KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs shall not produce or procure from a source other than KHFLLP/KOPL any item bearing the KHFLLP/KOPL name or logo or any trademarks, trade names or service marks belonging to or licensed to KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li><strong>KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Advertising: </strong>KHFLLP/KOPL ASSOCIATEs/ KHFLLP/KOPL CUSTOMERs may</li>
+</ul>
+<p>use advertising media to present KHFLLP/KOPL, the KHFLLP/KOPL products and KHFLLP/KOPL Business Opportunity upon prior authorization of KHFLLP/KOPL. They must submit the proposal in writing, including a copy of the proposed advertisement and additional information on the media at least 30 days prior to proposed start of the request. KHFLLP/KOPL may revoke its authorization at its own discretion.</p>
+<h1>SECTION 10: DEATH OF KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER</h1>
+<p>AND INHERITANCE OF THE KHFLLP/KOPL ASSOCIATE NUMBER KHFLLP/KOPL has entered into the Contract with the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER because of his/her personal qualities. Consequently, the relationship between KHFLLP/KOPL and the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER constitutes a personal services agreement. In case of demise of one of the applicants the KHFLLP/KOPL Business will automatically transfer to the other co-applicant. Unless such a transfer will not be contradictory to local inheritance legislation or is otherwise defined in a last will. If there is no co-applicant, an KHFLLP/KOPL ASSOCIATE NUMBER may be both bequeathed by will or testamentary contract and inherited provided KHFLLP/KOPL consents to the assignment of the Contract in favor of the heir or designee. KHFLLP/KOPL recommends that</p>
+<p>KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs consult legal experts and take the necessary precautions so that their KHFLLP/KOPL business can be bequeathed to their descendants or be transferred to a designee of their choice.</p>
+<p>These heirs or designees shall assume all the responsibilities of the testator, including all commissions and/or other payments paid in accordance with the provisions of the KHFLLP/KOPL Sales and Marketing Plan and to which the testator would have been entitled. If KHFLLP/KOPL Associate/KHFLLP/KOPL Customer dies without leaving a will, the laws regarding legal succession shall be applied in transferring the KHFLLP/KOPL business.</p>
+<h1>SECTION 11: BREACH OF CONTRACT; PROCEDURES, SANCTIONS</h1>
+<h2>11.1 Procedures:</h2>
+<ul>
+<li><strong>Investigation: </strong>When KHFLLP/KOPL assumes/believe that a breach of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract has occurred, will occur, or is threatened to occur, KHFLLP/KOPL may investigate the activity of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER at KHFLLP/KOPL may undertake this investigation on its own initiative or when another KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER has submitted a written complaint to KHFLLP/KOPL as provided in rule 11.1.2 of the Rules of Conduct.</li>
+</ul>
+<ul>
+<li><strong>Complaints by KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMERs: </strong>KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER</li>
+</ul>
+<p>who assumes/believes that another KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER has breached its KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract by violating the Rules of Conduct and KHFLLP/KOPL Policies, and who has personal knowledge of the activities leading to such alleged breach, shall notify KHFLLP/KOPL in writing of the alleged breach and all facts connected with it.</p>
+<ul>
+<li>On receiving this notice KHFLLP/KOPL will notify the appropriate KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMERs of the complaint and request an immediate response. A notification of the complaint and/or a copy of the inquiry letter will be sent to the Upline Silver and/or Upline Diamond &amp; above of this KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</li>
+</ul>
+<ul>
+<li>If the complaint and response do not contain sufficient facts upon which to make decision additional information may be requested from any party by KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li>KHFLLP/KOPL will decide whether there has been a violation of the Rules of Conduct and KHFLLP/KOPL Policies or other breach of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract based on the facts available and take appropriate action in accordance with section 12 of the Rules of Conduct.</li>
+</ul>
+<ul>
+<li>Notification of Action</li>
+</ul>
+<p><strong>11.1.3.1. </strong>KHFLLP/KOPL will forward a decision letter to the violating KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER, as well as the Upline Silver and/or Upline Diamond &amp; above KHFLLP/KOPL ASSOCIATE. If applicable, KHFLLP/KOPL will advise the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER of his opportunity to seek review of KHFLLP/KOPL's decision by the NATIONAL REVIEW PANEL.</p>
+<ul>
+<li>Content of Notification</li>
+</ul>
+<ul>
+<li>The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall be informed by any method allowable by law to the address, fax or e-mail that KHFLLP/KOPL has on record for the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER;</li>
+</ul>
+<ul>
+<li>Within the notification the section(s) of the Rules of Conduct or other provisions of the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER Contract violated or breached by the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER will be stated as well as the date in which any such action shall become effective;</li>
+</ul>
+<ul>
+<li><strong>NATIONAL REVIEW PANEL: </strong>If the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER does not agree with the actions taken by KHFLLP/KOPL then the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER may request a review by the NATIONAL REVIEW PANEL as described in section 16 of the Rules of Conduct.</li>
+</ul>
+<ul>
+<li><strong>Waiver of Claims: </strong>KHFLLP/KOPL Associate/KHFLLP/KOPL Customer waives any and all claims against KHFLLP/KOPL arising out of or in respect to any action that KHFLLP/KOPL takes under the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER Contract. KHFLLP/KOPL Associate/KHFLLP/KOPL Customer against whom action has been taken as a result of a violation of the Rules of Conduct and KHFLLP/KOPL Policies or other breach of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract shall have no claim against KHFLLP/KOPL arising out of or with respect to the action.</li>
+</ul>
+<h1>SECTION 12: COMPLIANCE</h1>
+<p>In the event of a breach of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract by KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER, KHFLLP/KOPL may take one or more of the following actions to ensure that a breach is remedied, that any damages arising from the breach are recouped, and to reduce the likelihood of the breach or other breaches recurring:</p>
+<ul>
+<li>Non Compliance</li>
+</ul>
+<ul>
+<li><strong>Termination: </strong>KHFLLP/KOPL may terminate the contract for intentional, severe breaches of the KHFLLP/KOPL Rules of Conduct and Policies only after having followed the procedures as set forth in section 11 of the Rules of Conduct and if all reasonable efforts to gain a mutual consent Upon termination for any cause whatsoever, the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER shall:
+<ul>
+<li>If requested by KHFLLP/KOPL and at KHFLLP/KOPL&rsquo;s sole discretion, return all KHFLLP/KOPL products and services in his possession in accordance with the Buy-Back Rule of the Rules of Conduct;</li>
+<li>Cease to use all trademarks, trade names, insignia or any other intellectual property belonging to or licensed to KHFLLP/KOPL;</li>
+<li>Cease to identify themselves as KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER;</li>
+<li>Cease to engage in any activities of KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER, as outlined, but not limited to the activities identified in Rule 6.4.2. of the Rules of Conduct. Upon termination by KHFLLP/KOPL KHFLLP/KOPL ASSOCIATE may not only take legal action but also will be eligible before the NATIONAL REVIEW PANEL (section 16 of the Rules of Conduct).</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Warning Letter which might include the requirement to mail the relevant Rules of conduct or Policies to the Business Group of the Silver KHFLLP/KOPL ASSOCIATE and to all Silver KHFLLP/KOPL ASSOCIATEs in an Silver or Diamond &amp; above KHFLLP/KOPL ASSOCIATE&rsquo;s organization.</li>
+</ul>
+<ul>
+<li><strong>Retraining: </strong>The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER must attend (with or without downline) training organized by KHFLLP/KOPL in order to cure the breach.</li>
+</ul>
+<ul>
+<li><strong>Suspension: </strong>KHFLLP/KOPL may take action to suspend some or all of the KHFLLP/KOPL ASSOCIATE&rsquo;s/KHFLLP/KOPL CUSTOMER&rsquo;s privileges under the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract, including but</li>
+</ul>
+<p>not limited to:</p>
+<ul>
+<li>Holding payments for payment of higher promotion monies in escrow pending final resolution of the matter;</li>
+<li>Suspending authorization to conduct sponsoring activity (sponsoring, recruiting meetings, training sessions, home presentations, etc.);</li>
+<li>Suspending the Ability to get any communication from KHFLLP/KOPL;</li>
+<li>Suspend invitations to company-sponsored seminars, trips and events;</li>
+<li>Conduct reorientation and retraining meetings and charge back the expenses to the offending KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER;</li>
+<li>Require that KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs provide KHFLLP/KOPL with recordings of their KHFLLP/KOPL Sales and Marketing Plan presentations;</li>
+<li>Order incapability for a defined period of time the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER will not be allowed to place orders</li>
+</ul>
+<p>The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER will be informed on the duration of suspension in the decision letter. The suspension may be imposed until such time as KHFLLP/KOPL is satisfied that the respective behavior has been corrected.</p>
+<ul>
+<li><strong>De-Sponsorship: </strong>The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER is removed as Sponsor of any downline KHFLLP/KOPL ASSOCIATE NUMBERs and/or has the ability to Sponsor new KHFLLP/KOPL ASSOCIATEs/KHFLLP/KOPL CUSTOMERs removed.</li>
+</ul>
+<ul>
+<li><strong>Bonus Refund/Withholding of bonus monies: </strong>The KHFLLP/KOPL ASSOCIATE must pay back KHFLLP/KOPL if paid, or KHFLLP/KOPL may withhold if not paid, bonuses, fees and commissions in order to cure the KHFLLP/KOPL reserves the right to retain discretionary promotions and rewards.</li>
+</ul>
+<ul>
+<li>Revocation/withholding of Qualification: KHFLLP/KOPL may withhold or remove any qualification and require return of any objects evidencing such qualification (by way of example and not limitation, such as pins certificates, etc.).</li>
+<li><strong>Acknowledgement and Undertakings/Cease and Desist declaration: </strong>The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER must acknowledge the breach providing undertakings stating</li>
+</ul>
+<p>that it will comply with its contractual obligations. KHFLLP/KOPL may provide an opportunity to cure a breach within a specific time period, as determined by KHFLLP/KOPL. KHFLLP/KOPL may ask the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER to sign and send in a cease and desist declaration.</p>
+<ul>
+<li><strong>Rejection of KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER application: </strong>KHFLLP/KOPL reserves the right to accept or reject any KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER application</li>
+</ul>
+<ul>
+<li><strong>Legal Action: </strong>KHFLLP/KOPL may take legal action against KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER, file a civil or criminal complaint, notify, or file complaints or reports with appropriate authorities or take such other action or exercise any other remedies as may be available and permitted under applicable law.</li>
+</ul>
+<ul>
+<li><strong>Additional Action: </strong>KHFLLP/KOPL reserves the right to apply the sanctions listed Above and any other adequate action, if required in a specific case of a contract violation and also to take any action short of termination of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract as may be permissible under applicable law and appropriate in KHFLLP/KOPL&rsquo;s sole discretion to address the specific breach(es);</li>
+</ul>
+<ul>
+<li><strong>Multiple Breaches: </strong>Following notification from KHFLLP/KOPL, KHFLLP/KOPL Associate/KHFLLP/KOPL Customer shall not allow any breach to remain uncorrected.</li>
+</ul>
+<ul>
+<li><strong>No Waiver: </strong>The failure of KHFLLP/KOPL to take any action upon learning of a breach or potential breach shall not constitute a waiver of KHFLLP/KOPL&rsquo;s rights to assert such a breach in the future. The failure of KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER to take any action upon learning of a violation of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract shall not constitute a waiver of any other rights or remedies that may be available under applicable law.</li>
+</ul>
+<h1>SECTION 13: DISPOSITION OF TERMINATED OR NON-RENEWED KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER CONTRACT</h1>
+<ul>
+<li><strong>Abandonment: </strong>When KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract is terminated or not renewed, it is considered abandoned; the signatory to the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER Contract shall have no further rights in the KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER Contract. KHFLLP/KOPL may assign or dissolve the KHFLLP/KOPL ASSOCIATE NUMBER, pursuant Rule 1.1 and Rule 15.1.2, the right to operate an KHFLLP/KOPL ASSOCIATE NUMBER in the former KHFLLP/KOPL ASSOCIATE&rsquo;s/KHFLLP/KOPL CUSTOMER&rsquo;s position in the Line of Sponsorship to another KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER, or may remove such position in the Line of Sponsorship, in its sole discretion. In exercising its prerogative hereunder, KHFLLP/KOPL may elect to employ one of the following methods or any other method permissible by law</li>
+</ul>
+<ul>
+<li><strong>Sale/Assignment of KHFLLP/KOPL ASSOCIATE NUMBER: </strong>If KHFLLP/KOPL elects to sell/ assign the right to operate an KHFLLP/KOPL business in the former KHFLLP/KOPL ASSOCIATE&rsquo;s/KHFLLP/KOPL CUSTOMER&rsquo;s position in the Line of Sponsorship, the following will be observed:</li>
+</ul>
+<ul>
+<li>Sale or assignment shall be offered in the order of priority imposed by Rule 6 of the Rules of Conduct.</li>
+</ul>
+<ul>
+<li>The terms of the sale or assignment will be set forth in a written contract executed between KHFLLP/KOPL and the purchaser.</li>
+</ul>
+<ul>
+<li>The purchasing party or assignee shall operate the KHFLLP/KOPL business in the position in the Line of Sponsorship held by the previous KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</li>
+</ul>
+<ul>
+<li><strong>Dissolution of KHFLLP/KOPL ASSOCIATE NUMBER: </strong>If KHFLLP/KOPL so elects, the Sponsor of the former KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER in the Line of Sponsorship may undertake the obligations of the former KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER and assume the role of Sponsor for all KHFLLP/KOPL ASSOCIATE</li>
+</ul>
+<p>/ KHFLLP/KOPL CUSTOMER who had been personally, or nationally sponsored by the former KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</p>
+<ul>
+<li><strong>No Limitation on KHFLLP/KOPL: </strong>KHFLLP/KOPL, however, is in no way limited to any of the Above methods of disposition of an KHFLLP/KOPL business and may exercise discretion to the benefit of the entire Line of Sponsorship as to methods and/or timing of disposition.</li>
+</ul>
+<h1>SECTION 14: NATIONAL REVIEW PANEL</h1>
+<p>The NATIONAL REVIEW PANEL provides an internal procedure for the review of decisions as to the termination, non-renewal, de-sponsorship or suspension of KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</p>
+<ul>
+<li><strong>Suspension of Authorization until a Decision is Made: </strong>In the event of an appeal to the national Review Panel the decision taken by KHFLLP/KOPL in general will not be suspended until review has taken place and a final decision has be taken by the review panel. During this period:</li>
+</ul>
+<ul>
+<li>The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER is not allowed to conduct any KHFLLP/KOPL related activity as described in section 6.4.2 of the Rules of conduct.</li>
+</ul>
+<ul>
+<li>The KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER must not present himself/herself as KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER;</li>
+</ul>
+<ul>
+<li>Any payment of any bonuses, fees, commission or other monies payable to the business are held in escrow by KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li>Whether the monthly Business Volumes of the business is to be counted towards qualification for Silver or Diamond &amp; above, discretionary bonuses or for any promotions will be determined by KHFLLP/KOPL when final decision by the NATIONAL REVIEW PANEL has been Recognition below Silver level may be withheld by KHFLLP/KOPL at its sole discretion.</li>
+<li>There will not be invitations to attend business seminars, leadership seminars and other events organized by KHFLLP/KOPL held during this period, even though there may be a qualification prior to the period of suspension.</li>
+</ul>
+<ul>
+<li>In the event the decision of the National Review Panel is rendered in favor of the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER, KHFLLP/KOPL shall restore full rights and privileges and pay the balance of monies previously held in escrow.</li>
+</ul>
+<ul>
+<li>In the event of any other decision taken by the NATIONAL REVIEW PANEL, KHFLLP/KOPL shall determine the disposition of the monies held in escrow.</li>
+</ul>
+<ul>
+<li><strong>Procedure of filling an appeal for review: </strong>The request for review must be in writing and may be accompanied by any documents supporting this request. The request must be filed within the time</li>
+</ul>
+<p>period specified in the decision letter and is to be addressed to KHFLLP/KOPL Corporation, 7575 East Fulton Road, Ada, Michigan 49355 USA, to the attention of Administrator Global Business Conduct &ndash; national. Alternatively, the request may be forwarded to appeal. <a href="mailto:administrator@KHFLLP.com">administrator@KHFLLP/KOPL.com.</a></p>
+<p>If the request is filed after the time limit, the request will be denied and the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER will be informed accordingly.</p>
+<ul>
+<li><strong>KHFLLP/KOPL CUSTOMER ship of the Panel: </strong>The National Review Panel shall consist of appropriate personnel from the corporate staff of KHFLLP/KOPL Corporation.</li>
+</ul>
+<ul>
+<li><strong>KHFLLP/KOPL CUSTOMERs of the Panel are not Arbitrators: </strong>KHFLLP/KOPL CUSTOMERs of the NATIONAL REVIEW PANEL do not act as arbitrators.</li>
+</ul>
+<h2>14.5 Procedure for the Review by Panel:</h2>
+<ul>
+<li>The parties may offer evidence submit additional evidence independently or at the Panel&rsquo;s</li>
+</ul>
+<p>request. The NATIONAL REVIEW PANEL will decide on the relevancy and materiality.</p>
+<ul>
+<li>Either party may attend the National Review Panel hearing at the KHFLLP/KOPL national Headquarters in Pune (INDIA) at his/her own expense.</li>
+</ul>
+<h2>14.6 Final Determination by the National Review Panel:</h2>
+<ul>
+<li>The determination of the National Review Panel will be appropriately communicated to all</li>
+</ul>
+<ul>
+<li>The NATIONAL REVIEW PANEL may affirm, reverse, or modify the decision of KHFLLP/KOPL.</li>
+</ul>
+<ul>
+<li>If the determination of the National Review Panel upholds or calls for termination of KHFLLP/KOPL ASSOCIATE/ KHFLLP/KOPL CUSTOMER, such termination will be confirmed by KHFLLP/KOPL Corporation notifying the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER that either</li>
+</ul>
+<ol>
+<li>the termination of his business has been confirmed as effective from the date of termination previously notified to the KHFLLP/KOPL ASSOCIATE /KHFLLP/KOPL CUSTOMER by KHFLLP/KOPL, or</li>
+<li>his/her business has been terminated by the NATIONAL REVIEW PANEL. In this event the business shall be deemed to have been terminated by KHFLLP/KOPL upon and by the virtue of service of notice of the Review Panel&rsquo;s decision upon the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER.</li>
+</ol>
+<ul>
+<li>In the event that the NATIONAL REVIEW PANEL decides upon corrective action other than termination, then:</li>
+</ul>
+<ol>
+<li>Notification of this corrective action shall be communicated directly by KHFLLP/KOPL Corporation to the appellant by letter sent by recorded mail containing either the date for completion of any action by the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER or the dates on which any action shall be taken by KHFLLP/KOPL.</li>
+<li>KHFLLP/KOPL will take necessary steps to implement the NATIONAL REVIEW PANEL&rsquo;s</li>
+</ol>
+<ul>
+<li>The decision of the NATIONAL REVIEW PANEL shall not give rise to any liability on the part of KHFLLP/KOPL Corporation or KHFLLP/KOPL, including but not limited to loss of profits or goodwill.</li>
+</ul>
+<ul>
+<li>If the KHFLLP/KOPL ASSOCIATE/KHFLLP/KOPL CUSTOMER initiates litigation prior to the hearing by the National Review Panel, the hearing shall be cancelled and the opportunity for review withdrawn by KHFLLP/KOPL.</li>
+</ul>
+<p><strong>Please note: </strong>Following KHFLLP/KOPL Policies mentioned in the Rules of Conduct are available on https://karyon.organic/</p>
+<p>e-mail: <a href="mailto:info@karyon.organic">info@karyon.organic</a></p>
+</div>
+	
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal END-->
+    <!--=================================
+     jquery -->
+    <!-- jquery -->
+    <script src="~/assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- plugins-jquery -->
+    <script src="~/assets/js/plugins-jquery.js"></script>
+
+    <!-- plugin_path -->
+    <script>var plugin_path = '~/assets/js/';</script>
+
+    <!-- custom -->
+    <script src="~/assets/js/custom.js"></script>
+
+
+
+</body>
+</html>
+<script>
+    $(document).ready(function() {
+        if ($('#SponsorLoginId').val() != "") {
+            GetSponsorName();
+        }
+        
+    });
+    function GetSponsorName() {
+        $(".errortext").removeClass("errortext");
+        $('#pre-loader').show();
+        $.ajax({
+            url: '/Home/GetSponsorName',
+            type: 'Post',
+            data: { SponsorId: $('#SponsorLoginId').val() },
+            success: function(response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        $('#SponsorName').val(response.response.name);
+                    }
+                    else {
+                        $('#SponsorLoginId').val('');
+                         $('#SponsorName').val(''); 1
+                        $("#SponsorLoginId").addClass('errortext');
+                        $('#SponsorLoginId').focus();
+                        alert(response.message);
+
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function() {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function GetStateCity() {
+        $(".errortext").removeClass("errortext");
+        $("#pre-loader").show();
+        $.ajax({
+            url: '/Home/GetStateCity',
+            type: 'Post',
+            data: { PinCode: $('#Pincode').val() },
+            success: function(response) {
+                if (response != null) {
+                    console.log(response);
+                    if (response.status == 1) {
+                        $('#State').val(response.response.state);
+                        $('#City').val(response.response.city);
+                    }
+                    else {
+                        $('#Pincode').val('');
+                        $("#Pincode").addClass('errortext');
+                        $('#Pincode').focus();
+                        alert(response.message);
+
+                    }
+
+                    $("#pre-loader").hide();
+
+                }
+                else {
+                    $("#pre-loader").hide();
+                }
+            }, error: function() {
+                //alert('Some Thing wrong!');
+                $("#pre-loader").hide();
+
+            }
+        });
+    }
+    function Fvalidate() {
+        debugger;
+        $(".errortext").removeClass("errortext");
+        if ($('#SponsorLoginId').val() == "") {
+            $("#SponsorLoginId").addClass('errortext');
+            $('#SponsorLoginId').focus();
+            return false;
+        }
+        if ($('#FirstName').val() == "") {
+            $("#FirstName").addClass('errortext');
+            $('#FirstName').focus();
+            return false;
+        }
+        if ($('#LastName').val() == "") {
+            $("#LastName").addClass('errortext');
+            $('#LastName').focus();
+            return false;
+        }
+        //if ($('#Email').val() == "") {
+        //    $("#Email").addClass('errortext');
+        //    $('#Email').focus();
+        //    return false;
+        //}
+        if ($('#MobileNo').val() == "") {
+            $("#MobileNo").addClass('errortext');
+            $('#MobileNo').focus();
+            return false;
+        }
+        if ($('#Password').val() == "") {
+            $("#Password").addClass('errortext');
+            $('#Password').focus();
+            return false;
+        }
+         var termsId = $('input[name="termconId"]:checked').val();
+        if (termsId == '' || termsId == null) {
+            alert('Please accept terms and conditions')
+            return false;
+        }
+            //if ($('#Pancard').val() == "") {
+        //    $("#Pancard").addClass('errortext');
+        //    $('#Pancard').focus();
+        //    return false;
+        //}
+        //if ($('#ImageFile').val() == "") {
+        //    $("#ImageFile").addClass('errortext');
+        //    $('#ImageFile').focus();
+        //    return false;
+        //}
+
+        var Leg = $('input[name="rdbLeg"]:checked').val();
+        $('#Leg').val(Leg);
+        $("#pre-loader").show();
+    }
+</script>

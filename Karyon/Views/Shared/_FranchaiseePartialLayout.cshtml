@@ -1,0 +1,38 @@
+﻿@model Karyon.Models.Menu
+
+
+@if (Context.Session.GetObjectFromJson<Menu>("_menu").menuList != null && Context.Session.GetObjectFromJson<Menu>("_submenu").subMenuList != null)
+{
+
+    @foreach (var item in Context.Session.GetObjectFromJson<Menu>("_menu").menuList)
+    {
+
+
+        <li class="slide">
+            <a class="side-menu__item" data-bs-toggle="slide" href="@item.Url">
+                <span class="side-menu__label"><i class="@item.Icon"></i> @item.MenuName</span>
+                @if (item.IsDropdown == "Y")
+                {
+                    <i class="angle fe fe-chevron-right"></i>
+                }
+            </a>
+            @if (item.IsDropdown == "Y")
+            {
+                <ul class="slide-menu">
+                    @foreach (var item1 in Context.Session.GetObjectFromJson<Menu>("_submenu").subMenuList)
+                    {
+                        if (int.Parse(item.MenuId) == int.Parse(item1.Fk_MenuId))
+                        {
+                            <li>
+                                <a href="@item1.Url" class="slide-item">
+                                    @item1.SubMenuName
+                                </a>
+                            </li>
+                        }
+                    }
+
+                </ul>
+            }
+        </li>
+    }
+}

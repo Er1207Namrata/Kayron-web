@@ -1,0 +1,237 @@
+﻿@model Karyon.Models.UploadDispatchDetails
+@{
+    ViewData["Title"] = "UpdateDispatchDetails";
+    Layout = "~/Views/Shared/_FranchiseLayout.cshtml";
+}
+<style>
+    .company-txt {
+        font-size: 17pt;
+        font-weight: bold;
+    }
+</style>
+
+<form asp-action="UpdateCustomerDispatchDetailExcel">
+
+    <div class="main-container container-fluid">
+
+        <!-- breadcrumb -->
+        <div class="breadcrumb-header justify-content-between">
+            <div class="left-content">
+                <span class="main-content-title mg-b-0 mg-b-lg-1">Update Dispatch Details</span>
+            </div>
+            <div class="justify-content-center mt-2">
+                <ol class="breadcrumb breadcrumb-style3">
+                    <li class="breadcrumb-item tx-15"><a href="javascript:void(0)">Billing</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Update Dispatch Details</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /breadcrumb -->
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-2">
+                                <div class="form-group">
+                                    <br />
+                                    <input type="file" id="excelfile" />
+                                    <input id="JsonstringWallet" name="JsonstringWallet" type="hidden" value="" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <div class="form-group">
+                                    <br />
+                                    <input type="button" id="viewfile" value="Export To Table" onclick="ExportToTable()" class="btn btn-info btn-sm" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <div class="form-group">
+                                    <br />
+                                    <a class="btn btn-primary btn-sm" href="https://admin.karyon.organic/SampleUpdateDispatchDetails.xlsx" target="_blank">Click Here To Download Format</a>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <br />
+                                    <p style="color:red">
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <table class="table table-striped" id="exceltable">
+                                </table>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <br />
+                                <input type="submit" onclick="return savedata();" id="btnsave" name="btnsave" class="btn btn-success" value="Update" style="display:none" />
+                                <p style="color:red">@TempData["UploadCustomerDispatchDetailExcel"]</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script>
+<script src="~/AssociatePanel/assets/plugins/jquery/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
+<script>
+    function ExportToTable() {
+        // debugger;
+
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;
+        /*Checks whether the file is a valid excel file*/
+        if (regex.test($("#excelfile").val().toLowerCase())) {
+            var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/
+            if ($("#excelfile").val().toLowerCase().indexOf(".xlsx") > 0) {
+                xlsxflag = true;
+            }
+            /*Checks whether the browser supports HTML5*/
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var data = e.target.result;
+                    /*Converts the excel data in to object*/
+                    if (xlsxflag) {
+                        var workbook = XLSX.read(data, { type: 'binary' });
+                    }
+                    else {
+                        var workbook = XLS.read(data, { type: 'binary' });
+                    }
+                    /*Gets all the sheetnames of excel in to a variable*/
+                    var sheet_name_list = workbook.SheetNames;
+                    var cnt = 0; /*This is used for restricting the script to consider only first sheet of excel*/
+                    sheet_name_list.forEach(function (y) { /*Iterate through all sheets*/
+                        /*Convert the cell value to Json*/
+                        if (xlsxflag) {
+                            var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+                        }
+                        else {
+                            var exceljson = XLS.utils.sheet_to_row_object_array(workbook.Sheets[y]);
+                        }
+                        if (exceljson.length > 0 && cnt == 0) {
+                            BindTable(exceljson, '#exceltable');
+                            cnt++;
+                        }
+                    });
+                    $('#exceltable').show();
+                    $('#btnsave').show();
+
+                    $('#excelfile').val('');
+
+                }
+                if (xlsxflag) {/*If excel file is .xlsx extension than creates a Array Buffer from excel*/
+                    reader.readAsArrayBuffer($("#excelfile")[0].files[0]);
+
+                }
+                else {
+                    reader.readAsBinaryString($("#excelfile")[0].files[0]);
+                }
+            }
+            else {
+                alert("Sorry! Your browser does not support HTML5!");
+            }
+        }
+        else {
+            alert("Please upload a valid Excel file!");
+
+            $('#excelfile').val('');
+        }
+    }
+    function BindTable(jsondata, tableid) {/*Function used to convert the JSON array to Html Table*/
+        var columns = BindTableHeader(jsondata, tableid); /*Gets all the column headings of Excel*/
+        for (var i = 0; i < jsondata.length; i++) {
+            var row$ = $('<tr/>');
+            for (var colIndex = 0; colIndex < columns.length; colIndex++) {
+                var cellValue = jsondata[i][columns[colIndex]];
+                if (cellValue == null)
+                    cellValue = "";
+                row$.append($('<td/>').html(cellValue));
+            }
+            $('#exceltable').append(row$);
+        }
+    }
+    function BindTableHeader(jsondata, tableid) {/*Function used to get all column names from JSON and bind the html table header*/
+        var columnSet = [];
+        var headerTr$ = $('<tr/>');
+        for (var i = 0; i < jsondata.length; i++) {
+            var rowHash = jsondata[i];
+            for (var key in rowHash) {
+                if (rowHash.hasOwnProperty(key)) {
+                    if ($.inArray(key, columnSet) == -1) {/*Adding each unique column names to a variable array*/
+                        columnSet.push(key);
+                        headerTr$.append($('<th/>').html(key));
+                    }
+                }
+            }
+        }
+        $('#exceltable').append(headerTr$);
+        return columnSet;
+    }
+    function savedata() {
+        //alert('ok');
+        //debugger;
+        var obj1 = "";
+        var OrderNo = "";
+        var Status = "";
+
+        var Date = "";
+        var oTable = document.getElementById('exceltable');
+        var rowLength = oTable.rows.length;
+        for (i = 0; i < rowLength; i++) {
+
+            //gets cells of current row
+            var oCells = oTable.rows.item(i).cells;
+
+            //gets amount of cells of current row
+            var cellLength = oCells.length;
+
+            //loops through each cell in current row
+            for (var j = 0; j < cellLength; j++) {
+                var cellVal = oCells.item(j).innerHTML;
+                if (i != 0) {
+                    if (j == 0) {
+                        OrderNo = oCells.item(j).innerHTML;
+                    }
+                    else if (j == 1) {
+                        Status = oCells.item(j).innerHTML;
+
+                    }
+                    else {
+                        Date = oCells.item(j).innerHTML;
+                        if (obj1 == "") {
+                            obj1 = "{ \"OrderNo\":\"" + OrderNo + "\",\"Status\":\"" + Status + "\",\"Date\":\"" + Date + "\"}";
+                        }
+                        else {
+                            obj1 = obj1 + ',' + "{ \"OrderNo\":\"" + OrderNo + "\",\"Status\":\"" + Status + "\",\"Date\":\"" + Date + "\"}";
+                        }
+
+                    }
+
+
+
+                }
+
+
+
+
+            }
+        }
+        obj1 = "[" + obj1 + "]";
+        $('#JsonstringWallet').val(obj1);
+
+    }
+</script>
